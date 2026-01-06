@@ -1,0 +1,92 @@
+// services/data-loader.js
+
+import { PATHS, ELEMENTS } from '../config/constants.js';
+
+let tributacaoData = [];
+let impostosFederaisData = [];
+
+/**
+ * Carrega os dados de tributação
+ */
+async function loadTributacoes() {
+  try {
+    const response = await fetch(PATHS.TRIBUTACOES);
+    const data = await response.json();
+    tributacaoData = data;
+    populateTributacaoSelect(data);
+    return data;
+  } catch (error) {
+    console.error('Erro ao carregar tributações:', error);
+    return [];
+  }
+}
+
+/**
+ * Carrega os dados de impostos federais
+ */
+async function loadImpostosFederais() {
+  try {
+    const response = await fetch(PATHS.IMPOSTOS_FEDERAIS);
+    const data = await response.json();
+    impostosFederaisData = data;
+    populateImpostosFederaisSelect(data);
+    return data;
+  } catch (error) {
+    console.error('Erro ao carregar impostos federais:', error);
+    return [];
+  }
+}
+
+/**
+ * Popula o select de tributação
+ */
+function populateTributacaoSelect(data) {
+  const select = document.getElementById(ELEMENTS.TRIBUTACAO);
+  select.innerHTML = '<option value="">Selecione...</option>';
+  
+  data.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item.tributacao;
+    option.textContent = item.tributacao;
+    select.appendChild(option);
+  });
+}
+
+/**
+ * Popula o select de impostos federais
+ */
+function populateImpostosFederaisSelect(data) {
+  const select = document.getElementById(ELEMENTS.IMP_FEDERAL);
+  select.innerHTML = '<option value="">Selecione...</option>';
+  
+  data.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item.imposto_federal;
+    option.textContent = item.imposto_federal;
+    select.appendChild(option);
+  });
+}
+
+/**
+ * Inicializa o carregamento de todos os dados
+ */
+export async function initializeData() {
+  await Promise.all([
+    loadTributacoes(),
+    loadImpostosFederais()
+  ]);
+}
+
+/**
+ * Retorna os dados de tributação
+ */
+export function getTributacaoData() {
+  return tributacaoData;
+}
+
+/**
+ * Retorna os dados de impostos federais
+ */
+export function getImpostosFederaisData() {
+  return impostosFederaisData;
+}
