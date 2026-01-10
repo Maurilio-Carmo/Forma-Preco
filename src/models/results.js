@@ -14,7 +14,8 @@ export function calcPrecoVenda(
 ) {
   const carga = toPercent(margemDesejada)
               + toPercent(percVendaPisCofins)
-              + (toPercent(percVendaICMS) * (1 - toPercent(percReducaoICMSSaida)));
+              + (toPercent(percVendaICMS) 
+              * (1 - toPercent(percReducaoICMSSaida)));
   
   return cmv / (1 - carga);
 }
@@ -31,6 +32,13 @@ export function calcPisCofinsPagar(vPisCofinsVenda, vCreditoPisCofins) {
  */
 export function calcICMSPagar(vICMSVenda, vIcmsCredito) {
   return vICMSVenda - vIcmsCredito;
+}
+
+/**
+ * Calcula o valor total a pagar ao fornecedor
+ */
+export function calcFornecedorPagar(precoCompra, vST, vIPI) {
+  return precoCompra + vST + vIPI;
 }
 
 /**

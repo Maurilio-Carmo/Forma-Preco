@@ -59,6 +59,7 @@ export function processCalculation() {
   // Calcula resultados finais
   const pisCofinsPagar = Results.calcPisCofinsPagar(vPisCofinsVenda, vCreditoPisCofins);
   const icmsPagar = Results.calcICMSPagar(vICMSVenda, vCreditoICMS);
+  const fornecedorPagar = Results.calcFornecedorPagar(precoCompra, vST, vIPI);
   const lucroBruto = Results.calcLucroBruto(precoVenda, cmv, vPisCofinsVenda, vICMSVenda);
   const margem = Results.calcMargem(lucroBruto, precoVenda);
   const markup = Results.calcMarkup(precoVenda, precoCompra);
@@ -80,6 +81,7 @@ export function processCalculation() {
     vIBSMunVenda,
     pisCofinsPagar,
     icmsPagar,
+    fornecedorPagar,
     lucroBruto,
     margem,
     markup

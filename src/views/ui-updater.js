@@ -35,7 +35,7 @@ export function updateUI(values) {
   updateElement(ELEMENTS.CBS_PAGAR_DETALHE, formatCurrency(values.vCBSVenda));
   updateElement(ELEMENTS.IBS_UF_DETALHE, formatCurrency(values.vIBSUFVenda));
   updateElement(ELEMENTS.IBS_MUN_DETALHE, formatCurrency(values.vIBSMunVenda));
-  updateElement(ELEMENTS.FORNECEDOR_DETALHE, formatCurrency(values.precoCompra));
+  updateElement(ELEMENTS.FORNECEDOR_DETALHE, formatCurrency(values.fornecedorPagar));
   updateElement(ELEMENTS.LUCRO_BRUTO_DETALHE, formatCurrency(values.lucroBruto));
 }
 
