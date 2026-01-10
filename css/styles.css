@@ -149,6 +149,11 @@ header small {
     margin-top: 2px;
 }
 
+/* Classe para ocultar elementos no Simples Nacional */
+.hidden-regime {
+    display: none !important;
+}
+
 /* cartões e painéis */
 .card,
 .result-box {

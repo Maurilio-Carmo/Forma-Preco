@@ -43,8 +43,8 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
       
       if (linha) {
         if (isSimplesNacional) {
-          // Oculta a linha completa
-          linha.style.display = 'none';
+          // Adiciona classe para ocultar
+          linha.classList.add('hidden-regime');
           
           // Limpa o valor do campo
           if (input) {
@@ -58,8 +58,8 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
             valorElement.textContent = 'R$ 0,00';
           }
         } else {
-          // Mostra a linha novamente
-          linha.style.display = 'flex';
+          // Remove classe para mostrar novamente
+          linha.classList.remove('hidden-regime');
         }
       }
     });
@@ -72,7 +72,7 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
         if (isSimplesNacional) {
           // Desabilita o select
           select.disabled = true;
-          // Opcional: reseta para valor padrão
+          // Reseta para valor padrão
           select.value = '';
         } else {
           // Habilita o select novamente
@@ -88,15 +88,16 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
       
       if (resultItem) {
         if (isSimplesNacional) {
-          // Oculta o result-item completo
-          resultItem.style.display = 'none';
+          // Adiciona classe para ocultar
+          resultItem.classList.add('hidden-regime');
+          
           // Limpa o valor
           if (elemento) {
             elemento.textContent = 'R$ 0,00';
           }
         } else {
-          // Mostra o result-item novamente
-          resultItem.style.display = 'flex';
+          // Remove classe para mostrar novamente
+          resultItem.classList.remove('hidden-regime');
         }
       }
     });
