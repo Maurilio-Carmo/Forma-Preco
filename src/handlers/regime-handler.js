@@ -17,6 +17,12 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
     'reducaoBCSaida'
   ];
   
+  // IDs dos result-items que devem ser ocultados no Simples Nacional
+  const resultItemsParaOcultar = [
+    'pisCofinsPagarDetalhe',
+    'icmsPagarDetalhe'
+  ];
+  
   // IDs dos selects que devem ser desabilitados no Simples Nacional
   const selectsParaDesabilitar = [
     'tributacao',
@@ -71,6 +77,26 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
         } else {
           // Habilita o select novamente
           select.disabled = false;
+        }
+      }
+    });
+    
+    // Oculta/mostra result-items nos resultados
+    resultItemsParaOcultar.forEach(itemId => {
+      const elemento = document.getElementById(itemId);
+      const resultItem = elemento?.closest('.result-item');
+      
+      if (resultItem) {
+        if (isSimplesNacional) {
+          // Oculta o result-item completo
+          resultItem.style.display = 'none';
+          // Limpa o valor
+          if (elemento) {
+            elemento.textContent = 'R$ 0,00';
+          }
+        } else {
+          // Mostra o result-item novamente
+          resultItem.style.display = 'flex';
         }
       }
     });
