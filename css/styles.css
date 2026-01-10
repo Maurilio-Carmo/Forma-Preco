@@ -32,7 +32,7 @@
 
     /* Layout */
     --radius: 16px;
-    --padding: 18px;
+    --padding: 14px;
 }
 
 [data-theme="dark"] {
@@ -128,11 +128,16 @@ body {
 
 /* cabeçalho */
 header {
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: var(--padding);
+    box-shadow: var(--card-shadow);
     grid-column: 1/-1;
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 6px;
+    transition: background 0.35s, color 0.35s;
 }
 
 header h1 {
