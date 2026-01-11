@@ -32,7 +32,7 @@
 
     /* Layout */
     --radius: 16px;
-    --padding: 18px;
+    --padding: 14px;
 }
 
 [data-theme="dark"] {
