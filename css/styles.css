@@ -136,10 +136,15 @@ header {
 }
 
 header h1 {
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: var(--padding);
+    box-shadow: var(--card-shadow);
     font-size: 24px;
     margin: 0;
     font-weight: 600;
     color: var(--text-strong);
+    transition: background 0.35s, color 0.35s;
 }
 
 header small {
