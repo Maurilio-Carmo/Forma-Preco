@@ -136,7 +136,6 @@ header {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 6px;
     transition: background 0.35s, color 0.35s;
 }
 
