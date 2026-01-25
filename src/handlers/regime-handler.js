@@ -35,12 +35,6 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
     'simplesPagarDetalhe'
   ];
   
-  // IDs dos selects que devem ser desabilitados no Simples Nacional
-  const selectsParaDesabilitar = [
-    'tributacao',
-    'impFederal'
-  ];
-  
   // Containers que devem ser ocultados no Simples
   const containersParaOcultar = [
     { id: 'tributacao', tipo: 'select-container' },
