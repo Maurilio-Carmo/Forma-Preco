@@ -67,7 +67,7 @@ export function updateICMS(tributacaoData, onComplete) {
 }
 
 /**
- * Atualiza campos de alíquotas do Simples Nacional baseado na faixa selecionada
+ * Atualiza campo de alíquota do Simples Nacional baseado na faixa selecionada
  */
 export function updateSimplesNacional(faixasSimplesNacionalData, onComplete) {
   const faixaSimples = document.getElementById(ELEMENTS.FAIXA_SIMPLES).value;
@@ -75,13 +75,14 @@ export function updateSimplesNacional(faixasSimplesNacionalData, onComplete) {
   let aliquota = 0;
 
   if (faixaSimples) {
-    const item = faixasSimplesNacionalData.find(x => x.faixa === faixaSimples);
+    const item = faixasSimplesNacionalData.find(x => x.faixa === parseInt(faixaSimples));
 
     if (item) {
       aliquota = item.aliquota ?? 0;
     }
   }
 
+  // Atualiza o campo de visualização (somente leitura)
   document.getElementById(ELEMENTS.SIMPLES_A_PAGAR).value = formatInputValue(aliquota);
 
   if (onComplete) onComplete();

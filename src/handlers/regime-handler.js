@@ -1,11 +1,13 @@
 // handlers/regime-handler.js
 
+import { ELEMENTS } from '../config/constants.js';
+
 /**
  * Gerencia a visibilidade dos campos baseado no regime tributário selecionado
  * @param {Function} recalculateCallback - Função de callback para recalcular após mudanças
  */
 export function setupRegimeVisibilityHandler(recalculateCallback) {
-  const regimeSelect = document.getElementById('regime');
+  const regimeSelect = document.getElementById(ELEMENTS.REGIME);
   
   // IDs dos campos que devem ser ocultados no Simples Nacional
   const camposParaOcultar = [
@@ -174,7 +176,9 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
   }
   
   // Adiciona listener para mudanças no regime
-  regimeSelect.addEventListener('change', atualizarVisibilidadeCampos);
+  if (regimeSelect) {
+    regimeSelect.addEventListener('change', atualizarVisibilidadeCampos);
+  }
   
   // Executa uma vez na inicialização para aplicar o estado correto
   atualizarVisibilidadeCampos();
@@ -184,7 +188,9 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
  * Remove os listeners do regime (útil para limpeza)
  */
 export function cleanupRegimeVisibilityHandler() {
-  const regimeSelect = document.getElementById('regime');
-  const newRegimeSelect = regimeSelect.cloneNode(true);
-  regimeSelect.parentNode.replaceChild(newRegimeSelect, regimeSelect);
+  const regimeSelect = document.getElementById(ELEMENTS.REGIME);
+  if (regimeSelect) {
+    const newRegimeSelect = regimeSelect.cloneNode(true);
+    regimeSelect.parentNode.replaceChild(newRegimeSelect, regimeSelect);
+  }
 }
