@@ -1,7 +1,7 @@
 // handlers/event-handlers.js
 
 import { ELEMENTS } from '../config/constants.js';
-import { updatePisCofins, updateICMS } from './tax-handlers.js';
+import { updatePisCofins, updateICMS, updateSimplesNacional} from './tax-handlers.js';
 
 /**
  * Configura listeners para cálculos em tempo real
@@ -16,7 +16,7 @@ export function setupCalculationListeners(processCalculation) {
 /**
  * Configura listeners para atualização de impostos
  */
-export function setupTaxUpdateListeners(tributacaoData, impostosFederaisData, processCalculation) {
+export function setupTaxUpdateListeners(tributacaoData, impostosFederaisData, faixasSimplesNacionalData, processCalculation) {
   // Listener para regime e imposto federal
   document.getElementById(ELEMENTS.REGIME)
     .addEventListener('change', () => {
@@ -32,5 +32,11 @@ export function setupTaxUpdateListeners(tributacaoData, impostosFederaisData, pr
   document.getElementById(ELEMENTS.TRIBUTACAO)
     .addEventListener('change', () => {
       updateICMS(tributacaoData, processCalculation);
+    });
+
+  // Listener para faixa do Simples Nacional
+  document.getElementById(ELEMENTS.FAIXA_SIMPLES)
+    .addEventListener('change', () => {
+      updateSimplesNacional(faixasSimplesNacionalData, processCalculation);
     });
 }

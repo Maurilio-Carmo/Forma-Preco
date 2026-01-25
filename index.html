@@ -58,6 +58,14 @@
                     <option value="">Carregando...</option>
                 </select>
             </div>
+
+            <!-- FAIXA DO SIMPLES NACIONAL -->
+            <div style="display:flex;align-items:center;gap:8px">
+                <label for="faixaSimples" class="section-title required">Faixa Simples:</label>
+                <select id="faixaSimples" class="input" style="flex:1" required>
+                    <option value="">Carregando...</option>
+                </select>
+            </div>
         
             <!-- Preço e Margem -->
             <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
@@ -169,6 +177,15 @@
                         <span class="percent-suffix">%</span>
                     </div>
                     <div class="col-value"></div>
+                </div>
+
+                <div class="linha">
+                    <label for="vendaICMS" class="col-label small muted">Simples a pagar:</label>
+                    <div class="col-input percent-wrapper">
+                        <input id="simplesAPagar" type="number" class="small-input percent-input" min="0" max="99" placeholder="0,00">
+                        <span class="percent-suffix">%</span>
+                    </div>
+                    <div id="valorSimplesAPagar" class="col-value small muted">R$ 0,00</div>
                 </div>
 
                 <div class="linha">
@@ -306,6 +323,11 @@
                     <div class="result-item">
                         <span>(-) ICMS a Pagar:</span>
                         <strong id="icmsPagarDetalhe">R$ 0,00</strong>
+                    </div>
+
+                    <div class="result-item">
+                        <span>(-) Simples a Pagar:</span>
+                        <strong id="simplesPagarDetalhe">R$ 0,00</strong>
                     </div>
 
                     <div class="result-item">

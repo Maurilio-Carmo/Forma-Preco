@@ -10,12 +10,14 @@ export function calcPrecoVenda(
   margemDesejada, 
   percVendaPisCofins, 
   percVendaICMS, 
-  percReducaoICMSSaida
+  percReducaoICMSSaida,
+  percSimples
 ) {
   const carga = toPercent(margemDesejada)
               + toPercent(percVendaPisCofins)
               + (toPercent(percVendaICMS) 
-              * (1 - toPercent(percReducaoICMSSaida)));
+              * (1 - toPercent(percReducaoICMSSaida)))
+              + toPercent(percSimples);
   
   return cmv / (1 - carga);
 }
@@ -35,6 +37,13 @@ export function calcICMSPagar(vICMSVenda, vIcmsCredito) {
 }
 
 /**
+ * Calcula Simples Nacional a pagar
+ */
+export function calcSimplesPagar(vSimplesVenda) {
+  return vSimplesVenda;
+}
+
+/**
  * Calcula o valor total a pagar ao fornecedor
  */
 export function calcFornecedorPagar(precoCompra, vST, vIPI) {
@@ -44,8 +53,8 @@ export function calcFornecedorPagar(precoCompra, vST, vIPI) {
 /**
  * Calcula o lucro bruto
  */
-export function calcLucroBruto(precoVenda, cmv, vPisCofinsVenda, vICMSVenda) {
-  return precoVenda - (cmv + vPisCofinsVenda + vICMSVenda);
+export function calcLucroBruto(precoVenda, cmv, vPisCofinsVenda, vICMSVenda, vSimplesVenda) {
+  return precoVenda - (cmv + vPisCofinsVenda + vICMSVenda + vSimplesVenda);
 }
 
 /**

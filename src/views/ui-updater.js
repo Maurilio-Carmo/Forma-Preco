@@ -16,6 +16,7 @@ export function updateUI(values) {
   // Atualiza valores calculados de saída
   updateElement(ELEMENTS.VALOR_VENDA_PIS_COFINS, formatCurrency(values.vPisCofinsVenda));
   updateElement(ELEMENTS.VALOR_VENDA_ICMS, formatCurrency(values.vICMSVenda));
+  updateElement(ELEMENTS.VALOR_SIMPLES_A_PAGAR, formatCurrency(values.vSimplesVenda));
   
   // Atualiza destaques principais
   updateElement(ELEMENTS.PRECO_COMPRA_RESULTADO, formatCurrency(values.precoCompra));
@@ -32,6 +33,7 @@ export function updateUI(values) {
   updateElement(ELEMENTS.PRECO_VENDA_DETALHE, formatCurrency(values.precoVenda));
   updateElement(ELEMENTS.PIS_COFINS_PAGAR_DETALHE, formatCurrency(values.pisCofinsPagar));
   updateElement(ELEMENTS.ICMS_PAGAR_DETALHE, formatCurrency(values.icmsPagar));
+  updateElement(ELEMENTS.SIMPLES_PAGAR_DETALHE, formatCurrency(values.simplesPagar));
   updateElement(ELEMENTS.CBS_PAGAR_DETALHE, formatCurrency(values.vCBSVenda));
   updateElement(ELEMENTS.IBS_UF_DETALHE, formatCurrency(values.vIBSUFVenda));
   updateElement(ELEMENTS.IBS_MUN_DETALHE, formatCurrency(values.vIBSMunVenda));

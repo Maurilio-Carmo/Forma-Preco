@@ -65,3 +65,24 @@ export function updateICMS(tributacaoData, onComplete) {
   
   if (onComplete) onComplete();
 }
+
+/**
+ * Atualiza campos de alíquotas do Simples Nacional baseado na faixa selecionada
+ */
+export function updateSimplesNacional(faixasSimplesNacionalData, onComplete) {
+  const faixaSimples = document.getElementById(ELEMENTS.FAIXA_SIMPLES).value;
+
+  let aliquota = 0;
+
+  if (faixaSimples) {
+    const item = faixasSimplesNacionalData.find(x => x.faixa === faixaSimples);
+
+    if (item) {
+      aliquota = item.aliquota ?? 0;
+    }
+  }
+
+  document.getElementById(ELEMENTS.SIMPLES_A_PAGAR).value = formatInputValue(aliquota);
+
+  if (onComplete) onComplete();
+}

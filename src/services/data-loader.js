@@ -4,6 +4,7 @@ import { PATHS, ELEMENTS } from '../config/constants.js';
 
 let tributacaoData = [];
 let impostosFederaisData = [];
+let faixasSimplesNacionalData = [];
 
 /**
  * Carrega os dados de tributação
@@ -33,6 +34,22 @@ async function loadImpostosFederais() {
     return data;
   } catch (error) {
     console.error('Erro ao carregar impostos federais:', error);
+    return [];
+  }
+}
+
+/**
+ * Carrega os dados de faixas do Simples Nacional
+ */
+async function loadFaixasSimplesNacional() {
+  try {
+    const response = await fetch(PATHS.FAIXAS_SIMPLES_NACIONAL);
+    const data = await response.json();
+    faixasSimplesNacionalData = data;
+    populateFaixasSimplesNacionalSelect(data);
+    return data;
+  } catch (error) {
+    console.error('Erro ao carregar faixas do Simples Nacional:', error);
     return [];
   }
 }
@@ -68,12 +85,27 @@ function populateImpostosFederaisSelect(data) {
 }
 
 /**
+ * Popula o select de faixas do Simples Nacional
+ */
+function populateFaixasSimplesNacionalSelect(data) {
+  const select = document.getElementById('faixaSimples');
+  select.innerHTML = '<option value="">Selecione...</option>';
+  data.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item.faixa;
+    option.textContent = item.faixa_descricao;
+    select.appendChild(option);
+  });
+}
+
+/**
  * Inicializa o carregamento de todos os dados
  */
 export async function initializeData() {
   await Promise.all([
     loadTributacoes(),
-    loadImpostosFederais()
+    loadImpostosFederais(),
+    loadFaixasSimplesNacional()
   ]);
 }
 
@@ -89,4 +121,11 @@ export function getTributacaoData() {
  */
 export function getImpostosFederaisData() {
   return impostosFederaisData;
+}
+
+/**
+ * Retorna os dados de faixas do Simples Nacional
+ */
+export function getFaixasSimplesNacionalData() {
+  return faixasSimplesNacionalData;
 }

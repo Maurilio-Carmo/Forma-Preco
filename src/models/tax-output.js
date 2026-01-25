@@ -17,6 +17,13 @@ export function calcICMSVenda(precoVenda, percVendaICMS, percReducaoICMSSaida) {
 }
 
 /**
+ * Calcula Simples Nacional na venda
+ */
+export function calcSimplesVenda(precoVenda, percSimples) {
+  return precoVenda * toPercent(percSimples);
+}
+
+/**
  * Calcula CBS na venda
  */
 export function calcCBSVenda(precoVenda, percCBS, percReducaoCBS) {

@@ -5,6 +5,7 @@ export const ELEMENTS = {
   REGIME: 'regime',
   TRIBUTACAO: 'tributacao',
   IMP_FEDERAL: 'impFederal',
+  FAIXA_SIMPLES: 'faixaSimples',
   PRECO_COMPRA: 'precoCompra',
   MARGEM_DESEJADA: 'margemDesejada',
   
@@ -20,6 +21,7 @@ export const ELEMENTS = {
   VENDA_PIS_COFINS: 'vendaPisCofins',
   VENDA_ICMS: 'vendaICMS',
   REDUCAO_BC_SAIDA: 'reducaoBCSaida',
+  SIMPLES_A_PAGAR: 'simplesAPagar',
   ALIQUOTA_CBS: 'aliquotaCBS',
   ALIQUOTA_REDUCAO_CBS: 'aliquotaReducaoCBS',
   ALIQUOTA_IBS_UF: 'aliquotaIBSUF',
@@ -35,6 +37,7 @@ export const ELEMENTS = {
   // Valores calculados de saída
   VALOR_VENDA_PIS_COFINS: 'valorVendaPisCofins',
   VALOR_VENDA_ICMS: 'valorVendaICMS',
+  VALOR_SIMPLES_A_PAGAR: 'valorSimplesAPagar',
   
   // Resultados principais
   PRECO_COMPRA_RESULTADO: 'precoCompraResultado',
@@ -49,6 +52,7 @@ export const ELEMENTS = {
   PRECO_VENDA_DETALHE: 'precoVendaDetalhe',
   PIS_COFINS_PAGAR_DETALHE: 'pisCofinsPagarDetalhe',
   ICMS_PAGAR_DETALHE: 'icmsPagarDetalhe',
+  SIMPLES_PAGAR_DETALHE: 'simplesPagarDetalhe',
   CBS_PAGAR_DETALHE: 'cbsPagarDetalhe',
   IBS_UF_DETALHE: 'ibsUFDetalhe',
   IBS_MUN_DETALHE: 'ibsMunDetalhe',
@@ -63,6 +67,7 @@ export const ELEMENTS = {
 export const PATHS = {
   TRIBUTACOES: './data/tributacoes.json',
   IMPOSTOS_FEDERAIS: './data/impostos_federais.json',
+  FAIXAS_SIMPLES_NACIONAL: './data/faixas_simples_nacional.json',
   ICON_MOON: 'icons/moon.png',
   ICON_SUN: 'icons/sun.png'
 };

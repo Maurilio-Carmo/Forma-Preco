@@ -1,6 +1,6 @@
 // js/main.js
 
-import { initializeData, getTributacaoData, getImpostosFederaisData } from './services/data-loader.js';
+import { initializeData, getTributacaoData, getImpostosFederaisData, getFaixasSimplesNacionalData } from './services/data-loader.js';
 import { processCalculation } from './controllers/calculation-controller.js';
 import { setupCalculationListeners, setupTaxUpdateListeners } from './handlers/event-handlers.js';
 import { setupRegimeVisibilityHandler } from './handlers/regime-handler.js';
@@ -17,10 +17,11 @@ async function initializeApp() {
     // Obtém referências aos dados carregados
     const tributacaoData = getTributacaoData();
     const impostosFederaisData = getImpostosFederaisData();
+    const faixasSimplesNacionalData = getFaixasSimplesNacionalData();
     
     // Configura listeners de eventos
     setupCalculationListeners(processCalculation);
-    setupTaxUpdateListeners(tributacaoData, impostosFederaisData, processCalculation);
+    setupTaxUpdateListeners(tributacaoData, impostosFederaisData, faixasSimplesNacionalData, processCalculation);
     
     // Configura gerenciamento de visibilidade por regime
     setupRegimeVisibilityHandler(processCalculation);

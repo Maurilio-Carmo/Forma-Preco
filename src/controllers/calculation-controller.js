@@ -34,6 +34,7 @@ export function processCalculation() {
   const percVendaPisCofins = toNumber(document.getElementById(ELEMENTS.VENDA_PIS_COFINS).value);
   const percVendaICMS = toNumber(document.getElementById(ELEMENTS.VENDA_ICMS).value);
   const percReducaoICMSSaida = toNumber(document.getElementById(ELEMENTS.REDUCAO_BC_SAIDA).value);
+  const percSimples = toNumber(document.getElementById(ELEMENTS.SIMPLES_A_PAGAR).value);
   const percCBS = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_CBS).value);
   const percReducaoCBS = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_REDUCAO_CBS).value);
   const percIBSUF = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_IBS_UF).value);
@@ -46,12 +47,14 @@ export function processCalculation() {
     margemDesejada,
     percVendaPisCofins,
     percVendaICMS,
-    percReducaoICMSSaida
+    percReducaoICMSSaida,
+    percSimples
   );
   
   // Calcula valores de saída
   const vICMSVenda = TaxOutput.calcICMSVenda(precoVenda, percVendaICMS, percReducaoICMSSaida);
   const vPisCofinsVenda = TaxOutput.calcPisCofinsVenda(precoVenda, percVendaPisCofins, vICMSVenda);
+  const vSimplesVenda = TaxOutput.calcSimplesVenda(precoVenda, percSimples);
   const vCBSVenda = TaxOutput.calcCBSVenda(precoVenda, percCBS, percReducaoCBS);
   const vIBSUFVenda = TaxOutput.calcIBSUFVenda(precoVenda, percIBSUF, percReducaoIBSUF);
   const vIBSMunVenda = TaxOutput.calcIBSMunVenda(precoVenda, percIBSMun);
@@ -59,8 +62,9 @@ export function processCalculation() {
   // Calcula resultados finais
   const pisCofinsPagar = Results.calcPisCofinsPagar(vPisCofinsVenda, vCreditoPisCofins);
   const icmsPagar = Results.calcICMSPagar(vICMSVenda, vCreditoICMS);
+  const simplesPagar = Results.calcSimplesPagar(vSimplesVenda);
   const fornecedorPagar = Results.calcFornecedorPagar(precoCompra, vST, vIPI);
-  const lucroBruto = Results.calcLucroBruto(precoVenda, cmv, vPisCofinsVenda, vICMSVenda);
+  const lucroBruto = Results.calcLucroBruto(precoVenda, cmv, vPisCofinsVenda, vICMSVenda, vSimplesVenda);
   const margem = Results.calcMargem(lucroBruto, precoVenda);
   const markup = Results.calcMarkup(precoVenda, precoCompra);
   
@@ -76,11 +80,13 @@ export function processCalculation() {
     precoVenda,
     vPisCofinsVenda,
     vICMSVenda,
+    vSimplesVenda,
     vCBSVenda,
     vIBSUFVenda,
     vIBSMunVenda,
     pisCofinsPagar,
     icmsPagar,
+    simplesPagar,
     fornecedorPagar,
     lucroBruto,
     margem,

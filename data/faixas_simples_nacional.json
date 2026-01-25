@@ -1,0 +1,50 @@
+[
+  {
+    "faixa": 1,
+    "faixa_descricao": "Até 180k/ano",
+    "receita_min": 0.00,
+    "receita_max": 180000.00,
+    "aliquota": 4.0,
+    "valor_deduzir": 0.00
+  },
+  {
+    "faixa": 2,
+    "faixa_descricao": "180k a 360k/ano",
+    "receita_min": 180000.01,
+    "receita_max": 360000.00,
+    "aliquota": 7.3,
+    "valor_deduzir": 5940.00
+  },
+  {
+    "faixa": 3,
+    "faixa_descricao": "360k a 720k/ano",
+    "receita_min": 360000.01,
+    "receita_max": 720000.00,
+    "aliquota": 9.5,
+    "valor_deduzir": 13860.00
+  },
+  {
+    "faixa": 4,
+    "faixa_descricao": "720k a 1,8M/ano",
+    "receita_min": 720000.01,
+    "receita_max": 1800000.00,
+    "aliquota": 10.7,
+    "valor_deduzir": 22500.00
+  },
+  {
+    "faixa": 5,
+    "faixa_descricao": "1,8M a 3,6M/ano",
+    "receita_min": 1800000.01,
+    "receita_max": 3600000.00,
+    "aliquota": 14.3,
+    "valor_deduzir": 87300.00
+  },
+  {
+    "faixa": 6,
+    "faixa_descricao": "3,6M a 4,8M/ano",
+    "receita_min": 3600000.01,
+    "receita_max": 4800000.00,
+    "aliquota": 19.0,
+    "valor_deduzir": 378000.00
+  }
+]

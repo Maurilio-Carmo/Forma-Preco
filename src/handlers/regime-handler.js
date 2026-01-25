@@ -17,16 +17,37 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
     'reducaoBCSaida'
   ];
   
+  // IDs dos campos que devem ser mostrados APENAS no Simples Nacional
+  const camposApenasSimples = [
+    'simplesAPagar'
+  ];
+  
   // IDs dos result-items que devem ser ocultados no Simples Nacional
   const resultItemsParaOcultar = [
     'pisCofinsPagarDetalhe',
     'icmsPagarDetalhe'
   ];
   
+  // IDs dos result-items que devem ser mostrados no Simples Nacional
+  const resultItemsApenasSimples = [
+    'simplesPagarDetalhe'
+  ];
+  
   // IDs dos selects que devem ser desabilitados no Simples Nacional
   const selectsParaDesabilitar = [
     'tributacao',
     'impFederal'
+  ];
+  
+  // Containers que devem ser ocultados no Simples
+  const containersParaOcultar = [
+    { id: 'tributacao', tipo: 'select-container' },
+    { id: 'impFederal', tipo: 'select-container' }
+  ];
+  
+  // Container que deve ser mostrado apenas no Simples
+  const containersApenasSimples = [
+    { id: 'faixaSimples', tipo: 'select-container' }
   ];
   
   /**
@@ -45,18 +66,11 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
         if (isSimplesNacional) {
           // Adiciona classe para ocultar
           linha.classList.add('hidden-regime');
+          if (input) input.value = '';
           
-          // Limpa o valor do campo
-          if (input) {
-            input.value = '';
-          }
-          
-          // Atualiza os valores calculados relacionados
           const valorId = `valor${campoId.charAt(0).toUpperCase() + campoId.slice(1)}`;
           const valorElement = document.getElementById(valorId);
-          if (valorElement) {
-            valorElement.textContent = 'R$ 0,00';
-          }
+          if (valorElement) valorElement.textContent = 'R$ 0,00';
         } else {
           // Remove classe para mostrar novamente
           linha.classList.remove('hidden-regime');
@@ -64,19 +78,55 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
       }
     });
     
-    // Desabilita/habilita selects de impostos
-    selectsParaDesabilitar.forEach(selectId => {
-      const select = document.getElementById(selectId);
+    // Mostra campos apenas para Simples Nacional
+    camposApenasSimples.forEach(campoId => {
+      const input = document.getElementById(campoId);
+      const linha = input?.closest('.linha');
       
-      if (select) {
+      if (linha) {
         if (isSimplesNacional) {
-          // Desabilita o select
-          select.disabled = true;
-          // Reseta para valor padrão
-          select.value = '';
+          linha.classList.remove('hidden-regime');
         } else {
-          // Habilita o select novamente
-          select.disabled = false;
+          linha.classList.add('hidden-regime');
+          if (input) input.value = '';
+          
+          const valorId = `valor${campoId.charAt(0).toUpperCase() + campoId.slice(1)}`;
+          const valorElement = document.getElementById(valorId);
+          if (valorElement) valorElement.textContent = 'R$ 0,00';
+        }
+      }
+    });
+    
+    // Gerencia containers dos selects principais
+    containersParaOcultar.forEach(({ id }) => {
+      const select = document.getElementById(id);
+      const container = select?.parentElement;
+      
+      if (container) {
+        if (isSimplesNacional) {
+          container.style.display = 'none';
+          if (select) {
+            select.disabled = true;
+            select.value = '';
+          }
+        } else {
+          container.style.display = 'flex';
+          if (select) select.disabled = false;
+        }
+      }
+    });
+    
+    // Gerencia container da faixa do Simples
+    containersApenasSimples.forEach(({ id }) => {
+      const select = document.getElementById(id);
+      const container = select?.parentElement;
+      
+      if (container) {
+        if (isSimplesNacional) {
+          container.style.display = 'flex';
+        } else {
+          container.style.display = 'none';
+          if (select) select.value = '';
         }
       }
     });
@@ -102,6 +152,21 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
       }
     });
     
+    // Mostra result-items apenas para Simples Nacional
+    resultItemsApenasSimples.forEach(itemId => {
+      const elemento = document.getElementById(itemId);
+      const resultItem = elemento?.closest('.result-item');
+      
+      if (resultItem) {
+        if (isSimplesNacional) {
+          resultItem.classList.remove('hidden-regime');
+        } else {
+          resultItem.classList.add('hidden-regime');
+          if (elemento) elemento.textContent = 'R$ 0,00';
+        }
+      }
+    });
+    
     // Recalcula os valores após ocultar/mostrar campos
     if (recalculateCallback && typeof recalculateCallback === 'function') {
       recalculateCallback();
@@ -120,7 +185,6 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
  */
 export function cleanupRegimeVisibilityHandler() {
   const regimeSelect = document.getElementById('regime');
-  // Clone e substitui para remover todos os listeners
   const newRegimeSelect = regimeSelect.cloneNode(true);
   regimeSelect.parentNode.replaceChild(newRegimeSelect, regimeSelect);
 }
