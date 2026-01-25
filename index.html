@@ -272,7 +272,7 @@
             </div>
 
             <div class="highlights-two">
-                <div class="highlight">
+                <div class="highlight tooltip-trigger" data-tooltip="margem">
                     <div class="small muted">
                         <strong>(=) Margem:</strong>
                     </div>
@@ -281,7 +281,7 @@
                     </div>
                 </div>
 
-                <div class="highlight">
+                <div class="highlight tooltip-trigger" data-tooltip="cmv">
                     <div class="small muted">
                         <strong>CMV:</strong>
                     </div>
@@ -290,11 +290,11 @@
                     </div>
                 </div>
 
-                <div class="highlight">
+                <div class="highlight tooltip-trigger" data-tooltip="markup">
                     <div class="small muted">
                         <strong>(=) Mark UP:</strong>
                     </div>
-                    <div calss="amt">
+                    <div class="amt">
                         <strong id="markupResultado">0,00 %</strong>
                     </div>
                 </div>
@@ -361,6 +361,15 @@
 
         </aside>
 
+    </div>
+
+    <!-- Modal de Tooltip -->
+    <div id="tooltipModal" class="tooltip-modal">
+        <div class="tooltip-content">
+            <button class="tooltip-close">&times;</button>
+            <h3 id="tooltipTitle"></h3>
+            <p id="tooltipDescription"></p>
+        </div>
     </div>
 
     <script type="module" src="src/main.js"></script>

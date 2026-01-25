@@ -5,6 +5,7 @@ import { processCalculation } from './controllers/calculation-controller.js';
 import { setupCalculationListeners, setupTaxUpdateListeners } from './handlers/event-handlers.js';
 import { setupRegimeVisibilityHandler } from './handlers/regime-handler.js';
 import { initializeTheme } from './views/theme-handler.js';
+import { initializeTooltips } from './views/tooltip-handler.js';
 
 /**
  * Inicializa a aplicação
@@ -28,6 +29,9 @@ async function initializeApp() {
     
     // Inicializa tema
     initializeTheme();
+    
+    // Inicializa tooltips
+    initializeTooltips();
     
     // Executa cálculo inicial
     processCalculation();

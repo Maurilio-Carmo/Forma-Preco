@@ -1,79 +1,156 @@
-/* variáveis e ajustes globais */
+/* ============================================================
+   VARIÁVEIS CSS - TEMA CLARO E ESCURO
+   ============================================================ */
+
 :root {
-    /* Base */
+    /* Cores Base */
     --bg: #f6f7f9;
     --bg-gradient-end: #eef0f2;
     --panel: #ffffff;
     --panel-soft: #f8fafc;
+    
+    /* Texto */
     --text: #060808;
     --text-strong: #2b3b43;
     --muted: #8b9198;
-
-    /* Bordas e divisões */
+    
+    /* Bordas e Divisores */
     --border: #e0e4e7;
     --border-soft: #edf1f3;
     --divider: #eef2f3;
-
+    
     /* Inputs */
     --input-bg: #fbfdfe;
     --input-text: #23303a;
-
-    /* Destaques */
+    --input-disabled-bg: #f5f5f5;
+    
+    /* Cores de Destaque */
     --accent: #5aa2ff;
     --green: #57b86a;
     --orange: #f6a623;
-
-    /* Extras */
-    --badge-bg: #eef6ff;
     --danger: #e53935;
-
+    
+    /* Badges e Extras */
+    --badge-bg: #eef6ff;
+    
     /* Sombras */
     --card-shadow: 0 6px 20px rgba(30, 40, 50, 0.25);
-
+    --hover-shadow: 0 8px 24px rgba(30, 40, 50, 0.3);
+    
     /* Layout */
     --radius: 16px;
+    --radius-small: 6px;
+    --radius-medium: 8px;
     --padding: 14px;
+    --gap: 12px;
 }
 
 [data-theme="dark"] {
-    /* Base */
+    /* Cores Base */
     --bg: #20262e;
     --bg-gradient-end: #252c35;
     --panel: #2b323c;
     --panel-soft: #ffffff0d;
-
+    
     /* Texto */
     --text: #e7ebef;
     --text-strong: #ffffff;
     --muted: #c5cdd5;
-
-    /* Bordas */
+    
+    /* Bordas e Divisores */
     --border: #3a4350;
     --border-soft: #323a45;
     --divider: #424c59;
-
+    
     /* Inputs */
     --input-bg: #262d36;
     --input-text: #f0f3f6;
-
-    /* Destaques */
+    --input-disabled-bg: #2a2a2a;
+    
+    /* Cores de Destaque */
     --accent: #8ab8ff;
     --green: #7ad69a;
     --orange: #f9c36a;
-
-    /* Extras */
-    --badge-bg: #3a4350;
     --danger: #f07a7a;
-
-    /* Sombra */
+    
+    /* Badges e Extras */
+    --badge-bg: #3a4350;
+    
+    /* Sombras */
     --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    --hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
+
+
+/* ============================================================
+   RESET E CONFIGURAÇÕES GLOBAIS
+   ============================================================ */
 
 * {
     box-sizing: border-box;
 }
 
-/* Tema */
+body {
+    font-family: "Rubik", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    margin: 0 auto;
+    background: linear-gradient(180deg, var(--bg), var(--bg-gradient-end));
+    color: var(--text);
+    padding: var(--padding);
+    max-width: 985px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background 0.35s, color 0.35s;
+}
+
+
+/* ============================================================
+   LAYOUT PRINCIPAL
+   ============================================================ */
+
+.container {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 15px;
+}
+
+
+/* ============================================================
+   HEADER / CABEÇALHO
+   ============================================================ */
+
+header {
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: var(--padding);
+    box-shadow: var(--card-shadow);
+    grid-column: 1/-1;
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+    margin-bottom: 6px;
+    transition: background 0.35s, box-shadow 0.35s;
+}
+
+header h1 {
+    font-size: 24px;
+    margin: 0;
+    font-weight: 600;
+    color: var(--text-strong);
+}
+
+header small {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+
+/* ============================================================
+   BOTÃO DE ALTERNÂNCIA DE TEMA
+   ============================================================ */
+
 .theme-toggle {
     position: fixed;
     top: 18px;
@@ -91,11 +168,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;    
+    padding: 0;
+    transition: opacity 0.2s, transform 0.2s;
 }
 
 .theme-toggle:hover {
     opacity: 0.85;
+    transform: scale(1.05);
 }
 
 .theme-toggle img {
@@ -105,78 +184,61 @@
     pointer-events: none;
 }
 
-/* corpo principal */
-body {
-    font-family: "Rubik", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    margin: 0 auto;
-    background: linear-gradient(180deg, var(--bg), var(--bg-gradient-end));
-    color: var(--text);
-    padding: var(--padding);
-    max-width: 985px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    transition: background 0.35s, color 0.35s;
-}
 
-/* grid principal */
-.container {
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 420px;
-    gap: 15px;
-}
+/* ============================================================
+   CARDS E PAINÉIS
+   ============================================================ */
 
-/* cabeçalho */
-header {
-    background: var(--panel);
-    border-radius: var(--radius);
-    padding: var(--padding);
-    box-shadow: var(--card-shadow);
-    grid-column: 1/-1;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 6px;
-    transition: background 0.35s, color 0.35s;
-}
-
-header h1 {
-    font-size: 24px;
-    margin: 0;
-    font-weight: 600;
-    color: var(--text-strong);
-}
-
-header small {
-    display: block;
-    color: var(--muted);
-    font-size: 13px;
-    margin-top: 2px;
-}
-
-/* Classe para ocultar elementos no Simples Nacional */
-.hidden-regime {
-    display: none !important;
-}
-
-/* cartões e painéis */
 .card,
 .result-box {
     background: var(--panel);
     border-radius: var(--radius);
     padding: var(--padding);
     box-shadow: var(--card-shadow);
-    transition: background 0.35s, color 0.35s;
+    transition: background 0.35s, box-shadow 0.35s;
 }
 
 .left {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: var(--gap);
     padding: var(--padding);
 }
 
-/* grupo de inputs */
+.right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+
+
+/* ============================================================
+   SEÇÕES AGRUPADAS (BOXED SECTIONS)
+   ============================================================ */
+
+.boxed-section {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-medium);
+    padding: var(--gap);
+    background: var(--panel-soft);
+    transition: background 0.35s, border-color 0.35s;
+}
+
+.section-title {
+    display: block;
+    white-space: nowrap;
+    min-width: 125px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+
+/* ============================================================
+   INPUTS E FORMULÁRIOS
+   ============================================================ */
+
 input[type="text"],
 input[type="number"],
 input[type="date"],
@@ -184,7 +246,7 @@ select {
     width: 100%;
     padding: 8px 12px;
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: var(--radius-small);
     background: var(--input-bg);
     font-size: 16px;
     color: var(--input-text);
@@ -192,22 +254,50 @@ select {
     transition: background 0.35s, color 0.35s, border-color 0.35s;
 }
 
-.small-input {
-    padding: 8px 10px;
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent);
 }
 
-.badge {
-    background: var(--badge-bg);
-    border-radius: 6px;
-    padding: 6px 8px;
-    font-weight: 600;
-    display: inline-block;
+input[readonly],
+input[disabled] {
+    background-color: var(--input-disabled-bg);
+    cursor: not-allowed;
+    color: #666;
+}
+
+[data-theme="dark"] input[readonly],
+[data-theme="dark"] input[disabled] {
+    background-color: var(--input-disabled-bg);
+    color: #999;
+}
+
+select:disabled {
+    background-color: var(--input-disabled-bg);
+    cursor: not-allowed;
+    color: #999;
+    opacity: 0.6;
+}
+
+[data-theme="dark"] select:disabled {
+    background-color: var(--input-disabled-bg);
+    color: #666;
+}
+
+.small-input {
+    padding: 8px 10px;
 }
 
 .date-input {
     max-width: 150px;
     text-align: center;
 }
+
+
+/* ============================================================
+   INPUTS COM PERCENTUAL
+   ============================================================ */
 
 .percent-wrapper {
     position: relative;
@@ -228,48 +318,40 @@ select {
     color: var(--muted);
 }
 
-/* blocos agrupados */
-.boxed-section {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px;
-    background: var(--panel-soft);
-    transition: background 0.35s, color 0.35s, border-color 0.35s;
-}
 
-.section-title {
-    display: block;
-    white-space: nowrap;
-    min-width: 125px;
+/* ============================================================
+   BADGES E LABELS
+   ============================================================ */
+
+.badge {
+    background: var(--badge-bg);
+    border-radius: var(--radius-small);
+    padding: 6px 8px;
     font-weight: 600;
-    color: var(--text);
-    margin-bottom: 8px;
-    font-size: 16px;
+    display: inline-block;
 }
 
-.small {
-    font-size: 15px;
-    color: var(--muted);
-}
-
-.muted {
-    color: var(--muted);
-}
-
-/* indicador de campo obrigatório */
 .required::after {
     content: " *";
     color: var(--danger);
     font-weight: 700;
 }
 
-/* linhas padronizadas */
+
+/* ============================================================
+   LINHAS PADRONIZADAS (INPUTS EM LINHA)
+   ============================================================ */
+
 .linha {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 6px;
     width: 100%;
+}
+
+.linha.hidden-regime {
+    display: none !important;
 }
 
 .col-label {
@@ -288,14 +370,25 @@ select {
     text-align: right;
 }
 
-/* coluna lateral direita */
-.right {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+
+/* ============================================================
+   TIPOGRAFIA E UTILITÁRIOS DE TEXTO
+   ============================================================ */
+
+.small {
+    font-size: 15px;
+    color: var(--muted);
 }
 
-/* destaques */
+.muted {
+    color: var(--muted);
+}
+
+
+/* ============================================================
+   HIGHLIGHTS / CARDS DE DESTAQUE
+   ============================================================ */
+
 .highlights-one {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -310,7 +403,7 @@ select {
 }
 
 .highlight {
-    padding: 14px;
+    padding: var(--padding);
     border-radius: var(--radius);
     background: var(--panel);
     box-shadow: var(--card-shadow);
@@ -319,8 +412,32 @@ select {
     align-items: center;
     text-align: center;
     gap: 6px;
-    transition: background 0.35s, color 0.35s, box-shadow 0.35s;
+    transition: all 0.2s ease;
 }
+
+/* Tooltip interativo em highlights */
+.highlight.tooltip-trigger {
+    cursor: pointer;
+}
+
+.highlight.tooltip-trigger:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--hover-shadow);
+    background-color: rgba(74, 144, 226, 0.05);
+}
+
+[data-theme="dark"] .highlight.tooltip-trigger:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+}
+
+.highlight.tooltip-trigger:active {
+    transform: translateY(0);
+}
+
+
+/* ============================================================
+   ÍCONES CIRCULARES
+   ============================================================ */
 
 .icon-circle {
     width: 65px;
@@ -340,27 +457,46 @@ select {
     display: block;
 }
 
-.ic-calc { background: var(--green); }
-.ic-cart { background: var(--orange); }
-.ic-sell { background: var(--green); }
-.ic-graf { background: var(--accent); }
+.ic-calc { 
+    background: var(--green); 
+}
 
-/* lista de resultados */
+.ic-cart { 
+    background: var(--orange); 
+}
+
+.ic-sell { 
+    background: var(--green); 
+}
+
+.ic-graf { 
+    background: var(--accent); 
+}
+
+
+/* ============================================================
+   LISTA DE RESULTADOS
+   ============================================================ */
+
 .result-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 12px;
+    margin-top: var(--gap);
 }
 
 .result-item {
     display: flex;
     justify-content: space-between;
     padding: 8px 10px;
-    border-radius: 6px;
+    border-radius: var(--radius-small);
     background: var(--panel-soft);
     border: 1px solid var(--border-soft);
-    transition: background 0.35s, color 0.35s, border-color 0.35s;
+    transition: background 0.35s, border-color 0.35s;
+}
+
+.result-item.hidden-regime {
+    display: none !important;
 }
 
 .result-footer {
@@ -370,6 +506,124 @@ select {
     padding-top: 8px;
     border-top: 1px dashed var(--divider);
 }
+
+
+/* ============================================================
+   TOOLTIPS / MODAIS EXPLICATIVOS
+   ============================================================ */
+
+.tooltip-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+}
+
+.tooltip-modal.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.tooltip-content {
+    background: white;
+    border-radius: var(--radius-medium);
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+[data-theme="dark"] .tooltip-content {
+    background: #2a2a2a;
+    color: #e0e0e0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.tooltip-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    line-height: 1;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.tooltip-close:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+[data-theme="dark"] .tooltip-close {
+    color: #999;
+}
+
+[data-theme="dark"] .tooltip-close:hover {
+    background-color: #3a3a3a;
+    color: #fff;
+}
+
+#tooltipTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    color: #333;
+    padding-right: 24px;
+}
+
+[data-theme="dark"] #tooltipTitle {
+    color: #e0e0e0;
+}
+
+#tooltipDescription {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    color: #666;
+}
+
+[data-theme="dark"] #tooltipDescription {
+    color: #b0b0b0;
+}
+
+
+/* ============================================================
+   FOOTER / RODAPÉ
+   ============================================================ */
 
 .footer {
     display: flex;
@@ -398,9 +652,12 @@ select {
 }
 
 
-/* responsividade desktop > mobile */
-@media (max-width: 900px) {
+/* ============================================================
+   RESPONSIVIDADE - DESKTOP PARA MOBILE
+   ============================================================ */
 
+/* Tablets e dispositivos médios */
+@media (max-width: 900px) {
     body {
         padding: 12px;
     }
@@ -415,13 +672,12 @@ select {
     }
 }
 
+/* Smartphones */
 @media (max-width: 480px) {
-
     body {
         padding: 10px;
     }
 
-    /* Faz a linha virar grid: 1fr para label, 85px para input */
     .linha {
         display: grid;
         grid-template-columns: 1fr 85px;
@@ -431,22 +687,32 @@ select {
         width: 100%;
     }
 
-    /* Label na coluna 1, quebra quando necessário */
     .col-label {
         grid-column: 1 / 2;
         white-space: nowrap;
         text-align: left !important;
     }
 
-    /* Input na coluna 2, largura fixa */
     .col-input {
         grid-column: 2 / 3;
         width: 85px !important;
     }
 
-    /* Valor ocupa as duas colunas na linha de baixo e é alinhado à direita */
     .col-value {
         grid-column: 1 / -1;
         text-align: right !important;
+    }
+
+    .tooltip-content {
+        max-width: 90%;
+        padding: 20px;
+    }
+    
+    #tooltipTitle {
+        font-size: 16px;
+    }
+    
+    #tooltipDescription {
+        font-size: 13px;
     }
 }
