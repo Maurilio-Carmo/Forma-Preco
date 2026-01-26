@@ -83,7 +83,7 @@ export function updateSimplesNacional(faixasSimplesNacionalData, onComplete) {
   }
 
   // Atualiza o campo de visualização (somente leitura)
-  document.getElementById(ELEMENTS.SIMPLES_A_PAGAR).value = formatInputValue(aliquota);
+  document.getElementById(ELEMENTS.ALIQUOTA_SIMPLES_NACIONAL).value = formatInputValue(aliquota);
 
   if (onComplete) onComplete();
 }

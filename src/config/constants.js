@@ -21,7 +21,7 @@ export const ELEMENTS = {
   VENDA_PIS_COFINS: 'vendaPisCofins',
   VENDA_ICMS: 'vendaICMS',
   REDUCAO_BC_SAIDA: 'reducaoBCSaida',
-  SIMPLES_A_PAGAR: 'simplesAPagar',
+  ALIQUOTA_SIMPLES_NACIONAL: 'aliquotaSimplesNacional',
   ALIQUOTA_CBS: 'aliquotaCBS',
   ALIQUOTA_REDUCAO_CBS: 'aliquotaReducaoCBS',
   ALIQUOTA_IBS_UF: 'aliquotaIBSUF',

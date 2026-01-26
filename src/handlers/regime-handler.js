@@ -21,7 +21,7 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
   
   // IDs dos campos que devem ser mostrados APENAS no Simples Nacional
   const camposApenasSimples = [
-    'simplesAPagar'
+    'aliquotaSimplesNacional'
   ];
   
   // IDs dos result-items que devem ser ocultados no Simples Nacional

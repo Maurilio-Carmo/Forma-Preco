@@ -34,7 +34,7 @@ export function processCalculation() {
   const percVendaPisCofins = toNumber(document.getElementById(ELEMENTS.VENDA_PIS_COFINS).value);
   const percVendaICMS = toNumber(document.getElementById(ELEMENTS.VENDA_ICMS).value);
   const percReducaoICMSSaida = toNumber(document.getElementById(ELEMENTS.REDUCAO_BC_SAIDA).value);
-  const percSimples = toNumber(document.getElementById(ELEMENTS.SIMPLES_A_PAGAR).value);
+  const percSimples = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_SIMPLES_NACIONAL).value);
   const percCBS = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_CBS).value);
   const percReducaoCBS = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_REDUCAO_CBS).value);
   const percIBSUF = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_IBS_UF).value);
