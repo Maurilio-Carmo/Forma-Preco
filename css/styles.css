@@ -434,6 +434,17 @@ select:disabled {
     transform: translateY(0);
 }
 
+/* Ícone de interrogação no CMV */
+.tooltip-icon-badge {
+    display: inline-block;
+    margin-left: 4px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.highlight:hover .tooltip-icon-badge {
+    opacity: 1;
+}
 
 /* ============================================================
    ÍCONES CIRCULARES
