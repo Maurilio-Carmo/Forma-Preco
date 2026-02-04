@@ -79,7 +79,8 @@ export const REGIMES = {
 };
 
 export const STORAGE_KEYS = {
-  THEME: 'theme'
+  THEME: 'theme',
+  PERFIL: 'perfil_loja'
 };
 
 export const THEMES = {

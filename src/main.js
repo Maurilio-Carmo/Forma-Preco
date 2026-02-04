@@ -6,6 +6,7 @@ import { setupCalculationListeners, setupTaxUpdateListeners } from './handlers/e
 import { setupRegimeVisibilityHandler } from './handlers/regime-handler.js';
 import { initializeTheme } from './views/theme-handler.js';
 import { initializeTooltips } from './views/tooltip-handler.js';
+import { initializeMenu, initializePerfilModal } from './handlers/menu-handler.js';
 
 /**
  * Inicializa a aplicação
@@ -30,6 +31,12 @@ async function initializeApp() {
     // Inicializa tema
     initializeTheme();
     
+    // Inicializa menu
+    initializeMenu();
+
+    // Inicializa modal de perfil
+    initializePerfilModal();
+
     // Inicializa tooltips
     initializeTooltips();
     
