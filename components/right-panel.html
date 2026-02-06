@@ -1,0 +1,133 @@
+<!-- RIGHT PANEL -->
+<aside class="right">
+
+    <div class="highlights-one">
+        <div class="highlight">
+            <div class="icon-circle ic-cart">
+                <img src="icons/carrinho.png" class="icon" alt="carrinho">
+            </div>
+            <div class="label muted">Preço de Compra</div>
+            <div class="amt">
+                <strong id="precoCompraResultado">R$ 0,00</strong>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <div class="icon-circle ic-sell">
+                <img src="icons/etiqueta.png" class="icon" alt="etiqueta">
+            </div>
+            <div class="label muted">Preço de Venda</div>
+            <div class="amt">
+                <strong id="precoVendaResultado">R$ 0,00</strong>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <div class="icon-circle ic-graf">
+                <img src="icons/lucro.png" class="icon" alt="lucro">
+            </div>
+            <div class="label muted">Lucro Bruto</div>
+            <div class="amt">
+                <strong id="lucroBrutoResultado">R$ 0,00</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="highlights-two">
+        <div class="highlight tooltip-trigger" data-tooltip="margem">
+            <div class="small muted">
+                <strong>(=) Margem:</strong>
+            </div>
+            <div class="amt">
+                <strong id="margemResultado">0,00 %</strong>
+            </div>
+        </div>
+
+        <div class="highlight tooltip-trigger" data-tooltip="cmv">
+            <div class="small muted">
+                <strong>CMV:</strong>
+                <svg class="tooltip-icon-badge" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+            </div>
+            <div class="amt">
+                <strong id="cmvResultado">R$ 0,00</strong>
+            </div>
+        </div>
+
+        <div class="highlight tooltip-trigger" data-tooltip="markup">
+            <div class="small muted">
+                <strong>(=) Mark UP:</strong>
+            </div>
+            <div class="amt">
+                <strong id="markupResultado">0,00 %</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULT BOX -->
+
+    <div class="result-box">
+
+        <div style="display:flex; justify-content:space-between; align-items:center">
+            <div class="section-title">Resultados</div>
+            <input id="dataAtual" type="text" class="date-input" disabled />
+        </div>
+
+        <div class="result-list">
+            <div class="result-item">
+                <span>Preço de venda:</span>
+                <strong id="precoVendaDetalhe">R$ 0,00</strong>
+            </div>
+
+            <div class="result-item">
+                <span>(-) PIS/COFINS a Pagar:</span>
+                <strong id="pisCofinsPagarDetalhe">R$ 0,00</strong>
+            </div>
+
+            <div class="result-item">
+                <span>(-) ICMS a Pagar:</span>
+                <strong id="icmsPagarDetalhe">R$ 0,00</strong>
+            </div>
+
+            <div class="result-item">
+                <span>(-) Simples a Pagar:</span>
+                <strong id="simplesPagarDetalhe">R$ 0,00</strong>
+            </div>
+
+            <div class="result-item">
+                <span>(-) CBS a Pagar:</span>
+                <strong id="cbsPagarDetalhe">R$ 0,00</strong>
+            </div>
+
+            <div class="result-item">
+                <span>(-) IBS Estadual a Pagar:</span>
+                <strong id="ibsUFDetalhe">R$ 0,00</strong>
+            </div>
+
+            <div class="result-item">
+                <span>(-) IBS Municipal a Pagar:</span>
+                <strong id="ibsMunDetalhe">R$ 0,00</strong>
+            </div>
+
+            <div class="result-item">
+                <span>(-) Fornecedor a Pagar:</span>
+                <strong id="fornecedorDetalhe">R$ 0,00</strong>
+            </div>
+
+            <div class="result-item">
+                <span>(=) Lucro Bruto:</span>
+                <strong id="lucroBrutoDetalhe">R$ 0,00</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+</div>

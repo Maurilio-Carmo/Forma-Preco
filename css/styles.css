@@ -124,11 +124,10 @@ header {
     border-radius: var(--radius);
     padding: var(--padding);
     box-shadow: var(--card-shadow);
-    grid-column: 1/-1;
     display: flex;
     align-items: center;
     gap: var(--gap);
-    margin-bottom: 6px;
+    margin-bottom: 14px;
     transition: background 0.35s, box-shadow 0.35s;
 }
 
@@ -199,7 +198,8 @@ header small {
 }
 
 .left {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     grid-template-columns: 1fr;
     gap: var(--gap);
     padding: var(--padding);
