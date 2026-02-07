@@ -7,7 +7,8 @@ import { setupCalculationListeners, setupTaxUpdateListeners } from './handlers/e
 import { setupRegimeVisibilityHandler } from './handlers/regime-handler.js';
 import { initializeTheme } from './views/theme-handler.js';
 import { initializeTooltips } from './views/tooltip-handler.js';
-import { initializeMenu, initializePerfilModal } from './handlers/menu-handler.js';
+import { initializeMenu } from './handlers/menu-handler.js';
+import { initializePerfilModal } from './handlers/perfil-modal-handler.js';
 
 /**
  * Carrega todos os componentes HTML
