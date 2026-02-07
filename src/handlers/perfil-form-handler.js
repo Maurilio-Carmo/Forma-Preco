@@ -22,13 +22,15 @@ export function fillPerfilForm() {
   document.getElementById('bairro').value = data.bairro || '';
   document.getElementById('municipio').value = data.municipio || '';
   document.getElementById('complemento').value = data.complemento || '';
-  document.getElementById('regimePerfil').value = data.regime || '';
 
   // Atualiza opções do regime baseado no que está salvo
   if (data.opcao_pelo_simples === true) {
+    // É optante pelo Simples
     updateRegimeOptions(true);
   } else if (data.regime) {
+    // NÃO é optante - mostra opções e seleciona o regime salvo
     updateRegimeOptions(false);
+    document.getElementById('regimePerfil').value = data.regime;
   }
 }
 
@@ -82,12 +84,20 @@ function updateRegimeOptions(isOptanteSimples) {
     regimeHelper.className = 'form-helper success';
   } else {
     // Não optante: mostra Lucro Real e Presumido
+    const currentValue = regimeSelect.value;
+    
     regimeSelect.innerHTML = `
       <option value="">Selecione...</option>
       <option value="Real">Lucro Real</option>
       <option value="Presumido">Lucro Presumido</option>
     `;
     regimeSelect.disabled = false;
+    
+    // Restaura o valor se era Real ou Presumido
+    if (currentValue === 'Real' || currentValue === 'Presumido') {
+      regimeSelect.value = currentValue;
+    }
+    
     regimeHelper.textContent = 'Selecione o regime tributário da empresa';
     regimeHelper.className = 'form-helper info';
   }
@@ -145,6 +155,12 @@ function handleFormSubmit(e, onSuccess) {
 
   const formData = getFormData();
 
+  // Valida se regime foi selecionado
+  if (!formData.regime) {
+    showStatus('Por favor, selecione o regime tributário', 'error');
+    return;
+  }
+
   if (savePerfilData(formData)) {
     showStatus('Dados salvos com sucesso!', 'success');
     
@@ -172,9 +188,7 @@ function handleClearPerfil() {
   
   // Restaura opções padrão do regime
   const regimeSelect = document.getElementById('regimePerfil');
-  regimeSelect.innerHTML = `
-    <option value=""></option>
-  `;
+  regimeSelect.innerHTML = `<option value=""></option>`;
   regimeSelect.disabled = false;
 
   const regimeHelper = document.getElementById('regimeHelper');
