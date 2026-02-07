@@ -20,19 +20,25 @@ export async function consultarCNPJ(cnpj) {
 
   const data = await response.json();
 
+  // Define regime com base na opção pelo Simples
+  const opcaoPeloSimples = data.opcao_pelo_simples === true;
+  const regime = opcaoPeloSimples ? 'Simples' : '';
+
   // Formata e retorna dados padronizados
   return {
     razao_social: data.razao_social || '',
     nome_fantasia: data.nome_fantasia || '',
     cep: formatCEP(data.cep || ''),
     uf: data.uf || '',
-    municipio: data.municipio || '',
-    bairro: data.bairro || '',
     logradouro: [
       data.descricao_tipo_de_logradouro,
       data.logradouro
     ].filter(Boolean).join(' '),
     numero: data.numero || '',
-    complemento: data.complemento || ''
+    bairro: data.bairro || '',
+    municipio: data.municipio || '',
+    complemento: data.complemento || '',
+    opcao_pelo_simples: opcaoPeloSimples,
+    regime: regime
   };
 }

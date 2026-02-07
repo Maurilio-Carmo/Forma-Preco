@@ -1,3 +1,94 @@
+
+Calculadora de Preço
+/
+modifiquei alguns arquivos e quero implantar uma nova função, quero que traga da api se é optante do simples caso for no perfil no campo de regime tributario venha somente o simples Nacional caso não de a opçõa de escolher entre Lucro Real e Lucro presumido, no left panel tambem tem o regime mas esse posso mudar a vontade e venha como padrao o do perfil  mostre o que e onde mudar dando os arquivos completos
+
+16:25
+Vou analisar o código e mostrar as modificações necessárias para implementar essa funcionalidade.
+
+Arquivos que precisam ser modificados:
+1. perfil-modal.html (completo)
+
+Arquivo HTML do modal de perfil atualizado com campo de regime condicionado à opção pelo Simples
+2. perfil-service.js (completo)
+
+Service atualizado para incluir regime tributário no perfil
+3. cnpj-service.js (completo)
+
+Service de CNPJ atualizado para retornar informação de opção pelo Simples
+4. perfil-form-handler.js (completo)
+
+Handler do formulário de perfil atualizado para gerenciar regime tributário conforme opção pelo Simples
+5. main.js (completo - com atualização)
+
+Main.js atualizado para carregar regime do perfil ao iniciar
+Agora vou gerar um arquivo com o resumo das mudanças:
+
+
+Documento resumindo todas as alterações realizadas
+Agora vou apresentar os arquivos para você:
+
+
+Presented 6 files
+✅ Implementação Concluída!
+Criei todos os arquivos necessários para implementar a funcionalidade solicitada. Aqui está o que foi feito:
+
+📋 Resumo da Funcionalidade
+O que foi implementado:
+
+Consulta CNPJ automática - Quando consulta o CNPJ via API:
+Se optante pelo Simples: campo regime fica travado mostrando apenas "Simples Nacional"
+Se NÃO optante: campo regime fica liberado para escolher entre "Lucro Real" e "Lucro Presumido"
+Sincronização Perfil → Calculador:
+Quando salva o perfil, o regime é automaticamente aplicado no calculador (left panel)
+Ao abrir o app, se houver regime salvo no perfil, ele é carregado automaticamente
+Liberdade no Calculador:
+O regime no left panel sempre pode ser alterado manualmente
+É independente do perfil, mas inicia com o valor do perfil
+📁 Arquivos Modificados
+Substitua estes arquivos no seu projeto:
+
+components/perfil-modal.html - Modal com campo regime atualizado
+src/services/perfil-service.js - Funções para gerenciar regime
+src/services/cnpj-service.js - Retorna dados de optante pelo Simples
+src/handlers/perfil-form-handler.js - Lógica de controle do formulário
+src/main.js - Carrega regime ao iniciar
+🎯 Como Funciona
+Fluxo completo:
+
+1. Usuário abre modal → digita CNPJ → clica consultar
+2. API retorna se é optante pelo Simples
+3. Campo regime se ajusta automaticamente:
+   - Optante: apenas "Simples" (travado)
+   - Não optante: "Real" ou "Presumido" (livre escolha)
+4. Usuário salva perfil
+5. Left panel é atualizado com o regime escolhido
+6. Campos são ocultados/exibidos conforme regime
+7. Usuário pode mudar regime no calculador quando quiser
+Leia o arquivo RESUMO_ALTERACOES.md para detalhes completos de cada mudança!
+
+Resumo alteracoes
+Documento · MD 
+Perfil modal
+Código · HTML 
+Perfil service
+JS 
+Cnpj service
+JS 
+Perfil form handler
+JS 
+Main
+JS 
+
+
+Quer ser notificado quando Claude responder?
+
+
+
+Claude é uma IA e pode cometer erros. Por favor, verifique as respostas.
+Perfil modal · HTML
+Copiar
+
 <!-- Overlay do Menu -->
 <div id="menuOverlay" class="menu-overlay"></div>
 
@@ -73,6 +164,13 @@
                 <div class="form-group">
                     <label for="complemento" class="form-label">Complemento:</label>
                     <input type="text" id="complemento" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="regimePerfil" class="form-label required">Regime Tributário:</label>
+                    <select id="regimePerfil" class="form-input" required>
+                    </select>
+                    <span class="form-helper" id="regimeHelper">O regime será definido após consultar o CNPJ</span>
                 </div>
 
                 <div class="form-actions">

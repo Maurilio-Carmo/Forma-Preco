@@ -9,12 +9,14 @@ import { initializeTheme } from './views/theme-handler.js';
 import { initializeTooltips } from './views/tooltip-handler.js';
 import { initializeMenu } from './handlers/menu-handler.js';
 import { initializePerfilModal } from './handlers/perfil-modal-handler.js';
+import { getRegimeTributario } from './services/perfil-service.js';
+import { ELEMENTS } from './config/constants.js';
 
 /**
  * Carrega todos os componentes HTML
  */
 async function loadHTMLComponents() {
-  console.log('🔄 Carregando componentes HTML...');
+  console.log('📄 Carregando componentes HTML...');
   
   await loadComponents([
     { id: 'header-container', path: 'components/header.html' },
@@ -28,6 +30,40 @@ async function loadHTMLComponents() {
   
   console.log('✅ Componentes HTML carregados');
 }
+
+/**
+ * Carrega o regime do perfil e define no calculador
+ */
+function loadRegimeFromPerfil() {
+  const regimeSalvo = getRegimeTributario();
+  const regimeSelect = document.getElementById(ELEMENTS.REGIME);
+  
+  if (regimeSalvo && regimeSelect) {
+    regimeSelect.value = regimeSalvo;
+    console.log(`✅ Regime do perfil carregado: ${regimeSalvo}`);
+    
+    // Dispara evento de mudança para atualizar a interface
+    const event = new Event('change', { bubbles: true });
+    regimeSelect.dispatchEvent(event);
+  }
+}
+
+/**
+ * Função global para atualizar regime do calculador a partir do perfil
+ * Chamada quando o perfil é salvo
+ */
+window.updateRegimeFromPerfil = function(regime) {
+  const regimeSelect = document.getElementById(ELEMENTS.REGIME);
+  
+  if (regime && regimeSelect) {
+    regimeSelect.value = regime;
+    console.log(`✅ Regime atualizado do perfil: ${regime}`);
+    
+    // Dispara evento de mudança para atualizar a interface
+    const event = new Event('change', { bubbles: true });
+    regimeSelect.dispatchEvent(event);
+  }
+};
 
 /**
  * Inicializa a aplicação
@@ -45,26 +81,29 @@ async function initializeApp() {
     const impostosFederaisData = getImpostosFederaisData();
     const faixasSimplesNacionalData = getFaixasSimplesNacionalData();
     
-    // 4. Configura listeners de eventos
+    // 4. Carrega regime do perfil (se existir)
+    loadRegimeFromPerfil();
+    
+    // 5. Configura listeners de eventos
     setupCalculationListeners(processCalculation);
     setupTaxUpdateListeners(tributacaoData, impostosFederaisData, faixasSimplesNacionalData, processCalculation);
     
-    // 5. Configura gerenciamento de visibilidade por regime
+    // 6. Configura gerenciamento de visibilidade por regime
     setupRegimeVisibilityHandler(processCalculation);
     
-    // 6. Inicializa tema
+    // 7. Inicializa tema
     initializeTheme();
     
-    // 7. Inicializa menu
+    // 8. Inicializa menu
     initializeMenu();
 
-    // 8. Inicializa modal de perfil
+    // 9. Inicializa modal de perfil
     initializePerfilModal();
 
-    // 9. Inicializa tooltips
+    // 10. Inicializa tooltips
     initializeTooltips();
     
-    // 10. Executa cálculo inicial
+    // 11. Executa cálculo inicial
     processCalculation();
     
     console.log('✅ Aplicação inicializada com sucesso');

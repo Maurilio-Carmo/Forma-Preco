@@ -45,3 +45,21 @@ export function clearPerfilData() {
     return false;
   }
 }
+
+/**
+ * Obtém o regime tributário do perfil
+ * @returns {string|null} - Regime tributário salvo ou null
+ */
+export function getRegimeTributario() {
+  const perfilData = loadPerfilData();
+  return perfilData?.regime || null;
+}
+
+/**
+ * Verifica se a empresa é optante pelo Simples Nacional
+ * @returns {boolean}
+ */
+export function isOptanteSimples() {
+  const perfilData = loadPerfilData();
+  return perfilData?.opcao_pelo_simples === true;
+}

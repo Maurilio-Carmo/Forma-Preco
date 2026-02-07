@@ -17,28 +17,41 @@ export function fillPerfilForm() {
   document.getElementById('nomeFantasia').value = data.nome_fantasia || '';
   document.getElementById('cep').value = data.cep || '';
   document.getElementById('uf').value = data.uf || '';
-  document.getElementById('municipio').value = data.municipio || '';
-  document.getElementById('bairro').value = data.bairro || '';
   document.getElementById('logradouro').value = data.logradouro || '';
   document.getElementById('numero').value = data.numero || '';
+  document.getElementById('bairro').value = data.bairro || '';
+  document.getElementById('municipio').value = data.municipio || '';
   document.getElementById('complemento').value = data.complemento || '';
+  document.getElementById('regimePerfil').value = data.regime || '';
+
+  // Atualiza opções do regime baseado no que está salvo
+  if (data.opcao_pelo_simples === true) {
+    updateRegimeOptions(true);
+  } else if (data.regime) {
+    updateRegimeOptions(false);
+  }
 }
 
 /**
  * Coleta dados do formulário
  */
 function getFormData() {
+  const regime = document.getElementById('regimePerfil').value;
+  const opcaoPeloSimples = regime === 'Simples';
+
   return {
     cnpj: document.getElementById('cnpj').value,
     razao_social: document.getElementById('razaoSocial').value,
     nome_fantasia: document.getElementById('nomeFantasia').value,
     cep: document.getElementById('cep').value,
     uf: document.getElementById('uf').value,
-    municipio: document.getElementById('municipio').value,
-    bairro: document.getElementById('bairro').value,
     logradouro: document.getElementById('logradouro').value,
     numero: document.getElementById('numero').value,
-    complemento: document.getElementById('complemento').value
+    bairro: document.getElementById('bairro').value,
+    municipio: document.getElementById('municipio').value,
+    complemento: document.getElementById('complemento').value,
+    regime: regime,
+    opcao_pelo_simples: opcaoPeloSimples
   };
 }
 
@@ -52,6 +65,35 @@ function showStatus(message, type = 'info') {
 }
 
 /**
+ * Atualiza opções do select de regime baseado na opção pelo Simples
+ * @param {boolean} isOptanteSimples - Se a empresa é optante pelo Simples
+ */
+function updateRegimeOptions(isOptanteSimples) {
+  const regimeSelect = document.getElementById('regimePerfil');
+  const regimeHelper = document.getElementById('regimeHelper');
+
+  if (isOptanteSimples) {
+    // Optante pelo Simples: mostra apenas Simples Nacional
+    regimeSelect.innerHTML = `
+      <option value="Simples" selected>Simples Nacional</option>
+    `;
+    regimeSelect.disabled = true;
+    regimeHelper.textContent = 'Empresa optante pelo Simples Nacional';
+    regimeHelper.className = 'form-helper success';
+  } else {
+    // Não optante: mostra Lucro Real e Presumido
+    regimeSelect.innerHTML = `
+      <option value="">Selecione...</option>
+      <option value="Real">Lucro Real</option>
+      <option value="Presumido">Lucro Presumido</option>
+    `;
+    regimeSelect.disabled = false;
+    regimeHelper.textContent = 'Selecione o regime tributário da empresa';
+    regimeHelper.className = 'form-helper info';
+  }
+}
+
+/**
  * Preenche campos com dados da API
  */
 function fillFieldsFromAPI(data) {
@@ -59,11 +101,18 @@ function fillFieldsFromAPI(data) {
   document.getElementById('nomeFantasia').value = data.nome_fantasia;
   document.getElementById('cep').value = data.cep;
   document.getElementById('uf').value = data.uf;
-  document.getElementById('municipio').value = data.municipio;
-  document.getElementById('bairro').value = data.bairro;
   document.getElementById('logradouro').value = data.logradouro;
   document.getElementById('numero').value = data.numero;
+  document.getElementById('bairro').value = data.bairro;
+  document.getElementById('municipio').value = data.municipio;
   document.getElementById('complemento').value = data.complemento;
+
+  // Atualiza o regime baseado na opção pelo Simples
+  updateRegimeOptions(data.opcao_pelo_simples);
+  
+  if (data.regime) {
+    document.getElementById('regimePerfil').value = data.regime;
+  }
 }
 
 /**
@@ -99,10 +148,15 @@ function handleFormSubmit(e, onSuccess) {
   if (savePerfilData(formData)) {
     showStatus('Dados salvos com sucesso!', 'success');
     
+    // Atualiza o regime do calculador se houver callback
+    if (window.updateRegimeFromPerfil) {
+      window.updateRegimeFromPerfil(formData.regime);
+    }
+    
     setTimeout(() => {
       if (onSuccess) onSuccess();
       showStatus('', 'info');
-    }, 1000);
+    }, 2000);
   } else {
     showStatus('Erro ao salvar os dados', 'error');
   }
@@ -111,13 +165,27 @@ function handleFormSubmit(e, onSuccess) {
 /**
  * Handler para limpar os dados do perfil
  */
-
 function handleClearPerfil() {
   clearPerfilData();
 
   document.getElementById('perfilForm')?.reset();
+  
+  // Restaura opções padrão do regime
+  const regimeSelect = document.getElementById('regimePerfil');
+  regimeSelect.innerHTML = `
+    <option value=""></option>
+  `;
+  regimeSelect.disabled = false;
+
+  const regimeHelper = document.getElementById('regimeHelper');
+  regimeHelper.textContent = 'O regime será definido após consultar o CNPJ';
+  regimeHelper.className = 'form-helper info';
 
   showStatus('Dados do perfil limpos.', 'success');
+
+  setTimeout(() => {
+    showStatus('', 'info');
+  }, 2000);
 }
 
 /**
