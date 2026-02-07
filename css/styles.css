@@ -126,9 +126,16 @@ header {
     box-shadow: var(--card-shadow);
     display: flex;
     align-items: center;
-    gap: var(--gap);
+    justify-content: space-between;
     margin-bottom: 14px;
     transition: background 0.35s, box-shadow 0.35s;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+    flex: 1; 
 }
 
 header h1 {
@@ -141,48 +148,9 @@ header h1 {
 header small {
     display: block;
     color: var(--muted);
-    font-size: 13px;
-    margin-top: 2px;
+    font-size: 12px;
+    margin-top: 5px;
 }
-
-
-/* ============================================================
-   BOTÃO DE ALTERNÂNCIA DE TEMA
-   ============================================================ */
-
-.theme-toggle {
-    position: fixed;
-    top: 18px;
-    right: calc((100vw - 985px) / 2 + 18px);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    font-size: 20px;
-    background: var(--panel);
-    box-shadow: var(--card-shadow);
-    color: var(--text);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    transition: opacity 0.2s, transform 0.2s;
-}
-
-.theme-toggle:hover {
-    opacity: 0.85;
-    transform: scale(1.05);
-}
-
-.theme-toggle img {
-    width: 22px;
-    height: 22px;
-    display: block;
-    pointer-events: none;
-}
-
 
 /* ============================================================
    CARDS E PAINÉIS
@@ -679,7 +647,6 @@ select:disabled {
 
     .container {
         grid-template-columns: 1fr;
-        padding: 5px;
     }
 }
 

@@ -108,13 +108,14 @@
 
 .menu-item svg {
     flex-shrink: 0;
+    transition: color 0.2s ease;
+    min-width: 24px;
+    min-height: 24px;
 }
 
-.menu-item .menu-icon {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    object-fit: contain;
+.menu-item span {
+    flex: 1;
+    white-space: normal;
 }
 
 /* Overlay */
@@ -279,7 +280,7 @@
 .input-icon-btn {
     position: absolute;
     right: 8px;
-    background: var(--accent);
+    background: transparent;
     border: none;
     border-radius: var(--radius-small);
     padding: 8px;
@@ -288,11 +289,11 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
-    color: white;
+    color: var(--text-strong);
 }
 
 .input-icon-btn:hover {
-    background: #4890ff;
+    color: var(--accent);
     transform: scale(1.05);
 }
 
@@ -303,6 +304,10 @@
 .input-icon-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.input-icon-btn svg {
+    display: block;
 }
 
 .form-helper {

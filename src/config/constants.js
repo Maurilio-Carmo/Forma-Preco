@@ -68,8 +68,8 @@ export const PATHS = {
   TRIBUTACOES: './data/tributacoes.json',
   IMPOSTOS_FEDERAIS: './data/impostos_federais.json',
   FAIXAS_SIMPLES_NACIONAL: './data/faixas_simples_nacional.json',
-  ICON_MOON: 'icons/moon.png',
-  ICON_SUN: 'icons/sun.png'
+  ICON_MOON: 'icons/lua.svg',
+  ICON_SUN: 'icons/sol.svg'
 };
 
 export const REGIMES = {
