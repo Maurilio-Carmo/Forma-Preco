@@ -1,0 +1,36 @@
+/* ============================================================
+   HEADER / CABEÇALHO
+   ============================================================ */
+
+header {
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: var(--padding);
+    box-shadow: var(--card-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    transition: background 0.35s, box-shadow 0.35s;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+    flex: 1; 
+}
+
+header h1 {
+    font-size: 24px;
+    margin: 0;
+    font-weight: 600;
+    color: var(--text-strong);
+}
+
+header small {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}

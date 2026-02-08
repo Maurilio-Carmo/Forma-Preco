@@ -1,0 +1,32 @@
+/* ============================================================
+   LISTA DE RESULTADOS
+   ============================================================ */
+
+.result-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: var(--gap);
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-radius: var(--radius-small);
+    background: var(--panel-soft);
+    border: 1px solid var(--border-soft);
+    transition: background 0.35s, border-color 0.35s;
+}
+
+.result-item.hidden-regime {
+    display: none !important;
+}
+
+.result-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--divider);
+}

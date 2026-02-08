@@ -1,0 +1,19 @@
+/* ============================================================
+   NOTIFICAÇÕES - TIPOS
+   ============================================================ */
+
+.notification-success {
+    --notification-color: #57b86a;
+}
+
+.notification-error {
+    --notification-color: #e53935;
+}
+
+.notification-warning {
+    --notification-color: #f6a623;
+}
+
+.notification-info {
+    --notification-color: #5aa2ff;
+}

@@ -1,0 +1,98 @@
+/* ============================================================
+   HIGHLIGHTS / CARDS DE DESTAQUE
+   ============================================================ */
+
+.highlights-one {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.highlights-two {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    white-space: nowrap;
+}
+
+.highlight {
+    padding: var(--padding);
+    border-radius: var(--radius);
+    background: var(--panel);
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+/* Tooltip interativo em highlights */
+.highlight.tooltip-trigger {
+    cursor: pointer;
+}
+
+.highlight.tooltip-trigger:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--hover-shadow);
+    background-color: rgba(74, 144, 226, 0.05);
+}
+
+[data-theme="dark"] .highlight.tooltip-trigger:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+}
+
+.highlight.tooltip-trigger:active {
+    transform: translateY(0);
+}
+
+/* Ícone de interrogação no CMV */
+.tooltip-icon-badge {
+    display: inline-block;
+    margin-left: 4px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.highlight:hover .tooltip-icon-badge {
+    opacity: 1;
+}
+
+/* ============================================================
+   ÍCONES CIRCULARES
+   ============================================================ */
+
+.icon-circle {
+    width: 65px;
+    height: 65px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--panel);
+    min-width: 65px;
+}
+
+.icon-circle img.icon {
+    width: 45px;
+    height: 45px;
+    display: block;
+}
+
+.ic-calc { 
+    background: var(--green); 
+}
+
+.ic-cart { 
+    background: var(--orange); 
+}
+
+.ic-sell { 
+    background: var(--green); 
+}
+
+.ic-graf { 
+    background: var(--accent); 
+}

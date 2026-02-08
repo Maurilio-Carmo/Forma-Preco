@@ -1,0 +1,39 @@
+/* ============================================================
+   ARQUIVO CSS PRINCIPAL
+   Importa todos os módulos CSS do projeto
+   ============================================================ */
+
+/* BASE */
+@import './base/variables.css';
+@import './base/reset.css';
+
+/* LAYOUT */
+@import './layout/grid.css';
+
+/* COMPONENTS */
+@import './components/header.css';
+@import './components/footer.css';
+@import './components/forms.css';
+@import './components/highlights.css';
+@import './components/results.css';
+@import './components/tooltips.css';
+@import './components/panels.css';
+
+/* MENU */
+@import './components/menu/menu-toggle.css';
+@import './components/menu/side-menu.css';
+@import './components/menu/menu-overlay.css';
+
+/* MODAL */
+@import './components/modal/modal-base.css';
+@import './components/modal/perfil-form.css';
+
+/* NOTIFICATIONS */
+@import './components/notifications/notification-base.css';
+@import './components/notifications/notification-animations.css';
+@import './components/notifications/notification-elements.css';
+@import './components/notifications/notification-types.css';
+
+/* UTILITIES */
+@import './utilities/helpers.css';
+@import './utilities/responsive.css';

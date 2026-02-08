@@ -1,0 +1,156 @@
+/* ============================================================
+   FORMULÁRIO DE PERFIL
+   ============================================================ */
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+    color: var(--text-strong);
+    font-size: 0.9rem;
+}
+
+.form-label.required::after {
+    content: " *";
+    color: var(--danger);
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-small);
+    background: var(--input-bg);
+    color: var(--input-text);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(90, 162, 255, 0.1);
+}
+
+.form-input:disabled {
+    background: var(--input-disabled-bg);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon .form-input {
+    padding-right: 45px;
+}
+
+.input-icon-btn {
+    position: absolute;
+    right: 8px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-small);
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    color: var(--text-strong);
+}
+
+.input-icon-btn:hover {
+    color: var(--accent);
+    transform: scale(1.05);
+}
+
+.input-icon-btn:active {
+    transform: scale(0.95);
+}
+
+.input-icon-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.input-icon-btn svg {
+    display: block;
+}
+
+.form-helper {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.form-helper.success {
+    color: var(--green);
+}
+
+.form-helper.error {
+    color: var(--danger);
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-small);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #4890ff;
+    box-shadow: 0 4px 12px rgba(90, 162, 255, 0.3);
+}
+
+.btn-secondary {
+    background: var(--panel-soft);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--border-soft);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}

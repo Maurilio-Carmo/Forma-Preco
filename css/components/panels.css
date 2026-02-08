@@ -1,0 +1,49 @@
+/* ============================================================
+   ESTILOS ESPECÍFICOS DOS PAINÉIS
+   ============================================================ */
+
+/* Containers de seleção (select com label) */
+.select-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.select-container label {
+    white-space: nowrap;
+}
+
+.select-container select {
+    flex: 1;
+}
+
+/* Container de preço e margem */
+.price-margin-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.price-margin-group {
+    flex: 1;
+}
+
+.price-margin-group label {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.price-margin-input-wrapper {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+/* Header do result box */
+.result-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--gap);
+}

@@ -1,0 +1,108 @@
+/* ============================================================
+   MENU LATERAL
+   ============================================================ */
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 280px;
+    height: 100vh;
+    background: var(--panel);
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    z-index: 1002;
+    overflow-y: auto;
+}
+
+.side-menu.active {
+    right: 0;
+}
+
+.side-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--padding);
+    border-bottom: 1px solid var(--border);
+}
+
+.side-menu-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-strong);
+}
+
+.menu-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--muted);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.menu-close:hover {
+    color: var(--text-strong);
+}
+
+.side-menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.side-menu-list li {
+    border-bottom: 1px solid var(--border-soft);
+}
+
+/* ============================================================
+   ITENS DO MENU
+   ============================================================ */
+
+.menu-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text--strong);
+    transition: background 0.2s ease, color 0.2s ease;
+    text-align: left;
+}
+
+.menu-item:hover {
+    background: var(--panel-soft);
+    color: var(--accent);
+}
+
+.menu-item:hover span {
+    color: var(--accent);
+}
+
+.menu-item svg {
+    min-width: 24px;
+    min-height: 24px;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .side-menu {
+        width: 60%;
+        right: -60%;
+    }
+}

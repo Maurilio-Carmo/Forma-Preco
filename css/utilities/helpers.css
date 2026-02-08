@@ -1,0 +1,67 @@
+/* ============================================================
+   TIPOGRAFIA E UTILITÁRIOS DE TEXTO
+   ============================================================ */
+
+.small {
+    font-size: 15px;
+    color: var(--muted);
+}
+
+.muted {
+    color: var(--muted);
+}
+
+/* ============================================================
+   BADGES E LABELS
+   ============================================================ */
+
+.badge {
+    background: var(--badge-bg);
+    border-radius: var(--radius-small);
+    padding: 6px 8px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.required::after {
+    content: " *";
+    color: var(--danger);
+    font-weight: 700;
+}
+
+/* ============================================================
+   UTILITÁRIOS DE LAYOUT
+   ============================================================ */
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.gap-small {
+    gap: 6px;
+}
+
+.gap-medium {
+    gap: 8px;
+}
+
+.gap-large {
+    gap: 12px;
+}

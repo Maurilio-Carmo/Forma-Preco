@@ -1,0 +1,59 @@
+/* ============================================================
+   LAYOUT PRINCIPAL
+   ============================================================ */
+
+.container {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 15px;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: 1fr;
+    gap: var(--gap);
+    padding: var(--padding);
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+
+/* ============================================================
+   CARDS E PAINÉIS
+   ============================================================ */
+
+.card,
+.result-box {
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: var(--padding);
+    box-shadow: var(--card-shadow);
+    transition: background 0.35s, box-shadow 0.35s;
+}
+
+/* ============================================================
+   SEÇÕES AGRUPADAS (BOXED SECTIONS)
+   ============================================================ */
+
+.boxed-section {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-medium);
+    padding: var(--gap);
+    background: var(--panel-soft);
+    transition: background 0.35s, border-color 0.35s;
+}
+
+.section-title {
+    display: block;
+    white-space: nowrap;
+    min-width: 125px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    font-size: 16px;
+}

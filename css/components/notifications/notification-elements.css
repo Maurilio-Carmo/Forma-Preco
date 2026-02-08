@@ -1,0 +1,64 @@
+/* ============================================================
+   NOTIFICAÇÕES - ELEMENTOS
+   ============================================================ */
+
+.notification-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.notification-icon svg {
+    animation: spin 1s linear infinite;
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-title {
+    font-weight: 600;
+    color: var(--text-strong);
+    margin: 0 0 4px 0;
+    font-size: 15px;
+}
+
+.notification-message {
+    color: var(--text);
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.notification-close:hover {
+    background: var(--panel-soft);
+    color: var(--text-strong);
+}
+
+.notification-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--notification-color);
+    animation: progressBar linear forwards;
+    animation-duration: var(--duration);
+}

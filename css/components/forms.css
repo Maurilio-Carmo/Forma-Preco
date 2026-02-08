@@ -1,0 +1,113 @@
+/* ============================================================
+   INPUTS E FORMULÁRIOS
+   ============================================================ */
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-small);
+    background: var(--input-bg);
+    font-size: 16px;
+    color: var(--input-text);
+    min-width: 85px;
+    transition: background 0.35s, color 0.35s, border-color 0.35s;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+input[readonly],
+input[disabled] {
+    background-color: var(--input-disabled-bg);
+    cursor: not-allowed;
+    color: #666;
+}
+
+[data-theme="dark"] input[readonly],
+[data-theme="dark"] input[disabled] {
+    background-color: var(--input-disabled-bg);
+    color: #999;
+}
+
+select:disabled {
+    background-color: var(--input-disabled-bg);
+    cursor: not-allowed;
+    color: #999;
+    opacity: 0.6;
+}
+
+[data-theme="dark"] select:disabled {
+    background-color: var(--input-disabled-bg);
+    color: #666;
+}
+
+.small-input {
+    padding: 8px 10px;
+}
+
+.date-input {
+    max-width: 150px;
+    text-align: center;
+}
+
+/* ============================================================
+   INPUTS COM PERCENTUAL
+   ============================================================ */
+
+.percent-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.percent-input {
+    padding-right: 22px;
+}
+
+.percent-suffix {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+/* ============================================================
+   LINHAS PADRONIZADAS (INPUTS EM LINHA)
+   ============================================================ */
+
+.linha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    width: 100%;
+}
+
+.linha.hidden-regime {
+    display: none !important;
+}
+
+.col-label {
+    white-space: nowrap;
+    min-width: 210px;
+    text-align: right;
+}
+
+.col-input {
+    text-align: center;
+}
+
+.col-value {
+    whitespace: nowrap;
+    min-width: 100px;
+    text-align: right;
+}

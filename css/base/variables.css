@@ -1,0 +1,82 @@
+/* ============================================================
+   VARIÁVEIS CSS - TEMA CLARO E ESCURO
+   ============================================================ */
+
+:root {
+    /* Cores Base */
+    --bg: #f6f7f9;
+    --bg-gradient-end: #eef0f2;
+    --panel: #ffffff;
+    --panel-soft: #f8fafc;
+    
+    /* Texto */
+    --text: #060808;
+    --text-strong: #2b3b43;
+    --muted: #8b9198;
+    
+    /* Bordas e Divisores */
+    --border: #e0e4e7;
+    --border-soft: #edf1f3;
+    --divider: #eef2f3;
+    
+    /* Inputs */
+    --input-bg: #fbfdfe;
+    --input-text: #23303a;
+    --input-disabled-bg: #f5f5f5;
+    
+    /* Cores de Destaque */
+    --accent: #5aa2ff;
+    --green: #57b86a;
+    --orange: #f6a623;
+    --danger: #e53935;
+    
+    /* Badges e Extras */
+    --badge-bg: #eef6ff;
+    
+    /* Sombras */
+    --card-shadow: 0 6px 20px rgba(30, 40, 50, 0.25);
+    --hover-shadow: 0 8px 24px rgba(30, 40, 50, 0.3);
+    
+    /* Layout */
+    --radius: 16px;
+    --radius-small: 6px;
+    --radius-medium: 8px;
+    --padding: 14px;
+    --gap: 12px;
+}
+
+[data-theme="dark"] {
+    /* Cores Base */
+    --bg: #20262e;
+    --bg-gradient-end: #252c35;
+    --panel: #2b323c;
+    --panel-soft: #ffffff0d;
+    
+    /* Texto */
+    --text: #e7ebef;
+    --text-strong: #ffffff;
+    --muted: #c5cdd5;
+    
+    /* Bordas e Divisores */
+    --border: #3a4350;
+    --border-soft: #323a45;
+    --divider: #424c59;
+    
+    /* Inputs */
+    --input-bg: #262d36;
+    --input-text: #f0f3f6;
+    --input-disabled-bg: #2a2a2a;
+    
+    /* Cores de Destaque */
+    --accent: #8ab8ff;
+    --green: #7ad69a;
+    --orange: #f9c36a;
+    --danger: #f07a7a;
+    
+    /* Badges e Extras */
+    --badge-bg: #3a4350;
+    
+    /* Sombras */
+    --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    --hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
