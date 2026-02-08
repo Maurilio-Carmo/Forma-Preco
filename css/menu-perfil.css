@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    padding: 8px;
+    padding: var(--padding);
     z-index: 1001;
 }
 
@@ -25,7 +25,10 @@
     background-color: var(--accent);
 }
 
-/* Menu Lateral */
+/* ============================================================
+   MENU LATERAL
+   ============================================================ */
+
 .side-menu {
     position: fixed;
     top: 0;
@@ -47,7 +50,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: var(--padding);
     border-bottom: 1px solid var(--border);
 }
 
@@ -63,7 +66,6 @@
     font-size: 2rem;
     cursor: pointer;
     color: var(--muted);
-    padding: 0;
     width: 30px;
     height: 30px;
     display: flex;
@@ -78,13 +80,17 @@
 
 .side-menu-list {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 
 .side-menu-list li {
     border-bottom: 1px solid var(--border-soft);
 }
+
+/* ============================================================
+   ITENS DO MENU
+   ============================================================ */
 
 .menu-item {
     width: 100%;
@@ -96,8 +102,8 @@
     border: none;
     cursor: pointer;
     font-size: 1rem;
-    color: var(--text);
-    transition: all 0.2s ease;
+    color: var(--text--strong);
+    transition: background 0.2s ease, color 0.2s ease;
     text-align: left;
 }
 
@@ -107,18 +113,21 @@
 }
 
 .menu-item svg {
-    flex-shrink: 0;
-    transition: color 0.2s ease;
     min-width: 24px;
     min-height: 24px;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
 }
 
 .menu-item span {
-    flex: 1;
-    white-space: normal;
+    color: var(--text-strong);
 }
 
-/* Overlay */
+
+/* ============================================================
+   OVERLAY
+   ============================================================ */
+
 .menu-overlay {
     position: fixed;
     top: 0;
@@ -189,7 +198,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px;
+    padding: 20px;
     border-bottom: 1px solid var(--border);
 }
 
@@ -219,7 +228,7 @@
 }
 
 .modal-body {
-    padding: 12px;
+    padding: 18px;
 }
 
 /* ============================================================
@@ -227,7 +236,7 @@
    ============================================================ */
 
 .form-group {
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
 .form-label {

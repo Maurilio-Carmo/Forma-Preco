@@ -60,7 +60,7 @@ export const ELEMENTS = {
   LUCRO_BRUTO_DETALHE: 'lucroBrutoDetalhe',
   
   // Tema
-  TOGGLE_THEME: 'toggleTheme',
+  TOGGLE_THEME: 'menuTema',
   THEME_ICON: 'themeIcon'
 };
 
