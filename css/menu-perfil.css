@@ -251,9 +251,10 @@
     color: var(--danger);
 }
 
-.form-input {
+.form-input,
+.form-select {
     width: 100%;
-    padding: 12px 14px;
+    padding: 8px 12px;
     border: 1px solid var(--border);
     border-radius: var(--radius-small);
     background: var(--input-bg);
