@@ -1,0 +1,186 @@
+/* ============================================================
+   SISTEMA DE NOTIFICAÇÕES TOAST
+   ============================================================ */
+
+.notification-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.notification {
+    background: var(--panel);
+    border-radius: var(--radius-medium);
+    padding: 16px 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    max-width: 400px;
+    pointer-events: auto;
+    animation: slideInRight 0.3s ease, fadeOut 0.3s ease forwards;
+    animation-delay: 0s, var(--fade-delay);
+    border-left: 4px solid var(--notification-color);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ============================================================
+   ANIMAÇÕES
+   ============================================================ */
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+@keyframes progressBar {
+    from {
+        width: 100%;
+    }
+    to {
+        width: 0%;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================================
+   ELEMENTOS DA NOTIFICAÇÃO
+   ============================================================ */
+
+.notification-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.notification-icon svg {
+    animation: spin 1s linear infinite;
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-title {
+    font-weight: 600;
+    color: var(--text-strong);
+    margin: 0 0 4px 0;
+    font-size: 15px;
+}
+
+.notification-message {
+    color: var(--text);
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.notification-close:hover {
+    background: var(--panel-soft);
+    color: var(--text-strong);
+}
+
+.notification-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--notification-color);
+    animation: progressBar linear forwards;
+    animation-duration: var(--duration);
+}
+
+/* ============================================================
+   TIPOS DE NOTIFICAÇÃO
+   ============================================================ */
+
+.notification-success {
+    --notification-color: #57b86a;
+}
+
+.notification-error {
+    --notification-color: #e53935;
+}
+
+.notification-warning {
+    --notification-color: #f6a623;
+}
+
+.notification-info {
+    --notification-color: #5aa2ff;
+}
+
+/* ============================================================
+   TEMA ESCURO
+   ============================================================ */
+
+[data-theme="dark"] .notification {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+@media (max-width: 480px) {
+    .notification-container {
+        right: 10px;
+        left: 10px;
+        top: 70px;
+    }
+
+    .notification {
+        min-width: auto;
+        max-width: none;
+    }
+}
