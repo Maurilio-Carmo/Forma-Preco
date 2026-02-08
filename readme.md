@@ -146,22 +146,6 @@ Toda a operação é executada no front-end (client-side).
 
 ## 🎨 Sistema de Design
 
-### Variáveis CSS
-
-```css
-/* Tema Claro */
---bg: #f6f7f9
---panel: #ffffff
---accent: #5aa2ff
---text: #060808
-
-/* Tema Escuro */
---bg: #20262e
---panel: #2b323c
---accent: #8ab8ff
---text: #e7ebef
-```
-
 ### Componentes Visuais
 
 * **Highlights:** Cards de destaque para valores principais
