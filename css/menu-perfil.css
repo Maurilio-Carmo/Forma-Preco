@@ -112,17 +112,16 @@
     color: var(--accent);
 }
 
+.menu-item:hover span {
+    color: var(--accent);
+}
+
 .menu-item svg {
     min-width: 24px;
     min-height: 24px;
     flex-shrink: 0;
     transition: color 0.2s ease;
 }
-
-.menu-item span {
-    color: var(--text-strong);
-}
-
 
 /* ============================================================
    OVERLAY
