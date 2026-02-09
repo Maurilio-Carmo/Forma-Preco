@@ -3,61 +3,59 @@
 import { logger } from './logger.js';
 
 /**
- * Carrega um componente HTML externo e injeta no elemento especificado
- * @param {string} elementId - ID do elemento onde o componente será injetado
- * @param {string} componentPath - Caminho do arquivo HTML do componente
- * @returns {Promise<void>}
+ * Template de skeleton para loading
  */
-export async function loadComponent(elementId, componentPath) {
+const SKELETON_TEMPLATES = {
+  default: '<div class="skeleton skeleton-card"></div>',
+  header: '<div class="skeleton" style="height: 80px;"></div>',
+  panel: '<div class="loading-container"><div class="skeleton skeleton-input"></div><div class="skeleton skeleton-input"></div><div class="skeleton skeleton-input"></div></div>',
+  sidebar: '<div class="loading-container"><div class="skeleton skeleton-highlight"></div><div class="skeleton skeleton-highlight"></div></div>'
+};
+
+/**
+ * Carrega um componente HTML externo e injeta no elemento especificado
+ */
+export async function loadComponent(elementId, componentPath, skeletonType = 'default') {
   const MODULE = 'ComponentLoader';
   
   try {
     logger.debug(MODULE, `Iniciando carregamento: ${componentPath} → #${elementId}`);
     
-    const response = await fetch(componentPath);
-    
-    if (!response.ok) {
-      const error = new Error(
-        `Falha ao carregar componente. Status HTTP: ${response.status}`
-      );
-      error.componentPath = componentPath;
-      error.httpStatus = response.status;
-      throw error;
-    }
-    
-    const html = await response.text();
     const element = document.getElementById(elementId);
     
     if (!element) {
-      logger.warn(
-        MODULE,
-        `Elemento de destino não encontrado no DOM`,
-        { elementId, componentPath }
-      );
+      logger.warn(MODULE, `Elemento de destino não encontrado no DOM`, { elementId });
       return;
     }
     
+    // Mostra skeleton durante carregamento
+    element.innerHTML = SKELETON_TEMPLATES[skeletonType] || SKELETON_TEMPLATES.default;
+    
+    const response = await fetch(componentPath);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const html = await response.text();
+    
+    // Aplica fade-in ao trocar conteúdo
+    element.classList.add('fade-in');
     element.innerHTML = html;
-    logger.success(MODULE, `Componente carregado com sucesso`, {
+    
+    logger.success(MODULE, `Componente carregado`, {
       path: componentPath,
-      target: `#${elementId}`,
-      size: `${html.length} caracteres`
+      target: `#${elementId}`
     });
     
   } catch (error) {
-    logger.error(
-      MODULE,
-      `Falha ao carregar componente: ${componentPath}`,
-      error
-    );
-    throw error; // Re-lança o erro para que initializeApp possa capturá-lo
+    logger.error(MODULE, `Falha ao carregar: ${componentPath}`, error);
+    throw error;
   }
 }
 
 /**
  * Carrega múltiplos componentes em paralelo
- * @param {Array<{id: string, path: string}>} components - Array de objetos com id e path
- * @returns {Promise<void>}
  */
 export async function loadComponents(components) {
   const MODULE = 'ComponentLoader';
@@ -65,41 +63,17 @@ export async function loadComponents(components) {
   logger.info(MODULE, `Carregando ${components.length} componentes em paralelo`);
   logger.time('Carregamento de componentes');
   
-  const promises = components.map(({ id, path }) => 
-    loadComponent(id, path)
+  const promises = components.map(({ id, path, skeleton }) => 
+    loadComponent(id, path, skeleton)
   );
   
   try {
     await Promise.all(promises);
     logger.timeEnd('Carregamento de componentes');
-    logger.success(MODULE, `Componentes carregados com sucesso`);
+    logger.success(MODULE, 'Todos os componentes carregados');
   } catch (error) {
     logger.timeEnd('Carregamento de componentes');
     logger.error(MODULE, 'Erro ao carregar componentes', error);
-    throw error;
-  }
-}
-
-/**
- * Carrega componentes sequencialmente (útil se houver dependências)
- * @param {Array<{id: string, path: string}>} components - Array de objetos com id e path
- * @returns {Promise<void>}
- */
-export async function loadComponentsSequential(components) {
-  const MODULE = 'ComponentLoader';
-  
-  logger.info(MODULE, `Carregando ${components.length} componentes sequencialmente`);
-  logger.time('Carregamento sequencial');
-  
-  try {
-    for (const { id, path } of components) {
-      await loadComponent(id, path);
-    }
-    logger.timeEnd('Carregamento sequencial');
-    logger.success(MODULE, `Componentes sequenciais carregados com sucesso`);
-  } catch (error) {
-    logger.timeEnd('Carregamento sequencial');
-    logger.error(MODULE, 'Erro no carregamento sequencial', error);
     throw error;
   }
 }

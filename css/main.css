@@ -18,6 +18,7 @@
 @import './components/results.css';
 @import './components/tooltips.css';
 @import './components/panels.css';
+@import './components/loading.css';
 
 /* MENU */
 @import './components/menu/menu-toggle.css';
@@ -37,3 +38,4 @@
 /* UTILITIES */
 @import './utilities/helpers.css';
 @import './utilities/responsive.css';
+@import './utilities/performance.css';

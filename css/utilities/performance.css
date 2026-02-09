@@ -1,0 +1,75 @@
+/* ============================================================
+   OTIMIZAÇÕES DE PERFORMANCE
+   ============================================================ */
+
+/* Content visibility para elementos fora da viewport */
+.lazy-content {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+}
+
+/* Will-change para animações conhecidas */
+.will-animate {
+    will-change: transform, opacity;
+}
+
+/* Remove will-change após animação */
+.animated {
+    will-change: auto;
+}
+
+/* GPU acceleration para transições */
+.gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Smooth scrolling otimizado */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Reduz animações se usuário preferir */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Otimização de imagens */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+img[loading="lazy"] {
+    content-visibility: auto;
+}
+
+/* Previne layout shift */
+.aspect-ratio {
+    position: relative;
+    width: 100%;
+}
+
+.aspect-ratio::before {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+}
+
+.aspect-ratio > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
