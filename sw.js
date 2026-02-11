@@ -11,6 +11,7 @@ const STATIC_ASSETS = [
   './css/base/variables.css',
   './css/base/reset.css',
   './src/main.js',
+  './icons/app.png',
   './icons/calculadora.png',
   './icons/carrinho.png',
   './icons/etiqueta.png',
