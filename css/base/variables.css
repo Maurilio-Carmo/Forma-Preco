@@ -33,6 +33,10 @@
     /* Badges e Extras */
     --badge-bg: #eef6ff;
     
+    /* Skeleton Loading */
+    --skeleton-start: #d8dce0;
+    --skeleton-middle: #e8edf1;
+    
     /* Sombras */
     --card-shadow: 0 6px 20px rgba(30, 40, 50, 0.25);
     --hover-shadow: 0 8px 24px rgba(30, 40, 50, 0.3);
@@ -75,6 +79,10 @@
     
     /* Badges e Extras */
     --badge-bg: #3a4350;
+    
+    /* Skeleton Loading */
+    --skeleton-start: #3a4350;
+    --skeleton-middle: #4a5360;
     
     /* Sombras */
     --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
