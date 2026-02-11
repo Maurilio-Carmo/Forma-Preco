@@ -1,7 +1,7 @@
 // sw.js
-const CACHE_NAME = 'calculadora-preco-v1.0.0';
-const STATIC_CACHE = 'static-v1.0.0';
-const DYNAMIC_CACHE = 'dynamic-v1.0.0';
+const CACHE_NAME = 'calculadora-preco-v1.0.1';
+const STATIC_CACHE = 'static-v1.0.1';
+const DYNAMIC_CACHE = 'dynamic-v1.0.1';
 
 const STATIC_ASSETS = [
   './',
@@ -90,6 +90,14 @@ self.addEventListener('fetch', event => {
   
   // Padrão: Network First
   event.respondWith(networkFirst(request, DYNAMIC_CACHE));
+});
+
+// Listener para mensagens (permite skipWaiting forçado)
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.action === 'skipWaiting') {
+    console.log('[SW] Pulando espera e ativando nova versão');
+    self.skipWaiting();
+  }
 });
 
 // Cache First Strategy
