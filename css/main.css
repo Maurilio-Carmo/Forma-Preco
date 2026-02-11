@@ -35,6 +35,9 @@
 @import './components/notifications/notification-elements.css';
 @import './components/notifications/notification-types.css';
 
+/* PWA */
+@import './components/pwa/pwa-install.css';
+
 /* UTILITIES */
 @import './utilities/helpers.css';
 @import './utilities/responsive.css';

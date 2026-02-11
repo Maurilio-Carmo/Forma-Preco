@@ -1,0 +1,151 @@
+/* ============================================================
+   PWA - NOTIFICAÇÃO DE INSTALAÇÃO
+   ============================================================ */
+
+.pwa-install-notification {
+    position: fixed;
+    top: 90px;
+    right: 20px;
+    z-index: 10000;
+    background: var(--panel);
+    border-radius: var(--radius-medium);
+    padding: 16px 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    min-width: 300px;
+    max-width: 400px;
+    border-left: 4px solid var(--accent);
+    animation: slideInRight 0.3s ease;
+    pointer-events: auto;
+}
+
+[data-theme="dark"] .pwa-install-notification {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.pwa-install-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.pwa-install-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.pwa-install-content {
+    flex: 1;
+}
+
+.pwa-install-title {
+    font-weight: 600;
+    color: var(--text-strong);
+    margin: 0 0 4px 0;
+    font-size: 15px;
+}
+
+.pwa-install-message {
+    color: var(--text);
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.pwa-install-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.pwa-install-close:hover {
+    background: var(--panel-soft);
+    color: var(--text-strong);
+}
+
+.pwa-install-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.pwa-install-btn {
+    flex: 1;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: var(--radius-small);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.pwa-install-btn:hover {
+    background: #4890ff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(90, 162, 255, 0.3);
+}
+
+.pwa-install-btn:active {
+    transform: translateY(0);
+}
+
+.pwa-install-btn-secondary {
+    flex: 0 0 auto;
+    padding: 10px 16px;
+    background: var(--panel-soft);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-small);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.pwa-install-btn-secondary:hover {
+    background: var(--border-soft);
+    border-color: var(--accent);
+}
+
+.pwa-install-btn-secondary:active {
+    transform: scale(0.98);
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+@media (max-width: 480px) {
+    .pwa-install-notification {
+        right: 10px;
+        left: 10px;
+        top: 70px;
+        min-width: auto;
+        max-width: none;
+    }
+    
+    .pwa-install-actions {
+        flex-direction: column;
+    }
+    
+    .pwa-install-btn,
+    .pwa-install-btn-secondary {
+        flex: 1;
+        width: 100%;
+    }
+}

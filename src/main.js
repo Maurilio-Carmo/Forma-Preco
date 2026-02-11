@@ -32,6 +32,7 @@ async function loadHTMLComponents() {
       { id: 'left-panel-container', path: 'components/left-panel.html', skeleton: 'panel' },
       { id: 'right-panel-container', path: 'components/right-panel.html', skeleton: 'sidebar' },
       { id: 'tooltip-modal-container', path: 'components/tooltip-modal.html', skeleton: 'default' },
+      { id: 'pwa-install-container', path: 'components/pwa-install-notification.html', skeleton: 'default' },
       { id: 'footer-container', path: 'components/footer.html', skeleton: 'default' }
     ]);
     
@@ -100,15 +101,15 @@ async function initializeApp() {
     logger.time('Tempo total de inicialização');
     
     // 1. Carrega componentes HTML primeiro
-    logger.info(MODULE, 'Etapa 1/13: Carregando componentes HTML');
+    logger.info(MODULE, 'Etapa 1/14: Carregando componentes HTML');
     await loadHTMLComponents();
     
     // 2. Carrega dados dos JSONs
-    logger.info(MODULE, 'Etapa 2/13: Carregando dados de tributação');
+    logger.info(MODULE, 'Etapa 2/14: Carregando dados de tributação');
     await initializeData();
     
     // 3. Obtém referências aos dados carregados
-    logger.info(MODULE, 'Etapa 3/13: Obtendo referências aos dados');
+    logger.info(MODULE, 'Etapa 3/14: Obtendo referências aos dados');
     const tributacaoData = getTributacaoData();
     const impostosFederaisData = getImpostosFederaisData();
     const faixasSimplesNacionalData = getFaixasSimplesNacionalData();
@@ -120,46 +121,46 @@ async function initializeApp() {
     });
     
     // 4. Carrega regime do perfil (se existir)
-    logger.info(MODULE, 'Etapa 4/13: Carregando perfil do usuário');
+    logger.info(MODULE, 'Etapa 4/14: Carregando perfil do usuário');
     loadRegimeFromPerfil();
     
     // 5. Configura listeners de eventos
-    logger.info(MODULE, 'Etapa 5/13: Configurando listeners de cálculo');
+    logger.info(MODULE, 'Etapa 5/14: Configurando listeners de cálculo');
     setupCalculationListeners(processCalculation);
     
-    logger.info(MODULE, 'Etapa 6/13: Configurando listeners de tributação');
+    logger.info(MODULE, 'Etapa 6/14: Configurando listeners de tributação');
     setupTaxUpdateListeners(tributacaoData, impostosFederaisData, faixasSimplesNacionalData, processCalculation);
     
     // 6. Configura gerenciamento de visibilidade por regime
-    logger.info(MODULE, 'Etapa 7/13: Configurando visibilidade por regime');
+    logger.info(MODULE, 'Etapa 7/14: Configurando visibilidade por regime');
     setupRegimeVisibilityHandler(processCalculation);
     
     // 7. Inicializa tema
-    logger.info(MODULE, 'Etapa 8/13: Inicializando tema');
+    logger.info(MODULE, 'Etapa 8/14: Inicializando tema');
     initializeTheme();
     
     // 8. Inicializa menu
-    logger.info(MODULE, 'Etapa 9/13: Inicializando menu');
+    logger.info(MODULE, 'Etapa 9/14: Inicializando menu');
     initializeMenu();
 
     // 9. Inicializa modal de perfil
-    logger.info(MODULE, 'Etapa 10/13: Inicializando modal de perfil');
+    logger.info(MODULE, 'Etapa 10/14: Inicializando modal de perfil');
     initializePerfilModal();
 
     // 10. Inicializa tooltips
-    logger.info(MODULE, 'Etapa 11/13: Inicializando tooltips');
+    logger.info(MODULE, 'Etapa 11/14: Inicializando tooltips');
     initializeTooltips();
     
     // 11. Inicializa otimizações de performance
-    logger.info(MODULE, 'Etapa 12/13: Inicializando otimizações de performance');
+    logger.info(MODULE, 'Etapa 12/14: Inicializando otimizações de performance');
     initializePerformanceOptimizations();
     
     // 12. Inicializa PWA
-    logger.info(MODULE, 'Etapa 13/13: Inicializando PWA');
+    logger.info(MODULE, 'Etapa 13/14: Inicializando PWA');
     initializePWA();
     
     // 13. Executa cálculo inicial
-    logger.info(MODULE, 'Executando cálculo inicial');
+    logger.info(MODULE, 'Etapa 14/14: Executando cálculo inicial');
     processCalculation();
     
     logger.timeEnd('Tempo total de inicialização');

@@ -1,119 +1,70 @@
 // utils/pwa.js
 
 import { logger } from './logger.js';
-import { notify } from './notifications.js';
+import { 
+  registerServiceWorker, 
+  setupInstallPrompt, 
+  setupConnectionMonitor,
+  checkForUpdates,
+  getServiceWorkerInfo
+} from '../services/pwa-service.js';
+import { initializePWAInstallNotification } from '../handlers/pwa-install-handler.js';
 
 const MODULE = 'PWA';
 
 /**
- * Registra Service Worker
- */
-export function registerServiceWorker() {
-  if (!('serviceWorker' in navigator)) {
-    logger.warn(MODULE, 'Service Worker não suportado neste navegador');
-    return;
-  }
-  
-  window.addEventListener('load', async () => {
-    try {
-      const registration = await navigator.serviceWorker.register('./sw.js');
-      
-      logger.success(MODULE, 'Service Worker registrado', {
-        scope: registration.scope
-      });
-      
-      // Verifica atualizações
-      registration.addEventListener('updatefound', () => {
-        const newWorker = registration.installing;
-        
-        newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            
-            // Opção 1: Notificar usuário
-            notify.info(
-              'Atualização Disponível',
-              'Uma nova versão está disponível. Recarregue a página para atualizar.',
-              0
-            );
-            
-            // Opção 2: Atualizar automaticamente
-            newWorker.postMessage({ type: 'SKIP_WAITING' });
-            window.location.reload();
-          }
-        });
-      });
-      
-    } catch (error) {
-      logger.error(MODULE, 'Falha ao registrar Service Worker', error);
-    }
-  });
-}
-
-/**
- * Verifica se app pode ser instalado
- */
-export function setupInstallPrompt() {
-  let deferredPrompt;
-  
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    
-    logger.info(MODULE, 'App pode ser instalado');
-    
-    // Mostra notificação de instalação
-    const notification = notify.info(
-      'Instalar Aplicativo',
-      'Você pode instalar esta calculadora no seu dispositivo',
-      10000
-    );
-    
-    // Adiciona botão de instalação na notificação
-    // (Implementação customizada se necessário)
-  });
-  
-  window.addEventListener('appinstalled', () => {
-    logger.success(MODULE, 'App instalado com sucesso');
-    deferredPrompt = null;
-    
-    notify.success(
-      'Instalado!',
-      'A calculadora foi instalada no seu dispositivo'
-    );
-  });
-}
-
-/**
- * Verifica status de conexão
- */
-export function setupConnectionMonitor() {
-  const updateOnlineStatus = () => {
-    if (navigator.onLine) {
-      logger.info(MODULE, 'Conexão restaurada');
-      notify.success('Online', 'Conexão com a internet restaurada');
-    } else {
-      logger.warn(MODULE, 'Sem conexão');
-      notify.warning(
-        'Offline',
-        'Você está sem conexão. Algumas funcionalidades podem não funcionar.',
-        0
-      );
-    }
-  };
-  
-  window.addEventListener('online', updateOnlineStatus);
-  window.addEventListener('offline', updateOnlineStatus);
-}
-
-/**
- * Inicializa funcionalidades PWA
+ * Inicializa todas as funcionalidades PWA
  */
 export function initializePWA() {
   logger.group('📱 Inicialização PWA');
   
-  registerServiceWorker();
-  setupInstallPrompt();
-  setupConnectionMonitor();
-  
-  logger.groupEnd();
+  try {
+    // 1. Registra Service Worker
+    logger.info(MODULE, 'Etapa 1/4: Registrando Service Worker');
+    registerServiceWorker();
+    
+    // 2. Configura prompt de instalação
+    logger.info(MODULE, 'Etapa 2/4: Configurando prompt de instalação');
+    setupInstallPrompt();
+    
+    // 3. Configura monitor de conexão
+    logger.info(MODULE, 'Etapa 3/4: Configurando monitor de conexão');
+    setupConnectionMonitor();
+    
+    // 4. Inicializa notificação de instalação
+    logger.info(MODULE, 'Etapa 4/4: Inicializando notificação de instalação');
+    initializePWAInstallNotification();
+    
+    logger.success(MODULE, 'PWA inicializado com sucesso');
+    
+    // Disponibiliza funções úteis no console (apenas em debug)
+    exposeDebugFunctions();
+    
+  } catch (error) {
+    logger.error(MODULE, 'Erro ao inicializar PWA', error);
+  } finally {
+    logger.groupEnd();
+  }
 }
+
+/**
+ * Expõe funções úteis no console para debug
+ */
+function exposeDebugFunctions() {
+  if (typeof window === 'undefined') return;
+  
+  // Função para verificar atualizações manualmente
+  window.checkForUpdates = checkForUpdates;
+  
+  // Função para obter informações do Service Worker
+  window.getServiceWorkerInfo = getServiceWorkerInfo;
+  
+  logger.debug(MODULE, 'Funções de debug disponíveis no console', {
+    functions: ['checkForUpdates()', 'getServiceWorkerInfo()']
+  });
+}
+
+/**
+ * Re-exporta funções úteis do service
+ */
+export { checkForUpdates, getServiceWorkerInfo };
