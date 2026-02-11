@@ -7,7 +7,10 @@
 }
 
 body {
-    font-family: "Rubik", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+                 "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+                 "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", 
+                 "Noto Color Emoji";
     margin: 0 auto;
     background: linear-gradient(180deg, var(--bg), var(--bg-gradient-end));
     color: var(--text);

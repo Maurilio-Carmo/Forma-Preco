@@ -73,13 +73,6 @@ self.addEventListener('fetch', event => {
       event.respondWith(fetch(request));
       return;
     }
-    
-    if (url.hostname.includes('fonts.googleapis') || 
-        url.hostname.includes('fonts.gstatic')) {
-      // Cache first para fontes
-      event.respondWith(cacheFirst(request, STATIC_CACHE));
-      return;
-    }
   }
   
   // Assets estáticos: Cache First
