@@ -76,6 +76,13 @@ self.addEventListener('fetch', event => {
     }
   }
   
+// Atualização imediata do Service Worker
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+  
   // Assets estáticos: Cache First
   if (STATIC_ASSETS.some(asset => request.url.includes(asset))) {
     event.respondWith(cacheFirst(request, STATIC_CACHE));

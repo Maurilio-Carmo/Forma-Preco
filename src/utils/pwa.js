@@ -28,13 +28,17 @@ export function registerServiceWorker() {
         
         newWorker.addEventListener('statechange', () => {
           if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            logger.info(MODULE, 'Nova versão disponível');
             
+            // Opção 1: Notificar usuário
             notify.info(
               'Atualização Disponível',
               'Uma nova versão está disponível. Recarregue a página para atualizar.',
               0
             );
+            
+            // Opção 2: Atualizar automaticamente
+            newWorker.postMessage({ type: 'SKIP_WAITING' });
+            window.location.reload();
           }
         });
       });
