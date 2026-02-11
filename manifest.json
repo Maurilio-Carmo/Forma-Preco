@@ -2,15 +2,16 @@
   "name": "Calculadora de Preço",
   "short_name": "Calc Preço",
   "description": "Calculadora de preço de venda com cálculo automático de tributos (PIS, COFINS, ICMS, Simples Nacional)",
-  "start_url": "./",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#f6f7f9",
-  "theme_color": "#5aa2ff",
+  "background_color": "#57b86a",
+  "theme_color": "#57b86a",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "./icons/app.png",
-      "sizes": "192x192",
+      "src": "/icons/app.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
