@@ -1,6 +1,7 @@
 // src/main.js
 
 import { loadComponents } from './utils/component-loader.js';
+import { loadAppVersion } from './utils/version-handler.js';
 import { initializeData, getTributacaoData, getImpostosFederaisData, getFaixasSimplesNacionalData } from './services/data-loader.js';
 import { processCalculation } from './controllers/calculation-controller.js';
 import { setupCalculationListeners, setupTaxUpdateListeners } from './handlers/event-handlers.js';
@@ -103,6 +104,10 @@ async function initializeApp() {
     // 1. Carrega componentes HTML primeiro
     logger.info(MODULE, 'Etapa 1/14: Carregando componentes HTML');
     await loadHTMLComponents();
+
+    // 1.1. Carrega versão do app
+    logger.info(MODULE, 'Etapa 1.1/14: Carregando versão do app');
+    loadAppVersion();
     
     // 2. Carrega dados dos JSONs
     logger.info(MODULE, 'Etapa 2/14: Carregando dados de tributação');

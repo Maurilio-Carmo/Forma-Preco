@@ -97,6 +97,39 @@
 }
 
 /* ============================================================
+   FOOTER DO MENU LATERAL - VERSÃO DO APP
+   ============================================================ */
+
+.side-menu-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-soft);
+    background: var(--panel);
+}
+
+.app-version {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.app-version span {
+    font-size: 0.813rem;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Adiciona padding no bottom da lista de menu para não sobrepor o footer */
+.side-menu-list {
+    padding-bottom: 60px;
+}
+
+/* ============================================================
    RESPONSIVIDADE
    ============================================================ */
 
@@ -104,5 +137,15 @@
     .side-menu {
         width: 60%;
         right: -60%;
+    }
+}
+
+@media (max-width: 768px) {
+    .side-menu-footer {
+        padding: 12px 16px;
+    }
+    
+    .app-version span {
+        font-size: 0.75rem;
     }
 }
