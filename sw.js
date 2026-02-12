@@ -1,7 +1,7 @@
 // sw.js
-const CACHE_NAME = 'calculadora-preco-v1.0.0';
-const STATIC_CACHE = 'static-v1.0.0';
-const DYNAMIC_CACHE = 'dynamic-v1.0.0';
+const CACHE_NAME = 'calculadora-preco-v1.0.1';
+const STATIC_CACHE = 'static-v1.0.1';
+const DYNAMIC_CACHE = 'dynamic-v1.0.1';
 
 const STATIC_ASSETS = [
   './',
@@ -64,6 +64,13 @@ self.addEventListener('activate', event => {
   );
 });
 
+// Atualização imediata do Service Worker
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 // Estratégia de cache
 self.addEventListener('fetch', event => {
   const { request } = event;
@@ -77,13 +84,6 @@ self.addEventListener('fetch', event => {
       return;
     }
   }
-  
-// Atualização imediata do Service Worker
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
   
   // Assets estáticos: Cache First
   if (STATIC_ASSETS.some(asset => request.url.includes(asset))) {
