@@ -9,7 +9,7 @@ const MODULE = 'VersionHandler';
  */
 export async function loadAppVersion() {
   try {
-    const response = await fetch('/manifest.json');
+    const response = await fetch('./manifest.json');
     const manifest = await response.json();
     
     const version = manifest.version || '1.0.0';
