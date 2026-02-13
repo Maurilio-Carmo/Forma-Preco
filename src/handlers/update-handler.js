@@ -1,207 +1,138 @@
 // src/handlers/update-handler.js
 
-(function(window) {
-  'use strict';
-  
-  const STORAGE_KEY = 'installed_version';
-  
-  /**
-   * Obtém versão instalada
-   */
-  function getInstalledVersion() {
-    try {
-      return localStorage.getItem(STORAGE_KEY) || '0.0.0';
-    } catch {
-      return '0.0.0';
-    }
+import { APP_VERSION, isNewerVersion } from '../config/version.js';
+import { logger } from '../utils/logger.js';
+import { notify } from '../utils/notifications.js';
+
+const MODULE = 'UpdateHandler';
+const STORAGE_KEY = 'installed_version';
+
+function getInstalledVersion() {
+  try {
+    return localStorage.getItem(STORAGE_KEY) || '0.0.0';
+  } catch {
+    return '0.0.0';
   }
-  
-  /**
-   * Salva versão instalada
-   */
-  function saveInstalledVersion(version) {
-    try {
-      localStorage.setItem(STORAGE_KEY, version);
-      console.log('✅ Versão salva:', version);
-    } catch (error) {
-      console.error('❌ Erro ao salvar versão:', error);
-    }
+}
+
+function saveInstalledVersion(version) {
+  try {
+    localStorage.setItem(STORAGE_KEY, version);
+    logger.info(MODULE, `Versão ${version} salva`);
+  } catch (error) {
+    logger.error(MODULE, 'Erro ao salvar versão', error);
   }
+}
+
+function showUpdateNotification(currentVersion, newVersion) {
+  const notification = document.getElementById('updateNotification');
+  const currentVersionEl = document.getElementById('currentVersion');
+  const newVersionEl = document.getElementById('newVersion');
   
-  /**
-   * Mostra notificação
-   */
-  function showUpdateNotification(currentVersion, newVersion) {
-    const notification = document.getElementById('updateNotification');
-    const currentEl = document.getElementById('currentVersion');
-    const newEl = document.getElementById('newVersion');
-    
-    if (!notification) return;
-    
-    if (currentEl) currentEl.textContent = 'v' + currentVersion;
-    if (newEl) newEl.textContent = 'v' + newVersion;
-    
-    notification.style.display = 'block';
-    setTimeout(function() {
-      notification.classList.add('show');
-    }, 100);
-    
-    console.log('🔄 Atualização disponível:', currentVersion, '→', newVersion);
-  }
+  if (!notification) return;
   
-  /**
-   * Esconde notificação
-   */
-  function hideUpdateNotification() {
-    const notification = document.getElementById('updateNotification');
-    if (!notification) return;
-    
-    notification.classList.remove('show');
-    setTimeout(function() {
-      notification.style.display = 'none';
-    }, 400);
-  }
+  if (currentVersionEl) currentVersionEl.textContent = `v${currentVersion}`;
+  if (newVersionEl) newVersionEl.textContent = `v${newVersion}`;
   
-  /**
-   * Atualiza o app
-   */
-  function updateApp() {
-    const notification = document.getElementById('updateNotification');
+  notification.style.display = 'block';
+  setTimeout(() => {
+    notification.classList.add('show');
+  }, 100);
+  
+  logger.info(MODULE, `Atualização disponível: ${currentVersion} → ${newVersion}`);
+}
+
+function hideUpdateNotification() {
+  const notification = document.getElementById('updateNotification');
+  if (!notification) return;
+  
+  notification.classList.remove('show');
+  setTimeout(() => {
+    notification.style.display = 'none';
+  }, 400);
+}
+
+async function updateApp() {
+  const notification = document.getElementById('updateNotification');
+  
+  try {
+    notification?.classList.add('updating');
+    logger.info(MODULE, 'Iniciando atualização...');
     
-    try {
-      notification?.classList.add('updating');
+    if ('serviceWorker' in navigator) {
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (registration) await registration.update();
       
-      console.log('🔄 Iniciando atualização...');
-      
-      // Salva nova versão
-      saveInstalledVersion(window.AppVersion.VERSION);
-      
-      // Limpa cache do service worker se existir
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistration().then(function(reg) {
-          if (reg) reg.update();
-        });
-        
-        if ('caches' in window) {
-          caches.keys().then(function(keys) {
-            return Promise.all(keys.map(function(key) {
-              return caches.delete(key);
-            }));
-          }).then(function() {
-            console.log('✅ Cache limpo');
-          });
-        }
-      }
-      
-      // Mostra feedback
-      if (window.notify) {
-        window.notify.success('Atualizando...', 'O app será recarregado', 1500);
-      }
-      
-      // Recarrega
-      setTimeout(function() {
-        window.location.reload(true);
-      }, 1500);
-      
-    } catch (error) {
-      console.error('❌ Erro ao atualizar:', error);
-      notification?.classList.remove('updating');
-      
-      if (window.notify) {
-        window.notify.error('Erro na atualização', 'Tente novamente mais tarde');
+      if ('caches' in window) {
+        const cacheKeys = await caches.keys();
+        await Promise.all(cacheKeys.map(key => caches.delete(key)));
+        logger.info(MODULE, 'Cache limpo');
       }
     }
+    
+    saveInstalledVersion(APP_VERSION);
+    notify.success('Atualizando...', 'O app será recarregado', 1500);
+    
+    setTimeout(() => {
+      window.location.reload(true);
+    }, 1500);
+    
+  } catch (error) {
+    logger.error(MODULE, 'Erro ao atualizar app', error);
+    notification?.classList.remove('updating');
+    notify.error('Erro na atualização', 'Tente novamente mais tarde');
   }
+}
+
+function dismissUpdate() {
+  hideUpdateNotification();
+  logger.info(MODULE, 'Atualização adiada');
+  try {
+    sessionStorage.setItem('update_dismissed', 'true');
+  } catch {}
+}
+
+export function checkForUpdates() {
+  const installedVersion = getInstalledVersion();
+  const currentVersion = APP_VERSION;
   
-  /**
-   * Ignora atualização
-   */
-  function dismissUpdate() {
-    hideUpdateNotification();
-    console.log('⏸️ Atualização adiada');
-    
-    try {
-      sessionStorage.setItem('update_dismissed', 'true');
-    } catch {}
-  }
+  logger.info(MODULE, `Verificando atualizações...`);
+  logger.info(MODULE, `Versão instalada: ${installedVersion}`);
+  logger.info(MODULE, `Versão atual: ${currentVersion}`);
   
-  /**
-   * Verifica atualizações
-   */
-  function checkForUpdates() {
-    const installedVersion = getInstalledVersion();
-    const currentVersion = window.AppVersion.VERSION;
-    
-    console.log('🔍 Verificando atualizações...');
-    console.log('   Instalada:', installedVersion);
-    console.log('   Atual:', currentVersion);
-    
-    if (window.AppVersion.isNewerVersion(currentVersion, installedVersion)) {
-      const dismissed = sessionStorage.getItem('update_dismissed');
-      
-      if (!dismissed) {
-        showUpdateNotification(installedVersion, currentVersion);
-      }
-      
-      return true;
+  if (isNewerVersion(currentVersion, installedVersion)) {
+    const dismissed = sessionStorage.getItem('update_dismissed');
+    if (!dismissed) {
+      showUpdateNotification(installedVersion, currentVersion);
     }
-    
-    if (installedVersion !== currentVersion) {
-      saveInstalledVersion(currentVersion);
+    return true;
+  }
+  
+  if (installedVersion !== currentVersion) {
+    saveInstalledVersion(currentVersion);
+  }
+  
+  return false;
+}
+
+export function initializeUpdateHandler() {
+  logger.group('🔄 Inicializando Update Handler');
+  
+  const updateBtn = document.getElementById('updateNow');
+  const dismissBtn = document.getElementById('updateDismiss');
+  
+  updateBtn?.addEventListener('click', updateApp);
+  dismissBtn?.addEventListener('click', dismissUpdate);
+  
+  checkForUpdates();
+  setInterval(checkForUpdates, 30 * 60 * 1000);
+  
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      checkForUpdates();
     }
-    
-    return false;
-  }
+  });
   
-  /**
-   * Carrega versão no menu
-   */
-  function loadAppVersion() {
-    const versionElement = document.getElementById('appVersion');
-    
-    if (versionElement) {
-      versionElement.textContent = 'v' + window.AppVersion.VERSION;
-      console.log('✅ Versão carregada:', window.AppVersion.VERSION);
-    }
-  }
-  
-  /**
-   * Inicializa
-   */
-  function initialize() {
-    console.log('🔄 Inicializando Update Handler');
-    
-    // Carrega versão no menu
-    loadAppVersion();
-    
-    // Configura botões
-    const updateBtn = document.getElementById('updateNow');
-    const dismissBtn = document.getElementById('updateDismiss');
-    
-    if (updateBtn) updateBtn.addEventListener('click', updateApp);
-    if (dismissBtn) dismissBtn.addEventListener('click', dismissUpdate);
-    
-    // Verifica atualizações
-    checkForUpdates();
-    
-    // Verifica a cada 30 minutos
-    setInterval(checkForUpdates, 30 * 60 * 1000);
-    
-    // Verifica quando volta para foreground
-    document.addEventListener('visibilitychange', function() {
-      if (!document.hidden) {
-        checkForUpdates();
-      }
-    });
-    
-    console.log('✅ Update Handler inicializado');
-  }
-  
-  // Expõe funções
-  window.UpdateHandler = {
-    initialize: initialize,
-    checkForUpdates: checkForUpdates,
-    updateApp: updateApp
-  };
-  
-})(window);
+  logger.groupEnd();
+  logger.success(MODULE, 'Update Handler inicializado');
+}
