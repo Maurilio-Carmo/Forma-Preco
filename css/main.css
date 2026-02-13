@@ -19,6 +19,7 @@
 @import './components/tooltips.css';
 @import './components/panels.css';
 @import './components/loading.css';
+@import './components/update-notification.css';
 
 /* MENU */
 @import './components/menu/menu-toggle.css';
