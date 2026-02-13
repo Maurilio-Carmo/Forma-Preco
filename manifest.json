@@ -1,7 +1,7 @@
 {
   "name": "Calculadora de Preço",
   "short_name": "Calc Preço",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Calculadora de preço de venda com cálculo automático de tributos (PIS, COFINS, ICMS, Simples Nacional)",
   "start_url": "./",
   "scope": "./",
