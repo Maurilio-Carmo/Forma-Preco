@@ -3,7 +3,7 @@
 (function(window) {
   'use strict';
   
-  const APP_VERSION = '1.0.5';
+  const APP_VERSION = '1.0.6';
   
   const VERSION_INFO = {
     version: APP_VERSION,
