@@ -7,7 +7,7 @@
     top: 0;
     right: -280px;
     width: 280px;
-    height: 100vh;
+    height: 100dvh;
     background: var(--panel);
     box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
     transition: right 0.3s ease;
@@ -246,7 +246,7 @@
 
 @media (max-width: 480px) {
     .side-menu {
-        width: 85%;
-        right: -85%;
+        width: 60%;
+        right: -60%;
     }
 }

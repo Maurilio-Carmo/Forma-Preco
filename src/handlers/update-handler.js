@@ -11,9 +11,14 @@ const STORAGE_KEY = 'installed_version';
 // CONTROLE DE VERSÃO NO STORAGE
 // ============================================================
 
+/**
+ * Retorna null se nunca foi salvo (primeira visita),
+ * ou a string da versão salva.
+ * Nunca usa fallback '0.0.0' para não criar falsos positivos.
+ */
 function getInstalledVersion() {
   try {
-    return localStorage.getItem(STORAGE_KEY);
+    return localStorage.getItem(STORAGE_KEY); // null se não existe
   } catch {
     return null;
   }
@@ -70,7 +75,6 @@ async function updateApp() {
 
     saveInstalledVersion(APP_VERSION);
     notify.success('Atualizando...', 'O app será recarregado', 1500);
-
     setTimeout(() => window.location.reload(true), 1500);
 
   } catch (error) {
@@ -85,21 +89,21 @@ async function updateApp() {
 // ============================================================
 
 /**
- * Lógica de verificação:
+ * Três cenários possíveis:
  *
- * - Se nunca houve versão salva (null): é a primeira visita.
- *   Salva a versão atual silenciosamente. Sem botão.
+ * 1. installedVersion === null  → primeira visita após trocar de sistema
+ *    de notificação. Salva silenciosamente. Sem botão.
  *
- * - Se a versão salva é menor que APP_VERSION: há atualização.
- *   Exibe o botão (a menos que o usuário tenha dispensado na sessão).
+ * 2. installedVersion < APP_VERSION  → há atualização disponível.
+ *    Exibe botão (a menos que o usuário tenha dispensado na sessão).
  *
- * - Se a versão salva é igual à atual: tudo em dia. Sem botão.
+ * 3. installedVersion === APP_VERSION  → tudo em dia. Sem botão.
  */
 export function checkForUpdates() {
   const installedVersion = getInstalledVersion();
   const currentVersion = APP_VERSION;
 
-  // Primeira visita: apenas registra a versão
+  // Cenário 1: primeira visita — apenas registra, sem mostrar botão
   if (installedVersion === null) {
     logger.info(MODULE, `Primeira visita — registrando versão ${currentVersion}`);
     saveInstalledVersion(currentVersion);
@@ -108,6 +112,7 @@ export function checkForUpdates() {
 
   logger.info(MODULE, `Verificando atualizações — instalada: ${installedVersion} / atual: ${currentVersion}`);
 
+  // Cenário 2: versão desatualizada
   if (isNewerVersion(currentVersion, installedVersion)) {
     const dismissed = sessionStorage.getItem('update_dismissed');
     if (!dismissed) {
@@ -116,6 +121,7 @@ export function checkForUpdates() {
     return true;
   }
 
+  // Cenário 3: em dia
   return false;
 }
 
@@ -126,20 +132,17 @@ export function checkForUpdates() {
 export function initializeUpdateHandler() {
   logger.group('🔄 Inicializando Update Handler');
 
-  // Event delegation — não depende do elemento já estar no DOM
+  // Event delegation — funciona mesmo se o elemento ainda não estiver no DOM
   document.addEventListener('click', (e) => {
     if (e.target.closest('#sidebarUpdateBtn')) {
       updateApp();
     }
   });
 
-  // Verificação inicial
   checkForUpdates();
 
-  // Verificação periódica a cada 30 minutos
   setInterval(checkForUpdates, 30 * 60 * 1000);
 
-  // Reverifica ao retornar para a aba
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) checkForUpdates();
   });
