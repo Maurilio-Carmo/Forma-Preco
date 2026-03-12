@@ -1,8 +1,8 @@
 // sw.js
 
-const CACHE_NAME = 'calculadora-preco-v1.0.8';
-const STATIC_CACHE = 'static-v1.0.8';
-const DYNAMIC_CACHE = 'dynamic-v1.0.8';
+const CACHE_NAME = 'calculadora-preco-v1.0.9';
+const STATIC_CACHE = 'static-v1.0.9';
+const DYNAMIC_CACHE = 'dynamic-v1.0.9';
 
 const STATIC_ASSETS = [
   './',

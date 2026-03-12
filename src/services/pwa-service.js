@@ -10,9 +10,6 @@ const MODULE = 'PWAService';
 // REGISTRO DO SERVICE WORKER
 // ============================================================
 
-/**
- * Registra o Service Worker e configura listeners de atualização
- */
 export async function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) {
     logger.warn(MODULE, 'Service Worker não suportado neste navegador');
@@ -22,9 +19,7 @@ export async function registerServiceWorker() {
   try {
     const registration = await navigator.serviceWorker.register('./sw.js');
 
-    logger.success(MODULE, 'Service Worker registrado', {
-      scope: registration.scope
-    });
+    logger.success(MODULE, 'Service Worker registrado', { scope: registration.scope });
 
     setupUpdateListener(registration);
     setupPeriodicUpdateCheck(registration);
@@ -41,13 +36,9 @@ export async function registerServiceWorker() {
 // LISTENERS DE ATUALIZAÇÃO DO SW
 // ============================================================
 
-/**
- * Monitora quando um novo Service Worker é encontrado
- */
 function setupUpdateListener(registration) {
   registration.addEventListener('updatefound', () => {
     const newWorker = registration.installing;
-
     if (!newWorker) return;
 
     newWorker.addEventListener('statechange', () => {
@@ -60,36 +51,20 @@ function setupUpdateListener(registration) {
   logger.debug(MODULE, 'Listener de atualizações do SW configurado');
 }
 
-/**
- * Quando nova versão do SW está pronta, aplica automaticamente
- */
 function handleUpdateAvailable(newWorker) {
   logger.info(MODULE, 'Nova versão do SW detectada — aplicando...');
 
-  notify.info(
-    'Atualizando Aplicação',
-    'Nova versão detectada. Atualizando em 2 segundos...',
-    2000
-  );
+  notify.info('Atualizando Aplicação', 'Nova versão detectada. Atualizando em 2 segundos...', 2000);
 
-  setTimeout(() => {
-    applyUpdate(newWorker);
-  }, 2000);
+  setTimeout(() => applyUpdate(newWorker), 2000);
 }
 
-/**
- * Envia mensagem ao SW para pular a espera e recarrega
- */
 function applyUpdate(newWorker) {
   newWorker.postMessage({ type: 'SKIP_WAITING' });
   window.location.reload();
-
   logger.success(MODULE, 'Atualização do SW aplicada — recarregando página');
 }
 
-/**
- * Verifica atualizações do SW a cada 60 minutos
- */
 function setupPeriodicUpdateCheck(registration) {
   setInterval(() => {
     registration.update();
@@ -104,29 +79,36 @@ function setupPeriodicUpdateCheck(registration) {
 // ============================================================
 
 /**
- * Captura o evento beforeinstallprompt e exibe o botão no sidebar.
- * Após instalação, oculta o botão e exibe notificação de sucesso.
+ * Configura a captura do prompt de instalação PWA.
+ *
+ * O evento beforeinstallprompt pode ser disparado pelo browser
+ * ANTES dos módulos ES6 carregarem. Por isso, o index.html
+ * captura o evento cedo e salva em window.__pwaInstallPrompt.
+ *
+ * Aqui fazemos duas coisas:
+ * 1. Se o prompt já foi capturado antes, exibe o botão imediatamente.
+ * 2. Registra o listener para capturas futuras (navegações seguintes).
  */
 export function setupInstallPrompt() {
+  // 1. Prompt já capturado antes dos módulos carregarem
+  if (window.__pwaInstallPrompt) {
+    logger.info(MODULE, 'Prompt de instalação já capturado — exibindo botão no sidebar');
+    showSidebarInstallButton(window.__pwaInstallPrompt);
+    window.__pwaInstallPrompt = null;
+  }
+
+  // 2. Listener para próximas disparadas (ex: após desinstalar)
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-
-    logger.info(MODULE, 'App pode ser instalado — exibindo botão no sidebar');
-
-    // Exibe botão de instalação no footer do sidebar
+    logger.info(MODULE, 'beforeinstallprompt recebido — exibindo botão no sidebar');
     showSidebarInstallButton(e);
   });
 
+  // 3. Após instalação confirmada
   window.addEventListener('appinstalled', () => {
     logger.success(MODULE, 'App instalado com sucesso');
-
-    // Garante que o botão seja ocultado após instalação
     hideSidebarInstallButton();
-
-    notify.success(
-      'Instalado!',
-      'A calculadora foi instalada no seu dispositivo'
-    );
+    notify.success('Instalado!', 'A calculadora foi instalada no seu dispositivo');
   });
 
   logger.debug(MODULE, 'Listeners de instalação configurados');
@@ -136,9 +118,6 @@ export function setupInstallPrompt() {
 // MONITOR DE CONEXÃO
 // ============================================================
 
-/**
- * Exibe notificações de status de conexão (online/offline)
- */
 export function setupConnectionMonitor() {
   let wasOffline = false;
 
@@ -146,24 +125,12 @@ export function setupConnectionMonitor() {
     if (navigator.onLine) {
       if (wasOffline) {
         logger.info(MODULE, 'Conexão restaurada');
-
-        notify.success(
-          'Online',
-          'Conexão com a internet restaurada',
-          3000
-        );
-
+        notify.success('Online', 'Conexão com a internet restaurada', 3000);
         wasOffline = false;
       }
     } else {
       logger.warn(MODULE, 'Sem conexão com a internet');
-
-      notify.warning(
-        'Offline',
-        'Você está sem conexão. Algumas funcionalidades podem não funcionar.',
-        0
-      );
-
+      notify.warning('Offline', 'Você está sem conexão. Algumas funcionalidades podem não funcionar.', 0);
       wasOffline = true;
     }
   };
@@ -171,9 +138,7 @@ export function setupConnectionMonitor() {
   window.addEventListener('online', updateOnlineStatus);
   window.addEventListener('offline', updateOnlineStatus);
 
-  if (!navigator.onLine) {
-    updateOnlineStatus();
-  }
+  if (!navigator.onLine) updateOnlineStatus();
 
   logger.debug(MODULE, 'Monitor de conexão configurado');
 }
@@ -182,9 +147,6 @@ export function setupConnectionMonitor() {
 // UTILITÁRIOS
 // ============================================================
 
-/**
- * Verifica atualizações manualmente no Service Worker registrado
- */
 export async function checkForUpdates() {
   if (!('serviceWorker' in navigator)) {
     logger.warn(MODULE, 'Service Worker não disponível');
@@ -201,7 +163,6 @@ export async function checkForUpdates() {
 
     await registration.update();
     logger.info(MODULE, 'Verificação manual de atualização executada');
-
     return true;
 
   } catch (error) {
@@ -210,16 +171,9 @@ export async function checkForUpdates() {
   }
 }
 
-/**
- * Retorna informações sobre o Service Worker atual
- */
 export async function getServiceWorkerInfo() {
   if (!('serviceWorker' in navigator)) {
-    return {
-      supported: false,
-      registered: false,
-      controller: null
-    };
+    return { supported: false, registered: false, controller: null };
   }
 
   try {
@@ -235,20 +189,12 @@ export async function getServiceWorkerInfo() {
           }
         : null,
       registration: registration
-        ? {
-            scope: registration.scope,
-            updateViaCache: registration.updateViaCache
-          }
+        ? { scope: registration.scope, updateViaCache: registration.updateViaCache }
         : null
     };
 
   } catch (error) {
     logger.error(MODULE, 'Erro ao obter informações do Service Worker', error);
-    return {
-      supported: true,
-      registered: false,
-      controller: null,
-      error: error.message
-    };
+    return { supported: true, registered: false, controller: null, error: error.message };
   }
 }
