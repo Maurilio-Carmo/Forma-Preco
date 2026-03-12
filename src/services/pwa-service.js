@@ -2,123 +2,208 @@
 
 import { logger } from '../utils/logger.js';
 import { notify } from '../utils/notifications.js';
-import { showInstallNotification } from '../handlers/pwa-install-handler.js';
+import { showSidebarInstallButton, hideSidebarInstallButton } from '../handlers/pwa-install-handler.js';
 
 const MODULE = 'PWAService';
 
+// ============================================================
+// REGISTRO DO SERVICE WORKER
+// ============================================================
+
 /**
- * Registra Service Worker e gerencia atualizações
+ * Registra o Service Worker e configura listeners de atualização
  */
 export async function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) {
     logger.warn(MODULE, 'Service Worker não suportado neste navegador');
     return null;
   }
-  
+
   try {
     const registration = await navigator.serviceWorker.register('./sw.js');
-    
+
     logger.success(MODULE, 'Service Worker registrado', {
       scope: registration.scope
     });
-    
-    // Configura listener de atualizações
+
     setupUpdateListener(registration);
-    
-    // Configura verificação periódica
     setupPeriodicUpdateCheck(registration);
-    
+
     return registration;
-    
+
   } catch (error) {
     logger.error(MODULE, 'Falha ao registrar Service Worker', error);
     return null;
   }
 }
 
+// ============================================================
+// LISTENERS DE ATUALIZAÇÃO DO SW
+// ============================================================
+
 /**
- * Configura listener para detectar atualizações
+ * Monitora quando um novo Service Worker é encontrado
  */
 function setupUpdateListener(registration) {
   registration.addEventListener('updatefound', () => {
     const newWorker = registration.installing;
-    
+
     if (!newWorker) return;
-    
+
     newWorker.addEventListener('statechange', () => {
       if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
         handleUpdateAvailable(newWorker);
       }
     });
   });
-  
-  logger.debug(MODULE, 'Listener de atualizações configurado');
+
+  logger.debug(MODULE, 'Listener de atualizações do SW configurado');
 }
 
 /**
- * Processa atualização disponível
+ * Quando nova versão do SW está pronta, aplica automaticamente
  */
 function handleUpdateAvailable(newWorker) {
-  logger.info(MODULE, 'Nova versão detectada - atualizando...');
-  
-  // Mostra notificação informativa
+  logger.info(MODULE, 'Nova versão do SW detectada — aplicando...');
+
   notify.info(
     'Atualizando Aplicação',
     'Nova versão detectada. Atualizando em 2 segundos...',
     2000
   );
-  
-  // Aguarda 2 segundos para usuário ver a mensagem
+
   setTimeout(() => {
     applyUpdate(newWorker);
   }, 2000);
 }
 
 /**
- * Aplica a atualização
+ * Envia mensagem ao SW para pular a espera e recarrega
  */
 function applyUpdate(newWorker) {
   newWorker.postMessage({ type: 'SKIP_WAITING' });
   window.location.reload();
-  
-  logger.success(MODULE, 'Atualização aplicada - recarregando página');
+
+  logger.success(MODULE, 'Atualização do SW aplicada — recarregando página');
 }
 
 /**
- * Configura verificação periódica de atualizações
+ * Verifica atualizações do SW a cada 60 minutos
  */
 function setupPeriodicUpdateCheck(registration) {
-  // Verifica a cada 60 minutos
   setInterval(() => {
     registration.update();
-    logger.debug(MODULE, 'Verificação periódica de atualização executada');
+    logger.debug(MODULE, 'Verificação periódica do SW executada');
   }, 60 * 60 * 1000);
-  
-  logger.debug(MODULE, 'Verificação periódica configurada (60 minutos)');
+
+  logger.debug(MODULE, 'Verificação periódica do SW configurada (60 min)');
 }
 
+// ============================================================
+// PROMPT DE INSTALAÇÃO
+// ============================================================
+
 /**
- * Verifica atualizações manualmente
+ * Captura o evento beforeinstallprompt e exibe o botão no sidebar.
+ * Após instalação, oculta o botão e exibe notificação de sucesso.
+ */
+export function setupInstallPrompt() {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+
+    logger.info(MODULE, 'App pode ser instalado — exibindo botão no sidebar');
+
+    // Exibe botão de instalação no footer do sidebar
+    showSidebarInstallButton(e);
+  });
+
+  window.addEventListener('appinstalled', () => {
+    logger.success(MODULE, 'App instalado com sucesso');
+
+    // Garante que o botão seja ocultado após instalação
+    hideSidebarInstallButton();
+
+    notify.success(
+      'Instalado!',
+      'A calculadora foi instalada no seu dispositivo'
+    );
+  });
+
+  logger.debug(MODULE, 'Listeners de instalação configurados');
+}
+
+// ============================================================
+// MONITOR DE CONEXÃO
+// ============================================================
+
+/**
+ * Exibe notificações de status de conexão (online/offline)
+ */
+export function setupConnectionMonitor() {
+  let wasOffline = false;
+
+  const updateOnlineStatus = () => {
+    if (navigator.onLine) {
+      if (wasOffline) {
+        logger.info(MODULE, 'Conexão restaurada');
+
+        notify.success(
+          'Online',
+          'Conexão com a internet restaurada',
+          3000
+        );
+
+        wasOffline = false;
+      }
+    } else {
+      logger.warn(MODULE, 'Sem conexão com a internet');
+
+      notify.warning(
+        'Offline',
+        'Você está sem conexão. Algumas funcionalidades podem não funcionar.',
+        0
+      );
+
+      wasOffline = true;
+    }
+  };
+
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+
+  if (!navigator.onLine) {
+    updateOnlineStatus();
+  }
+
+  logger.debug(MODULE, 'Monitor de conexão configurado');
+}
+
+// ============================================================
+// UTILITÁRIOS
+// ============================================================
+
+/**
+ * Verifica atualizações manualmente no Service Worker registrado
  */
 export async function checkForUpdates() {
   if (!('serviceWorker' in navigator)) {
     logger.warn(MODULE, 'Service Worker não disponível');
     return false;
   }
-  
+
   try {
     const registration = await navigator.serviceWorker.getRegistration();
-    
+
     if (!registration) {
       logger.warn(MODULE, 'Nenhum Service Worker registrado');
       return false;
     }
-    
+
     await registration.update();
     logger.info(MODULE, 'Verificação manual de atualização executada');
-    
+
     return true;
-    
+
   } catch (error) {
     logger.error(MODULE, 'Erro ao verificar atualizações', error);
     return false;
@@ -126,76 +211,7 @@ export async function checkForUpdates() {
 }
 
 /**
- * Configura prompt de instalação
- */
-export function setupInstallPrompt() {
-  window.addEventListener('beforeinstallprompt', (e) => {
-    // Previne o prompt automático
-    e.preventDefault();
-    
-    logger.info(MODULE, 'App pode ser instalado');
-    
-    // Mostra notificação customizada
-    showInstallNotification(e);
-  });
-  
-  window.addEventListener('appinstalled', () => {
-    logger.success(MODULE, 'App instalado com sucesso');
-    
-    notify.success(
-      'Instalado!',
-      'A calculadora foi instalada no seu dispositivo'
-    );
-  });
-  
-  logger.debug(MODULE, 'Listeners de instalação configurados');
-}
-
-/**
- * Monitora status de conexão
- */
-export function setupConnectionMonitor() {
-  let wasOffline = false;
-  
-  const updateOnlineStatus = () => {
-    if (navigator.onLine) {
-      if (wasOffline) {
-        logger.info(MODULE, 'Conexão restaurada');
-        
-        notify.success(
-          'Online',
-          'Conexão com a internet restaurada',
-          3000
-        );
-        
-        wasOffline = false;
-      }
-    } else {
-      logger.warn(MODULE, 'Sem conexão com a internet');
-      
-      notify.warning(
-        'Offline',
-        'Você está sem conexão. Algumas funcionalidades podem não funcionar.',
-        0 // Não desaparece automaticamente
-      );
-      
-      wasOffline = true;
-    }
-  };
-  
-  window.addEventListener('online', updateOnlineStatus);
-  window.addEventListener('offline', updateOnlineStatus);
-  
-  // Verifica status inicial
-  if (!navigator.onLine) {
-    updateOnlineStatus();
-  }
-  
-  logger.debug(MODULE, 'Monitor de conexão configurado');
-}
-
-/**
- * Retorna informações sobre o Service Worker
+ * Retorna informações sobre o Service Worker atual
  */
 export async function getServiceWorkerInfo() {
   if (!('serviceWorker' in navigator)) {
@@ -205,26 +221,29 @@ export async function getServiceWorkerInfo() {
       controller: null
     };
   }
-  
+
   try {
     const registration = await navigator.serviceWorker.getRegistration();
-    
+
     return {
       supported: true,
       registered: !!registration,
-      controller: navigator.serviceWorker.controller ? {
-        state: navigator.serviceWorker.controller.state,
-        scriptURL: navigator.serviceWorker.controller.scriptURL
-      } : null,
-      registration: registration ? {
-        scope: registration.scope,
-        updateViaCache: registration.updateViaCache
-      } : null
+      controller: navigator.serviceWorker.controller
+        ? {
+            state: navigator.serviceWorker.controller.state,
+            scriptURL: navigator.serviceWorker.controller.scriptURL
+          }
+        : null,
+      registration: registration
+        ? {
+            scope: registration.scope,
+            updateViaCache: registration.updateViaCache
+          }
+        : null
     };
-    
+
   } catch (error) {
     logger.error(MODULE, 'Erro ao obter informações do Service Worker', error);
-    
     return {
       supported: true,
       registered: false,

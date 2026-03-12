@@ -19,7 +19,6 @@
 @import './components/tooltips.css';
 @import './components/panels.css';
 @import './components/loading.css';
-@import './components/update-notification.css';
 
 /* MENU */
 @import './components/menu/menu-toggle.css';
@@ -35,9 +34,6 @@
 @import './components/notifications/notification-animations.css';
 @import './components/notifications/notification-elements.css';
 @import './components/notifications/notification-types.css';
-
-/* PWA */
-@import './components/pwa/pwa-install.css';
 
 /* UTILITIES */
 @import './utilities/helpers.css';

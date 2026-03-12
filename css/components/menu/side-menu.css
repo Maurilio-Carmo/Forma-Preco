@@ -97,7 +97,7 @@
 }
 
 /* ============================================================
-   FOOTER DO MENU LATERAL - VERSÃO DO APP
+   FOOTER DO MENU LATERAL
    ============================================================ */
 
 .side-menu-footer {
@@ -105,28 +105,111 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 16px 20px;
+    padding: 12px 16px;
     border-top: 1px solid var(--border-soft);
     background: var(--panel);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
+
+/* Padding extra na lista para não sobrepor o footer */
+.side-menu-list {
+    padding-bottom: 120px;
+}
+
+/* ============================================================
+   BOTÕES PWA NO SIDEBAR
+   ============================================================ */
+
+.sidebar-pwa-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: var(--radius-small);
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    border: none;
+    text-align: center;
+}
+
+.sidebar-pwa-btn svg {
+    flex-shrink: 0;
+}
+
+/* Botão Instalar */
+.sidebar-pwa-btn--install {
+    background: var(--accent);
+    color: #fff;
+}
+
+.sidebar-pwa-btn--install:hover {
+    background: color-mix(in srgb, var(--accent) 85%, #000);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-pwa-btn--install:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Botão Atualizar */
+.sidebar-pwa-btn--update {
+    background: var(--panel-soft);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.sidebar-pwa-btn--update:hover {
+    background: var(--border-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.sidebar-pwa-btn--update:active {
+    transform: translateY(0);
+}
+
+/* Estado de loading durante atualização */
+.sidebar-pwa-btn--update.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.sidebar-pwa-btn--update.loading svg {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   VERSÃO DO APP (somente quando instalado como PWA)
+   ============================================================ */
 
 .app-version {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
+    padding-top: 4px;
 }
 
 .app-version span {
-    font-size: 0.813rem;
+    font-size: 0.75rem;
     color: var(--muted);
     font-weight: 500;
     letter-spacing: 0.5px;
-}
-
-/* Adiciona padding no bottom da lista de menu para não sobrepor o footer */
-.side-menu-list {
-    padding-bottom: 60px;
 }
 
 /* ============================================================
@@ -138,14 +221,17 @@
         width: 60%;
         right: -60%;
     }
-}
 
-@media (max-width: 768px) {
     .side-menu-footer {
-        padding: 12px 16px;
+        padding: 10px 12px;
     }
-    
+
+    .sidebar-pwa-btn {
+        font-size: 0.813rem;
+        padding: 9px 12px;
+    }
+
     .app-version span {
-        font-size: 0.75rem;
+        font-size: 0.688rem;
     }
 }

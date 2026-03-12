@@ -5,114 +5,86 @@ import { logger } from '../utils/logger.js';
 const MODULE = 'PWAInstallHandler';
 
 let deferredPrompt = null;
-let notificationElement = null;
-let autoHideTimeout = null;
+
+// ============================================================
+// EXIBIÇÃO DO BOTÃO NO SIDEBAR
+// ============================================================
 
 /**
- * Mostra a notificação de instalação
+ * Armazena o prompt e exibe o botão de instalação no footer do sidebar
  */
-export function showInstallNotification(prompt) {
+export function showSidebarInstallButton(prompt) {
   deferredPrompt = prompt;
-  
-  notificationElement = document.getElementById('pwaInstallNotification');
-  
-  if (!notificationElement) {
-    logger.error(MODULE, 'Elemento de notificação não encontrado no DOM');
+
+  const btn = document.getElementById('sidebarInstallBtn');
+
+  if (!btn) {
+    logger.error(MODULE, 'Botão de instalação (#sidebarInstallBtn) não encontrado no DOM');
     return;
   }
-  
-  // Mostra a notificação
-  notificationElement.style.display = 'block';
-  
-  logger.info(MODULE, 'Notificação de instalação exibida');
-  
-  // Auto-oculta após 15 segundos
-  autoHideTimeout = setTimeout(() => {
-    hideInstallNotification();
-    logger.debug(MODULE, 'Notificação auto-ocultada após 15s');
-  }, 15000);
+
+  btn.style.display = 'flex';
+  logger.info(MODULE, 'Botão de instalação exibido no sidebar');
 }
 
 /**
- * Oculta a notificação de instalação
+ * Oculta o botão de instalação do sidebar
  */
-export function hideInstallNotification() {
-  if (!notificationElement) return;
-  
-  notificationElement.style.display = 'none';
-  
-  if (autoHideTimeout) {
-    clearTimeout(autoHideTimeout);
-    autoHideTimeout = null;
-  }
-  
-  logger.debug(MODULE, 'Notificação de instalação ocultada');
+export function hideSidebarInstallButton() {
+  const btn = document.getElementById('sidebarInstallBtn');
+  if (btn) btn.style.display = 'none';
+  logger.debug(MODULE, 'Botão de instalação ocultado');
 }
 
+// ============================================================
+// AÇÃO DE INSTALAÇÃO
+// ============================================================
+
 /**
- * Processa a instalação do PWA
+ * Dispara o prompt nativo do browser para instalar o PWA
  */
 async function handleInstall() {
   if (!deferredPrompt) {
     logger.warn(MODULE, 'Prompt de instalação não disponível');
     return;
   }
-  
+
   try {
-    // Mostra o prompt nativo
     deferredPrompt.prompt();
-    
-    // Aguarda escolha do usuário
+
     const { outcome } = await deferredPrompt.userChoice;
-    
     logger.info(MODULE, `Escolha de instalação: ${outcome}`);
-    
+
     if (outcome === 'accepted') {
-      logger.success(MODULE, 'Usuário aceitou instalação');
+      logger.success(MODULE, 'Usuário aceitou a instalação');
     } else {
-      logger.info(MODULE, 'Usuário recusou instalação');
+      logger.info(MODULE, 'Usuário recusou a instalação');
     }
-    
-    // Limpa o prompt
+
     deferredPrompt = null;
-    
+
   } catch (error) {
     logger.error(MODULE, 'Erro ao processar instalação', error);
   } finally {
-    // Oculta a notificação
-    hideInstallNotification();
+    hideSidebarInstallButton();
   }
 }
 
-/**
- * Adia a instalação
- */
-function handleLater() {
-  logger.info(MODULE, 'Usuário adiou instalação');
-  hideInstallNotification();
-}
+// ============================================================
+// INICIALIZAÇÃO — event delegation no document
+// ============================================================
 
 /**
- * Inicializa os event listeners da notificação
+ * Registra o listener de instalação via event delegation no document.
+ * Isso garante que funciona mesmo que #sidebarInstallBtn ainda não
+ * esteja no DOM no momento da inicialização do PWA.
  */
-export function initializePWAInstallNotification() {
-  const installBtn = document.getElementById('pwaInstallBtn');
-  const laterBtn = document.getElementById('pwaInstallLaterBtn');
-  const closeBtn = document.getElementById('pwaInstallClose');
-  
-  if (!installBtn || !laterBtn || !closeBtn) {
-    logger.warn(MODULE, 'Botões da notificação não encontrados no DOM');
-    return;
-  }
-  
-  // Botão Instalar
-  installBtn.addEventListener('click', handleInstall);
-  
-  // Botão Depois
-  laterBtn.addEventListener('click', handleLater);
-  
-  // Botão Fechar
-  closeBtn.addEventListener('click', hideInstallNotification);
-  
-  logger.success(MODULE, 'Event listeners da notificação inicializados');
+export function initializeSidebarInstallButton() {
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('#sidebarInstallBtn')) {
+      handleInstall();
+    }
+  });
+
+  logger.success(MODULE, 'Listener de instalação registrado via event delegation');
 }
