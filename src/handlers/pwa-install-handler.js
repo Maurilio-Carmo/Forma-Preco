@@ -19,7 +19,17 @@ export function showSidebarInstallButton(prompt) {
   const btn = document.getElementById('sidebarInstallBtn');
 
   if (!btn) {
-    logger.error(MODULE, 'Botão de instalação (#sidebarInstallBtn) não encontrado no DOM');
+    // Componente ainda não carregado — aguarda e tenta novamente
+    logger.debug(MODULE, 'Botão de instalação ainda não disponível, aguardando carregamento do componente...');
+    setTimeout(() => {
+      const retryBtn = document.getElementById('sidebarInstallBtn');
+      if (retryBtn) {
+        retryBtn.style.display = 'flex';
+        logger.info(MODULE, 'Botão de instalação exibido no sidebar (após retry)');
+      } else {
+        logger.warn(MODULE, 'Botão de instalação (#sidebarInstallBtn) não encontrado após carregamento dos componentes');
+      }
+    }, 1000);
     return;
   }
 

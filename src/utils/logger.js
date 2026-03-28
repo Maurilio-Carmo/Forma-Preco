@@ -17,11 +17,11 @@ const LOG_LEVELS = { DEBUG: 0, INFO: 1, SUCCESS: 2, WARN: 3, ERROR: 4 };
 class Logger {
   constructor() {
     this.enabled = true;
-    // Padrão em produção: apenas WARN e ERROR
-    this.minLevel = LOG_LEVELS.WARN;
+    // Padrão: INFO e acima (INFO, SUCCESS, WARN, ERROR visíveis; DEBUG oculto)
+    this.minLevel = LOG_LEVELS.INFO;
     this.debugMode = this.isDebugMode();
 
-    // Ativa todos os logs se ?debug=true ou localStorage debug_mode=true
+    // Ativa DEBUG se ?debug=true ou localStorage debug_mode=true
     if (this.debugMode) {
       this.minLevel = LOG_LEVELS.DEBUG;
     }
