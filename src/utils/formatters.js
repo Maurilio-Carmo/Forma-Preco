@@ -15,11 +15,21 @@ export function toPercent(value) {
   return toNumber(value) / 100;
 }
 
+const currencyFormatter = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 /**
- * Formata número como moeda brasileira
+ * Formata número como moeda brasileira (ex: R$ 1.234,56)
+ * @param {number} value
+ * @returns {string}
  */
 export function formatCurrency(value) {
-  return `R$ ${value.toFixed(2)}`;
+  if (!isFinite(value)) return 'R$ —';
+  return currencyFormatter.format(value);
 }
 
 /**
