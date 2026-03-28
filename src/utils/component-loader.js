@@ -42,7 +42,17 @@ export async function loadComponent(elementId, componentPath, skeletonType = 'de
     // Aplica fade-in ao trocar conteúdo
     element.classList.add('fade-in');
     element.innerHTML = html;
-    
+
+    // Re-insere <script> tags para garantir execução (innerHTML não executa scripts)
+    element.querySelectorAll('script').forEach(oldScript => {
+      const newScript = document.createElement('script');
+      Array.from(oldScript.attributes).forEach(attr => {
+        newScript.setAttribute(attr.name, attr.value);
+      });
+      newScript.textContent = oldScript.textContent;
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+
     logger.success(MODULE, `Componente carregado`, {
       path: componentPath,
       target: `#${elementId}`
