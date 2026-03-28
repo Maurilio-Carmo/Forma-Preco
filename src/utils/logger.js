@@ -4,18 +4,27 @@
  * Sistema centralizado de logging com níveis e formatação consistente
  */
 
-const LOG_LEVELS = {
-  INFO: { emoji: 'ℹ️', color: '#5aa2ff', console: 'log' },
+const LOG_LEVEL_STYLES = {
+  INFO:    { emoji: 'ℹ️', color: '#5aa2ff', console: 'log' },
   SUCCESS: { emoji: '✅', color: '#57b86a', console: 'log' },
-  WARN: { emoji: '⚠️', color: '#f6a623', console: 'warn' },
-  ERROR: { emoji: '❌', color: '#e53935', console: 'error' },
-  DEBUG: { emoji: '🔍', color: '#9c27b0', console: 'log' }
+  WARN:    { emoji: '⚠️', color: '#f6a623', console: 'warn' },
+  ERROR:   { emoji: '❌', color: '#e53935', console: 'error' },
+  DEBUG:   { emoji: '🔍', color: '#9c27b0', console: 'log' }
 };
+
+const LOG_LEVELS = { DEBUG: 0, INFO: 1, SUCCESS: 2, WARN: 3, ERROR: 4 };
 
 class Logger {
   constructor() {
     this.enabled = true;
+    // Padrão em produção: apenas WARN e ERROR
+    this.minLevel = LOG_LEVELS.WARN;
     this.debugMode = this.isDebugMode();
+
+    // Ativa todos os logs se ?debug=true ou localStorage debug_mode=true
+    if (this.debugMode) {
+      this.minLevel = LOG_LEVELS.DEBUG;
+    }
   }
 
   /**
@@ -29,12 +38,20 @@ class Logger {
   }
 
   /**
+   * Define o nível mínimo de log
+   * @param {string} level - 'DEBUG' | 'INFO' | 'SUCCESS' | 'WARN' | 'ERROR'
+   */
+  setMinLevel(level) {
+    this.minLevel = LOG_LEVELS[level] ?? LOG_LEVELS.WARN;
+  }
+
+  /**
    * Formata mensagem com contexto e timestamp
    */
   formatMessage(level, module, message, data) {
     const timestamp = new Date().toLocaleTimeString('pt-BR');
-    const levelInfo = LOG_LEVELS[level];
-    
+    const levelInfo = LOG_LEVEL_STYLES[level];
+
     return {
       prefix: `${levelInfo.emoji} [${timestamp}] [${module}]`,
       message,
@@ -49,12 +66,14 @@ class Logger {
    */
   log(level, module, message, data = null) {
     if (!this.enabled) return;
-    
-    // Logs de DEBUG só aparecem em modo debug
-    if (level === 'DEBUG' && !this.debugMode) return;
-    
+
+    const levelValue = LOG_LEVELS[level] ?? LOG_LEVELS.INFO;
+
+    // ERROR sempre exibido; demais respeitam minLevel
+    if (level !== 'ERROR' && levelValue < this.minLevel) return;
+
     const formatted = this.formatMessage(level, module, message, data);
-    
+
     if (data) {
       console[formatted.consoleMethod](
         `%c${formatted.prefix}`,
@@ -71,100 +90,77 @@ class Logger {
     }
   }
 
-  /**
-   * Log de informação
-   */
+  /** @param {string} module @param {string} message @param {*} [data] */
   info(module, message, data = null) {
     this.log('INFO', module, message, data);
   }
 
-  /**
-   * Log de sucesso
-   */
+  /** @param {string} module @param {string} message @param {*} [data] */
   success(module, message, data = null) {
     this.log('SUCCESS', module, message, data);
   }
 
-  /**
-   * Log de aviso
-   */
+  /** @param {string} module @param {string} message @param {*} [data] */
   warn(module, message, data = null) {
     this.log('WARN', module, message, data);
   }
 
-  /**
-   * Log de erro
-   */
+  /** @param {string} module @param {string} message @param {*} [error] */
   error(module, message, error = null) {
     const errorData = error ? {
       message: error.message,
       stack: error.stack,
       ...error
     } : null;
-    
+
     this.log('ERROR', module, message, errorData);
   }
 
-  /**
-   * Log de debug (só aparece em modo debug)
-   */
+  /** @param {string} module @param {string} message @param {*} [data] */
   debug(module, message, data = null) {
     this.log('DEBUG', module, message, data);
   }
 
-  /**
-   * Agrupa logs relacionados
-   */
+  /** Agrupa logs relacionados */
   group(label) {
-    if (!this.enabled) return;
+    if (!this.enabled || this.minLevel > LOG_LEVELS.INFO) return;
     console.group(`🔹 ${label}`);
   }
 
-  /**
-   * Fecha grupo de logs
-   */
+  /** Fecha grupo de logs */
   groupEnd() {
-    if (!this.enabled) return;
+    if (!this.enabled || this.minLevel > LOG_LEVELS.INFO) return;
     console.groupEnd();
   }
 
-  /**
-   * Tabela formatada (útil para arrays de objetos)
-   */
+  /** Tabela formatada (útil para arrays de objetos) */
   table(module, message, data) {
-    if (!this.enabled) return;
+    if (!this.enabled || this.minLevel > LOG_LEVELS.INFO) return;
     console.log(`📊 [${module}] ${message}`);
     console.table(data);
   }
 
-  /**
-   * Mede tempo de execução
-   */
+  /** Mede tempo de execução */
   time(label) {
-    if (!this.enabled) return;
+    if (!this.enabled || this.minLevel > LOG_LEVELS.INFO) return;
     console.time(`⏱️ ${label}`);
   }
 
-  /**
-   * Finaliza medição de tempo
-   */
+  /** Finaliza medição de tempo */
   timeEnd(label) {
-    if (!this.enabled) return;
+    if (!this.enabled || this.minLevel > LOG_LEVELS.INFO) return;
     console.timeEnd(`⏱️ ${label}`);
   }
 
-  /**
-   * Habilita/desabilita todos os logs
-   */
+  /** Habilita/desabilita todos os logs */
   setEnabled(enabled) {
     this.enabled = enabled;
   }
 
-  /**
-   * Habilita/desabilita modo debug
-   */
+  /** Habilita/desabilita modo debug */
   setDebugMode(enabled) {
     this.debugMode = enabled;
+    this.minLevel = enabled ? LOG_LEVELS.DEBUG : LOG_LEVELS.WARN;
     localStorage.setItem('debug_mode', enabled.toString());
   }
 }

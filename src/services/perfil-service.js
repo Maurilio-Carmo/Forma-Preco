@@ -21,9 +21,9 @@ export function loadPerfilData() {
     const parsedData = JSON.parse(perfilData);
     
     logger.success(MODULE, 'Perfil carregado com sucesso', {
-      cnpj: parsedData.cnpj,
+      hasCnpj: !!parsedData.cnpj,
       regime: parsedData.regime,
-      hasData: !!parsedData.razao_social
+      hasRazaoSocial: !!parsedData.razao_social
     });
     
     return parsedData;
@@ -73,8 +73,8 @@ export function savePerfilData(data) {
     localStorage.setItem(STORAGE_KEYS.PERFIL, jsonData);
     
     logger.success(MODULE, 'Perfil salvo com sucesso', {
-      cnpj: data.cnpj,
-      razaoSocial: data.razao_social,
+      hasCnpj: !!data.cnpj,
+      hasRazaoSocial: !!data.razao_social,
       regime: data.regime,
       size: `${sizeInKB.toFixed(2)} KB`
     });
