@@ -159,8 +159,10 @@ async function initializeApp() {
     logger.info(MODULE, 'Etapa 15/16: Inicializando sistema de atualização');
     initializeUpdateHandler();
 
-    // 16. Executa cálculo inicial
+    // 16. Atualiza ano do footer e executa cálculo inicial
     logger.info(MODULE, 'Etapa 16/16: Executando cálculo inicial');
+    const footerYear = document.getElementById('footer-year');
+    if (footerYear) footerYear.textContent = new Date().getFullYear();
     processCalculation();
 
     logger.timeEnd('Tempo total de inicialização');
