@@ -49,8 +49,40 @@ function validateCNPJFormat(cnpj) {
       { cnpj }
     );
   }
-  
+
+  // Valida dígitos verificadores
+  if (!validateCNPJDigits(cnpjLimpo)) {
+    throw new CNPJError(
+      'CNPJ inválido: dígitos verificadores incorretos',
+      'VALIDATION_ERROR',
+      { cnpj }
+    );
+  }
+
   return cnpjLimpo;
+}
+
+/**
+ * Valida os dois dígitos verificadores do CNPJ
+ * @param {string} cnpj - CNPJ com 14 dígitos (apenas números)
+ * @returns {boolean}
+ */
+function validateCNPJDigits(cnpj) {
+  const calcDigit = (digits, weights) => {
+    const sum = digits.reduce((acc, d, i) => acc + d * weights[i], 0);
+    const rest = sum % 11;
+    return rest < 2 ? 0 : 11 - rest;
+  };
+
+  const digits = cnpj.split('').map(Number);
+  const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+
+  const d1 = calcDigit(digits.slice(0, 12), weights1);
+  if (d1 !== digits[12]) return false;
+
+  const d2 = calcDigit(digits.slice(0, 13), weights2);
+  return d2 === digits[13];
 }
 
 /**
