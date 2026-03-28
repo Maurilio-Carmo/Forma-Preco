@@ -2,14 +2,22 @@
 
 import { ELEMENTS } from '../config/constants.js';
 import { updatePisCofins, updateICMS, updateSimplesNacional} from './tax-handlers.js';
+import { debounce } from '../utils/debounce.js';
 
 /**
  * Configura listeners para cálculos em tempo real
+ * - Selects executam imediatamente (change)
+ * - Inputs usam debounce de 150ms para evitar chamadas excessivas
  */
 export function setupCalculationListeners(processCalculation) {
+  const debouncedCalc = debounce(processCalculation, 150);
+
   document.querySelectorAll('input, select').forEach(field => {
-    field.addEventListener('input', processCalculation);
-    field.addEventListener('change', processCalculation);
+    if (field.tagName === 'SELECT') {
+      field.addEventListener('change', processCalculation);
+    } else {
+      field.addEventListener('input', debouncedCalc);
+    }
   });
 }
 
