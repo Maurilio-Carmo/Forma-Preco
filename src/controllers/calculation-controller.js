@@ -1,56 +1,78 @@
 // controllers/calculation-controller.js
 
-import { ELEMENTS } from '../config/constants.js';
-import { toNumber } from '../utils/formatters.js';
 import * as TaxInput from '../models/tax-input.js';
 import * as TaxOutput from '../models/tax-output.js';
 import * as Results from '../models/results.js';
 import { updateUI } from '../views/ui-updater.js';
+import { notify } from '../utils/notifications.js';
+import { readFormValues } from '../utils/form-reader.js';
+
+/**
+ * Retorna objeto com todos os valores zerados (exceto precoCompra) para exibição de erro
+ * @param {number} precoCompra
+ * @returns {Object}
+ */
+function getZeroValues(precoCompra) {
+  return {
+    precoCompra,
+    margemDesejada: 0,
+    vCreditoPisCofins: 0,
+    vCreditoICMS: 0,
+    vST: 0,
+    vIPI: 0,
+    cmv: 0,
+    precoVenda: 0,
+    vPisCofinsVenda: 0,
+    vICMSVenda: 0,
+    vSimplesVenda: 0,
+    vCBSVenda: 0,
+    vIBSUFVenda: 0,
+    vIBSMunVenda: 0,
+    pisCofinsPagar: 0,
+    icmsPagar: 0,
+    simplesPagar: 0,
+    fornecedorPagar: precoCompra,
+    lucroBruto: 0,
+    margem: 0,
+    markup: 0
+  };
+}
 
 /**
  * Processa todos os cálculos e atualiza a interface
  */
 export function processCalculation() {
-  // Coleta valores de entrada principais
-  const precoCompra = toNumber(document.getElementById(ELEMENTS.PRECO_COMPRA).value);
-  const margemDesejada = toNumber(document.getElementById(ELEMENTS.MARGEM_DESEJADA).value);
-  
-  // Coleta percentuais de entrada
-  const percPisCofins = toNumber(document.getElementById(ELEMENTS.CREDITO_PIS_COFINS).value);
-  const percICMS = toNumber(document.getElementById(ELEMENTS.CREDITO_ICMS).value);
-  const percReducaoICMS = toNumber(document.getElementById(ELEMENTS.REDUCAO_BC_ICMS).value);
-  const percICMSST = toNumber(document.getElementById(ELEMENTS.ICMS_ST).value);
-  const percReducaoICMSST = toNumber(document.getElementById(ELEMENTS.REDUCAO_BC_ST).value);
-  const percIPI = toNumber(document.getElementById(ELEMENTS.IPI).value);
-  
+  const form = readFormValues();
+
+  const { precoCompra, margemDesejada } = form;
+  const { percPisCofins, percICMS, percReducaoICMS, percICMSST, percReducaoICMSST, percIPI } = form.entrada;
+  const { percVendaPisCofins, percVendaICMS, percReducaoICMSSaida, percSimples,
+          percCBS, percReducaoCBS, percIBSUF, percReducaoIBSUF, percIBSMun } = form.saida;
+
   // Calcula valores de entrada
   const vCreditoICMS = TaxInput.calcCreditoICMS(precoCompra, percICMS, percReducaoICMS, percICMSST);
   const vCreditoPisCofins = TaxInput.calcCreditoPisCofins(precoCompra, percPisCofins, vCreditoICMS);
   const vST = TaxInput.calcICMSST(precoCompra, percICMSST, percReducaoICMSST);
   const vIPI = TaxInput.calcIPI(precoCompra, percIPI);
   const cmv = TaxInput.calcCMV(precoCompra, vCreditoPisCofins, vCreditoICMS, vST, vIPI);
-  
-  // Coleta percentuais de saída
-  const percVendaPisCofins = toNumber(document.getElementById(ELEMENTS.VENDA_PIS_COFINS).value);
-  const percVendaICMS = toNumber(document.getElementById(ELEMENTS.VENDA_ICMS).value);
-  const percReducaoICMSSaida = toNumber(document.getElementById(ELEMENTS.REDUCAO_BC_SAIDA).value);
-  const percSimples = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_SIMPLES_NACIONAL).value);
-  const percCBS = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_CBS).value);
-  const percReducaoCBS = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_REDUCAO_CBS).value);
-  const percIBSUF = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_IBS_UF).value);
-  const percReducaoIBSUF = toNumber(document.getElementById(ELEMENTS.ALIQUOTA_REDUCAO_IBS_UF).value);
-  const percIBSMun = toNumber(document.getElementById(ELEMENTS.IBS_MUN).value);
-  
+
   // Calcula preço de venda
   const precoVenda = Results.calcPrecoVenda(
-    cmv,
-    margemDesejada,
-    percVendaPisCofins,
-    percVendaICMS,
-    percReducaoICMSSaida,
-    percSimples
+    cmv, margemDesejada, percVendaPisCofins, percVendaICMS,
+    percReducaoICMSSaida, percSimples,
+    percCBS, percReducaoCBS, percIBSUF, percReducaoIBSUF, percIBSMun
   );
-  
+
+  // Valida combinação de margem + tributos
+  if (!isFinite(precoVenda) || precoVenda < 0) {
+    notify.warning(
+      'Carga Tributária Inviável',
+      'A soma da margem e tributos ultrapassa 100%. Ajuste os percentuais.'
+    );
+    updateUI(getZeroValues(precoCompra));
+    return;
+  }
+
   // Calcula valores de saída
   const vICMSVenda = TaxOutput.calcICMSVenda(precoVenda, percVendaICMS, percReducaoICMSSaida);
   const vPisCofinsVenda = TaxOutput.calcPisCofinsVenda(precoVenda, percVendaPisCofins, vICMSVenda);
@@ -58,16 +80,18 @@ export function processCalculation() {
   const vCBSVenda = TaxOutput.calcCBSVenda(precoVenda, percCBS, percReducaoCBS);
   const vIBSUFVenda = TaxOutput.calcIBSUFVenda(precoVenda, percIBSUF, percReducaoIBSUF);
   const vIBSMunVenda = TaxOutput.calcIBSMunVenda(precoVenda, percIBSMun);
-  
+
   // Calcula resultados finais
   const pisCofinsPagar = Results.calcPisCofinsPagar(vPisCofinsVenda, vCreditoPisCofins);
   const icmsPagar = Results.calcICMSPagar(vICMSVenda, vCreditoICMS);
   const simplesPagar = Results.calcSimplesPagar(vSimplesVenda);
   const fornecedorPagar = Results.calcFornecedorPagar(precoCompra, vST, vIPI);
-  const lucroBruto = Results.calcLucroBruto(precoVenda, cmv, vPisCofinsVenda, vICMSVenda, vSimplesVenda);
+  const lucroBruto = Results.calcLucroBruto(
+    precoVenda, cmv, vPisCofinsVenda, vICMSVenda, vSimplesVenda, vCBSVenda, vIBSUFVenda, vIBSMunVenda
+  );
   const margem = Results.calcMargem(lucroBruto, precoVenda);
   const markup = Results.calcMarkup(precoVenda, precoCompra);
-  
+
   // Monta objeto com todos os valores
   const values = {
     precoCompra,
@@ -92,9 +116,9 @@ export function processCalculation() {
     margem,
     markup
   };
-  
+
   // Atualiza interface
   updateUI(values);
-  
+
   return values;
 }
