@@ -5,6 +5,7 @@ import { consultarCNPJ, getCNPJErrorMessage } from '../services/cnpj-service.js'
 import { loadPerfilData, savePerfilData, clearPerfilData } from '../services/perfil-service.js';
 import { logger } from '../utils/logger.js';
 import { notify } from '../utils/notifications.js';
+import { eventBus } from '../utils/event-bus.js';
 
 const MODULE = 'PerfilFormHandler';
 
@@ -252,10 +253,8 @@ function handleFormSubmit(e, onSuccess) {
       'Os dados da sua loja foram salvos com sucesso!'
     );
     
-    // Atualiza o regime do calculador se houver callback
-    if (window.updateRegimeFromPerfil) {
-      window.updateRegimeFromPerfil(formData.regime);
-    }
+    // Notifica o calculador sobre a mudança de regime via EventBus
+    eventBus.emit('perfil:regime-changed', formData.regime);
     
     setTimeout(() => {
       if (onSuccess) onSuccess();

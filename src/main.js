@@ -15,6 +15,7 @@ import { getRegimeTributario } from './services/perfil-service.js';
 import { ELEMENTS } from './config/constants.js';
 import { logger } from './utils/logger.js';
 import { notify } from './utils/notifications.js';
+import { eventBus } from './utils/event-bus.js';
 import { initializePerformanceOptimizations } from './utils/performance.js';
 import { initializePWA } from './utils/pwa.js';
 
@@ -63,22 +64,23 @@ function loadRegimeFromPerfil() {
 }
 
 /**
- * Função global para atualizar regime do calculador a partir do perfil
- * Chamada quando o perfil é salvo
+ * Registra listener do EventBus para atualizar o regime quando o perfil é salvo
  */
-window.updateRegimeFromPerfil = function(regime) {
-  const regimeSelect = document.getElementById(ELEMENTS.REGIME);
+function setupPerfilRegimeListener() {
+  eventBus.on('perfil:regime-changed', (regime) => {
+    const regimeSelect = document.getElementById(ELEMENTS.REGIME);
 
-  if (regime && regimeSelect) {
-    regimeSelect.value = regime;
-    logger.success(MODULE, 'Regime atualizado via perfil', { regime });
+    if (regime && regimeSelect) {
+      regimeSelect.value = regime;
+      logger.success(MODULE, 'Regime atualizado via perfil', { regime });
 
-    const event = new Event('change', { bubbles: true });
-    regimeSelect.dispatchEvent(event);
+      const event = new Event('change', { bubbles: true });
+      regimeSelect.dispatchEvent(event);
 
-    notify.success('Regime Atualizado', `Regime tributário alterado para ${regime}`);
-  }
-};
+      notify.success('Regime Atualizado', `Regime tributário alterado para ${regime}`);
+    }
+  });
+}
 
 /**
  * Inicializa a aplicação
@@ -112,8 +114,9 @@ async function initializeApp() {
       faixasSimples: faixasSimplesNacionalData.length
     });
 
-    // 5. Carrega regime do perfil (se existir)
+    // 5. Carrega regime do perfil (se existir) e registra listener de atualização
     logger.info(MODULE, 'Etapa 5/16: Carregando perfil do usuário');
+    setupPerfilRegimeListener();
     loadRegimeFromPerfil();
 
     // 6. Configura listeners de eventos
