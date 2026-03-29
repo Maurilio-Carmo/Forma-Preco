@@ -33,6 +33,17 @@
     "aliq_saida_simples": 0
   },
   {
+    "imposto_federal": "Aliquota 10%",
+    "cst_entrada_real": "73",
+    "cst_saida_real": "02",
+    "aliq_entrada_real": 0.925,
+    "aliq_saida_real": 0.925,
+    "aliq_entrada_presumido": 0.365,
+    "aliq_saida_presumido": 0.365,
+    "aliq_entrada_simples": 0,
+    "aliq_saida_simples": 0
+  },
+  {
     "imposto_federal": "Substituto",
     "cst_entrada_real": "75",
     "cst_saida_real": "05",
