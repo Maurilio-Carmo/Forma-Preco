@@ -1,6 +1,7 @@
 // src/utils/version-handler.js
 
 import { logger } from './logger.js';
+import { APP_VERSION } from '../config/version.js';
 
 const MODULE = 'VersionHandler';
 
@@ -15,43 +16,24 @@ function isInstalledPWA() {
 }
 
 /**
- * Carrega a versão do app do manifest.json,
- * atualiza o elemento #appVersion e exibe o wrapper
+ * Atualiza o elemento #appVersion e exibe o wrapper
  * somente quando o app estiver instalado como PWA.
  */
-export async function loadAppVersion() {
-  try {
-    const response = await fetch('./manifest.json');
-    const manifest = await response.json();
+export function loadAppVersion() {
+  const versionElement = document.getElementById('appVersion');
+  const versionWrapper = document.getElementById('appVersionWrapper');
 
-    const version = manifest.version || '1.0.0';
-    const versionElement = document.getElementById('appVersion');
-    const versionWrapper = document.getElementById('appVersionWrapper');
-
-    if (versionElement) {
-      versionElement.textContent = `v${version}`;
-      logger.info(MODULE, `Versão do app carregada: ${version}`);
-    }
-
-    // Exibe o wrapper de versão somente se instalado como PWA
-    if (versionWrapper) {
-      versionWrapper.style.display = isInstalledPWA() ? 'flex' : 'none';
-      logger.debug(MODULE, `Wrapper de versão ${isInstalledPWA() ? 'exibido' : 'ocultado'} (modo standalone: ${isInstalledPWA()})`);
-    }
-
-    return version;
-
-  } catch (error) {
-    logger.error(MODULE, 'Erro ao carregar versão do app', error);
-
-    // Fallback
-    const versionElement = document.getElementById('appVersion');
-    if (versionElement) {
-      versionElement.textContent = 'v1.0.0';
-    }
-
-    return '1.0.0';
+  if (versionElement) {
+    versionElement.textContent = `v${APP_VERSION}`;
+    logger.info(MODULE, `Versão do app carregada: ${APP_VERSION}`);
   }
+
+  if (versionWrapper) {
+    versionWrapper.style.display = isInstalledPWA() ? 'flex' : 'none';
+    logger.debug(MODULE, `Wrapper de versão ${isInstalledPWA() ? 'exibido' : 'ocultado'} (modo standalone: ${isInstalledPWA()})`);
+  }
+
+  return APP_VERSION;
 }
 
 /**

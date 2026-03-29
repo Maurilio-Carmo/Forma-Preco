@@ -1,12 +1,12 @@
 // src/config/version.js
 
-export const APP_VERSION = '1.0.12';
+export const APP_VERSION = '1.0.13';
 
 export const VERSION_INFO = {
   version: APP_VERSION,
   buildDate: '2026-03-12',
-  name: 'Calculadora de Preço',
-  shortName: 'CalcPreço',
+  name: 'Forma Preço',
+  shortName: 'FormaPreço',
 };
 
 export function compareVersions(v1, v2) {

@@ -96,7 +96,7 @@ async function initializeApp() {
 
     // 2. Carrega versão do app
     logger.info(MODULE, 'Etapa 2/16: Carregando versão do app');
-    await loadAppVersion();
+    loadAppVersion();
 
     // 3. Carrega dados dos JSONs
     logger.info(MODULE, 'Etapa 3/16: Carregando dados de tributação');

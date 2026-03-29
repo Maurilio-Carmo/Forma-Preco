@@ -1,4 +1,4 @@
-# 🧮 Calculadora de Preço — Documentação Técnica
+# 🧮 Forma Preço — Documentação Técnica
 
 ## 📜 Visão Geral
 
