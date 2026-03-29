@@ -17,7 +17,7 @@ Aplicação web completa para cálculo de preço de venda considerando margem de
 
 A solução está publicada no GitHub Pages — sem instalação ou dependências.
 
-**[https://maurilio-carmo.github.io/Calculadora_de_Preco/](https://maurilio-carmo.github.io/Calculadora_de_Preco/)**
+**[https://maurilio-carmo.github.io/Forma-Preco/](https://maurilio-carmo.github.io/Forma-Preco/)**
 
 Toda a operação é executada no front-end (client-side).
 
