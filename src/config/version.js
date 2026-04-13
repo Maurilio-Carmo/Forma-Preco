@@ -1,6 +1,6 @@
 // src/config/version.js
 
-export const APP_VERSION = '1.0.14';
+export const APP_VERSION = '1.0.15';
 
 export const VERSION_INFO = {
   version: APP_VERSION,

@@ -37,7 +37,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #1a5fd4, var(--accent));
+    background: linear-gradient(90deg, #1a7a42, var(--accent));
 }
 
 /* Tooltip interativo em highlights */
@@ -48,11 +48,11 @@
 .highlight.tooltip-trigger:hover {
     transform: translateY(-2px);
     box-shadow: var(--hover-shadow);
-    background-color: rgba(74, 144, 226, 0.05);
+    background-color: rgba(58, 171, 106, 0.05);
 }
 
 [data-theme="dark"] .highlight.tooltip-trigger:hover {
-    background-color: rgba(74, 144, 226, 0.1);
+    background-color: rgba(58, 171, 106, 0.1);
 }
 
 .highlight.tooltip-trigger:active {
@@ -93,18 +93,18 @@
     display: block;
 }
 
-.ic-calc { 
-    background: var(--green); 
+.ic-calc {
+    background: #1a7a42;
 }
 
-.ic-cart { 
-    background: var(--orange); 
+.ic-cart {
+    background: #2e9955;
 }
 
-.ic-sell { 
-    background: var(--green); 
+.ic-sell {
+    background: #3dbb70;
 }
 
-.ic-graf { 
-    background: var(--accent); 
+.ic-graf {
+    background: #57cc8a;
 }

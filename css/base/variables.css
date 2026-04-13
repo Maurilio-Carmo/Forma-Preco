@@ -25,13 +25,13 @@
     --input-disabled-bg: #f5f5f5;
     
     /* Cores de Destaque */
-    --accent: #5aa2ff;
-    --green: #57b86a;
+    --accent: #3aab6a;
+    --green: #2e9955;
     --orange: #f6a623;
     --danger: #e53935;
-    
+
     /* Badges e Extras */
-    --badge-bg: #eef6ff;
+    --badge-bg: #eef8f2;
     
     /* Skeleton Loading */
     --skeleton-start: #d8dce0;
@@ -72,13 +72,13 @@
     --input-disabled-bg: #2a2a2a;
     
     /* Cores de Destaque */
-    --accent: #8ab8ff;
-    --green: #7ad69a;
+    --accent: #5ed68a;
+    --green: #4dc87a;
     --orange: #f9c36a;
     --danger: #f07a7a;
-    
+
     /* Badges e Extras */
-    --badge-bg: #3a4350;
+    --badge-bg: #1e3a2a;
     
     /* Skeleton Loading */
     --skeleton-start: #3a4350;

@@ -26,7 +26,7 @@ header h1 {
     margin: 0;
     font-weight: 800;
     letter-spacing: -0.5px;
-    background: linear-gradient(90deg, #1a5fd4, var(--accent));
+    background: linear-gradient(90deg, #1a7a42, var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -51,7 +51,7 @@ header small {
     align-items: center;
     gap: 8px;
     padding: 10px 14px;
-    background: var(--accent);
+    background: linear-gradient(135deg, #1a7a42, #3aab6a);
     color: #fff;
     border-radius: var(--radius-small);
     text-decoration: none;
@@ -63,9 +63,9 @@ header small {
 }
 
 .btn-support:hover {
-    background: color-mix(in srgb, var(--accent) 85%, #000);
+    background: linear-gradient(135deg, #155f34, #2e9055);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(30, 120, 60, 0.35);
 }
 
 .btn-support:active {
