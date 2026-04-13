@@ -17,9 +17,17 @@ Aplicação web completa para cálculo de preço de venda considerando margem de
 
 A solução está publicada no GitHub Pages — sem instalação ou dependências.
 
-**[https://maurilio-carmo.github.io/Forma-Preco/](https://maurilio-carmo.github.io/Forma-Preco/)**
+**[Visualizar página do Forma Preço](https://maurilio-carmo.github.io/Forma-Preco/)**
 
 Toda a operação é executada no front-end (client-side).
+
+---
+
+## ☕ Apoie o Projeto
+
+Se este app te ajudou a economizar tempo ou dinheiro, considere fazer uma doação!
+
+**[Apoiar / Fazer uma doação](https://maurilio-carmo.github.io/Coffee-Pay/)**
 
 ---
 

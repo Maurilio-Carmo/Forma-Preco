@@ -24,8 +24,12 @@ header {
 header h1 {
     font-size: 24px;
     margin: 0;
-    font-weight: 600;
-    color: var(--text-strong);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #1a5fd4, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 header small {
@@ -33,4 +37,53 @@ header small {
     color: var(--muted);
     font-size: 12px;
     margin-top: 5px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-support {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: var(--radius-small);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-support:hover {
+    background: color-mix(in srgb, var(--accent) 85%, #000);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-support:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.btn-support-icon {
+    flex-shrink: 0;
+}
+
+/* Mobile: oculta o label, mantém só o ícone no botão quadrado */
+@media (max-width: 480px) {
+    .btn-support {
+        padding: 9px;
+    }
+
+    .btn-support-label {
+        display: none;
+    }
 }

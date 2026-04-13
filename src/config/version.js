@@ -1,10 +1,10 @@
 // src/config/version.js
 
-export const APP_VERSION = '1.0.13';
+export const APP_VERSION = '1.0.14';
 
 export const VERSION_INFO = {
   version: APP_VERSION,
-  buildDate: '2026-03-12',
+  buildDate: '2026-04-13',
   name: 'Forma Preço',
   shortName: 'FormaPreço',
 };
