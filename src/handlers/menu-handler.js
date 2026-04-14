@@ -35,7 +35,6 @@ export function initializeMenu() {
   const menuOverlay = document.getElementById('menuOverlay');
   const menuPerfil = document.getElementById('menuPerfil');
   const menuTema = document.getElementById('menuTema');
-  const toggleTheme = document.getElementById('toggleTheme');
   const sideMenu = document.getElementById('sideMenu');
 
   // Abrir menu
@@ -52,10 +51,7 @@ export function initializeMenu() {
   });
 
   // Alterar tema
-  menuTema?.addEventListener('click', () => {
-    closeMenu();
-    toggleTheme?.click();
-  });
+  menuTema?.addEventListener('click', closeMenu);
 
   // ESC fecha o menu
   document.addEventListener('keydown', (e) => {

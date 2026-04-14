@@ -177,14 +177,3 @@ export function setupRegimeVisibilityHandler(recalculateCallback) {
   // Executa uma vez na inicialização para aplicar o estado correto
   atualizarVisibilidadeCampos();
 }
-
-/**
- * Remove os listeners do regime (útil para limpeza)
- */
-export function cleanupRegimeVisibilityHandler() {
-  const regimeSelect = document.getElementById(ELEMENTS.REGIME);
-  if (regimeSelect) {
-    const newRegimeSelect = regimeSelect.cloneNode(true);
-    regimeSelect.parentNode.replaceChild(newRegimeSelect, regimeSelect);
-  }
-}

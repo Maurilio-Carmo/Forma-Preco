@@ -97,17 +97,3 @@ async function networkFirst(request, cacheName) {
     throw new Error(`[SW] Sem cache para: ${request.url}`);
   }
 }
-
-async function staleWhileRevalidate(request, cacheName) {
-  const cache = await caches.open(cacheName);
-  const cached = await cache.match(request);
-
-  const fetchPromise = fetch(request)
-    .then(response => {
-      if (response.ok) cache.put(request, response.clone());
-      return response;
-    })
-    .catch(() => cached);
-
-  return cached || fetchPromise;
-}
