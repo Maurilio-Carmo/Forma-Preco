@@ -21,57 +21,12 @@ export async function registerServiceWorker() {
 
     logger.success(MODULE, 'Service Worker registrado', { scope: registration.scope });
 
-    setupUpdateListener(registration);
-    setupPeriodicUpdateCheck(registration);
-
     return registration;
 
   } catch (error) {
     logger.error(MODULE, 'Falha ao registrar Service Worker', error);
     return null;
   }
-}
-
-// ============================================================
-// LISTENERS DE ATUALIZAÇÃO DO SW
-// ============================================================
-
-function setupUpdateListener(registration) {
-  registration.addEventListener('updatefound', () => {
-    const newWorker = registration.installing;
-    if (!newWorker) return;
-
-    newWorker.addEventListener('statechange', () => {
-      if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-        handleUpdateAvailable(newWorker);
-      }
-    });
-  });
-
-  logger.debug(MODULE, 'Listener de atualizações do SW configurado');
-}
-
-function handleUpdateAvailable(newWorker) {
-  logger.info(MODULE, 'Nova versão do SW detectada — aplicando...');
-
-  notify.info('Atualizando Aplicação', 'Nova versão detectada. Atualizando em 2 segundos...', 2000);
-
-  setTimeout(() => applyUpdate(newWorker), 2000);
-}
-
-function applyUpdate(newWorker) {
-  newWorker.postMessage({ type: 'SKIP_WAITING' });
-  window.location.reload();
-  logger.success(MODULE, 'Atualização do SW aplicada — recarregando página');
-}
-
-function setupPeriodicUpdateCheck(registration) {
-  setInterval(() => {
-    registration.update();
-    logger.debug(MODULE, 'Verificação periódica do SW executada');
-  }, 60 * 60 * 1000);
-
-  logger.debug(MODULE, 'Verificação periódica do SW configurada (60 min)');
 }
 
 // ============================================================
