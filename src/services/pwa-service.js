@@ -17,7 +17,7 @@ export async function registerServiceWorker() {
   }
 
   try {
-    const registration = await navigator.serviceWorker.register('./sw.js');
+    const registration = await navigator.serviceWorker.register('./sw.js', { type: 'module' });
 
     logger.success(MODULE, 'Service Worker registrado', { scope: registration.scope });
 
@@ -104,7 +104,6 @@ export function setupInstallPrompt() {
     showSidebarInstallButton(e);
   });
 
-  // 3. Após instalação confirmada
   window.addEventListener('appinstalled', () => {
     logger.success(MODULE, 'App instalado com sucesso');
     hideSidebarInstallButton();

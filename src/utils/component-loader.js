@@ -28,7 +28,6 @@ export async function loadComponent(elementId, componentPath, skeletonType = 'de
       return;
     }
     
-    // Mostra skeleton durante carregamento
     element.innerHTML = SKELETON_TEMPLATES[skeletonType] || SKELETON_TEMPLATES.default;
     
     const response = await fetch(componentPath);
@@ -39,7 +38,6 @@ export async function loadComponent(elementId, componentPath, skeletonType = 'de
     
     const html = await response.text();
     
-    // Aplica fade-in ao trocar conteúdo
     element.classList.add('fade-in');
     element.innerHTML = html;
 

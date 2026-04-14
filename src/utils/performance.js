@@ -5,54 +5,6 @@ import { logger } from './logger.js';
 const MODULE = 'Performance';
 
 /**
- * Implementa lazy loading para imagens
- */
-export function initializeLazyLoading() {
-  const images = document.querySelectorAll('img[data-src]');
-  
-  if (!images.length) {
-    logger.debug(MODULE, 'Nenhuma imagem lazy encontrada');
-    return;
-  }
-  
-  if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          if (img.dataset.src) {
-            img.src = img.dataset.src;
-            img.removeAttribute('data-src');
-            img.classList.add('fade-in');
-            observer.unobserve(img);
-            
-            logger.debug(MODULE, 'Imagem carregada via lazy loading', {
-              src: img.src
-            });
-          }
-        }
-      });
-    }, {
-      rootMargin: '50px'
-    });
-    
-    images.forEach(img => imageObserver.observe(img));
-    
-    logger.success(MODULE, `Lazy loading ativado para ${images.length} imagens`);
-  } else {
-    // Fallback para navegadores sem suporte
-    images.forEach(img => {
-      if (img.dataset.src) {
-        img.src = img.dataset.src;
-        img.removeAttribute('data-src');
-      }
-    });
-    
-    logger.warn(MODULE, 'IntersectionObserver não suportado, carregando todas as imagens');
-  }
-}
-
-/**
  * Adiciona loading="lazy" em imagens
  */
 export function addNativeLazyLoading() {
@@ -81,22 +33,6 @@ export function initializeContentVisibility() {
   });
   
   logger.success(MODULE, `Content visibility ativado para ${lazyContents.length} elementos`);
-}
-
-/**
- * Otimiza animações removendo will-change após execução
- */
-export function optimizeAnimations() {
-  const animatedElements = document.querySelectorAll('.notification, .modal, .tooltip-modal');
-  
-  animatedElements.forEach(element => {
-    element.addEventListener('animationend', () => {
-      element.classList.remove('will-animate');
-      element.classList.add('animated');
-    }, { once: true });
-  });
-  
-  logger.debug(MODULE, 'Otimizações de animação aplicadas');
 }
 
 /**
@@ -188,10 +124,8 @@ export function prefetchResources() {
 export function initializePerformanceOptimizations() {
   logger.group('⚡ Otimizações de Performance');
   
-  initializeLazyLoading();
   addNativeLazyLoading();
   initializeContentVisibility();
-  optimizeAnimations();
   prefetchResources();
   
   // Mede Web Vitals apenas em modo debug

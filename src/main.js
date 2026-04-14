@@ -90,89 +90,35 @@ async function initializeApp() {
     logger.group('🚀 Inicialização da Aplicação');
     logger.time('Tempo total de inicialização');
 
-    // 1. Carrega componentes HTML primeiro
-    logger.info(MODULE, 'Etapa 1/16: Carregando componentes HTML');
     await loadHTMLComponents();
-
-    // 2. Carrega versão do app
-    logger.info(MODULE, 'Etapa 2/16: Carregando versão do app');
     loadAppVersion();
-
-    // 3. Carrega dados dos JSONs
-    logger.info(MODULE, 'Etapa 3/16: Carregando dados de tributação');
     await initializeData();
 
-    // 4. Obtém referências aos dados carregados
-    logger.info(MODULE, 'Etapa 4/16: Obtendo referências aos dados');
     const tributacaoData = getTributacaoData();
     const impostosFederaisData = getImpostosFederaisData();
     const faixasSimplesNacionalData = getFaixasSimplesNacionalData();
 
-    logger.debug(MODULE, 'Dados carregados', {
-      tributacoes: tributacaoData.length,
-      impostosFederais: impostosFederaisData.length,
-      faixasSimples: faixasSimplesNacionalData.length
-    });
-
-    // 5. Carrega regime do perfil (se existir) e registra listener de atualização
-    logger.info(MODULE, 'Etapa 5/16: Carregando perfil do usuário');
     setupPerfilRegimeListener();
     loadRegimeFromPerfil();
-
-    // 6. Configura listeners de eventos
-    logger.info(MODULE, 'Etapa 6/16: Configurando listeners de cálculo');
     setupCalculationListeners(processCalculation);
-
-    // 7. Configura listeners de atualização de tributação
-    logger.info(MODULE, 'Etapa 7/16: Configurando listeners de tributação');
     setupTaxUpdateListeners(tributacaoData, impostosFederaisData, faixasSimplesNacionalData, processCalculation);
-
-    // 8. Configura gerenciamento de visibilidade por regime
-    logger.info(MODULE, 'Etapa 8/16: Configurando visibilidade por regime');
     setupRegimeVisibilityHandler(processCalculation);
-
-    // 9. Inicializa tema
-    logger.info(MODULE, 'Etapa 9/16: Inicializando tema');
     initializeTheme();
-
-    // 10. Inicializa menu
-    logger.info(MODULE, 'Etapa 10/16: Inicializando menu');
     initializeMenu();
-
-    // 11. Inicializa modal de perfil
-    logger.info(MODULE, 'Etapa 11/16: Inicializando modal de perfil');
     initializePerfilModal();
-
-    // 12. Inicializa tooltips
-    logger.info(MODULE, 'Etapa 12/16: Inicializando tooltips');
     initializeTooltips();
-
-    // 13. Inicializa otimizações de performance
-    logger.info(MODULE, 'Etapa 13/16: Inicializando otimizações de performance');
     initializePerformanceOptimizations();
-
-    // 14. Inicializa PWA (service worker + botão instalar no sidebar)
-    logger.info(MODULE, 'Etapa 14/16: Inicializando PWA');
     initializePWA();
-
-    // 15. Inicializa sistema de atualização (botão atualizar no sidebar)
-    logger.info(MODULE, 'Etapa 15/16: Inicializando sistema de atualização');
     initializeUpdateHandler();
 
-    // 16. Atualiza ano do footer e executa cálculo inicial
-    logger.info(MODULE, 'Etapa 16/16: Executando cálculo inicial');
     const footerYear = document.getElementById('footer-year');
     if (footerYear) footerYear.textContent = new Date().getFullYear();
     processCalculation();
 
     logger.timeEnd('Tempo total de inicialização');
-    logger.success(MODULE, 'Aplicação inicializada com sucesso! 🎉');
+    logger.success(MODULE, 'Aplicação inicializada com sucesso!');
     logger.groupEnd();
-
-    if (!sessionStorage.getItem('app_initialized')) {
-      notify.success('Aplicação Pronta', 'Calculadora carregada e pronta para uso!');
-      sessionStorage.setItem('app_initialized', 'true');
-    }
+    sessionStorage.setItem('app_initialized', 'true');
 
   } catch (error) {
     logger.groupEnd();
@@ -260,14 +206,12 @@ function showFatalError({ title, message, technical, action = 'Recarregar' }) {
   notify.error(title, message, 0);
 }
 
-// Inicia a aplicação quando o DOM estiver pronto
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeApp);
 } else {
   initializeApp();
 }
 
-// Captura erros globais não tratados
 window.addEventListener('error', (event) => {
   logger.error(MODULE, 'Erro não tratado capturado', {
     message: event.message,
@@ -278,7 +222,6 @@ window.addEventListener('error', (event) => {
   });
 });
 
-// Captura promessas rejeitadas não tratadas
 window.addEventListener('unhandledrejection', (event) => {
   logger.error(MODULE, 'Promise rejeitada não tratada', { reason: event.reason });
   event.preventDefault();

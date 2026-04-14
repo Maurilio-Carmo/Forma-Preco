@@ -34,6 +34,13 @@
     <!-- DNS Prefetch -->
     <link rel="dns-prefetch" href="https://brasilapi.com.br">
     
+    <!-- Tema aplicado antes do primeiro paint para evitar flash -->
+    <script>
+      if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    </script>
+
     <!-- CSS -->
     <link rel="stylesheet" href="css/main.css" />
 

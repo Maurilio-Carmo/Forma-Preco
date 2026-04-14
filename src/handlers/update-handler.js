@@ -1,8 +1,19 @@
 // src/handlers/update-handler.js
 
-import { APP_VERSION, isNewerVersion } from '../config/version.js';
+import { APP_VERSION } from '../../version.js';
+
+function isNewerVersion(newVersion, currentVersion) {
+  const p1 = newVersion.split('.').map(Number);
+  const p2 = currentVersion.split('.').map(Number);
+  for (let i = 0; i < 3; i++) {
+    if (p1[i] > p2[i]) return true;
+    if (p1[i] < p2[i]) return false;
+  }
+  return false;
+}
 import { logger } from '../utils/logger.js';
 import { notify } from '../utils/notifications.js';
+import { isInstalledPWA } from '../utils/version-handler.js';
 
 const MODULE = 'UpdateHandler';
 const STORAGE_KEY = 'installed_version';
@@ -11,14 +22,9 @@ const STORAGE_KEY = 'installed_version';
 // CONTROLE DE VERSÃO NO STORAGE
 // ============================================================
 
-/**
- * Retorna null se nunca foi salvo (primeira visita),
- * ou a string da versão salva.
- * Nunca usa fallback '0.0.0' para não criar falsos positivos.
- */
 function getInstalledVersion() {
   try {
-    return localStorage.getItem(STORAGE_KEY); // null se não existe
+    return localStorage.getItem(STORAGE_KEY);
   } catch {
     return null;
   }
@@ -34,21 +40,67 @@ function saveInstalledVersion(version) {
 }
 
 // ============================================================
-// BOTÃO DE ATUALIZAÇÃO NO SIDEBAR
+// VERIFICAÇÃO DE VERSÃO
 // ============================================================
 
-function showSidebarUpdateButton() {
-  const btn = document.getElementById('sidebarUpdateBtn');
-  if (!btn) return;
-  btn.style.display = 'flex';
-  logger.info(MODULE, 'Botão de atualização exibido no sidebar');
+/**
+ * Verifica se há nova versão disponível.
+ * Na primeira visita registra silenciosamente e retorna false.
+ * @returns {boolean}
+ */
+export function checkForUpdates() {
+  const installedVersion = getInstalledVersion();
+  const currentVersion = APP_VERSION;
+
+  if (installedVersion === null) {
+    logger.info(MODULE, `Primeira visita — registrando versão ${currentVersion}`);
+    saveInstalledVersion(currentVersion);
+    return false;
+  }
+
+  logger.info(MODULE, `Verificando atualizações — instalada: ${installedVersion} / atual: ${currentVersion}`);
+
+  return isNewerVersion(currentVersion, installedVersion);
 }
 
-function hideSidebarUpdateButton() {
-  const btn = document.getElementById('sidebarUpdateBtn');
-  if (!btn) return;
-  btn.style.display = 'none';
-  logger.debug(MODULE, 'Botão de atualização ocultado');
+// ============================================================
+// SINCRONIZAÇÃO DO FOOTER DO SIDEBAR
+// ============================================================
+
+/**
+ * Decide o que exibir no footer do sidebar de acordo com as regras:
+ *   - canInstall  → botão Instalar
+ *   - instalado + nova versão → botão Atualizar
+ *   - instalado + versão ok  → wrapper de versão
+ *   - demais casos → nada
+ *
+ * @param {boolean} canInstall - true quando beforeinstallprompt está disponível
+ */
+export function syncSidebarFooter(canInstall = false) {
+  const installBtn = document.getElementById('sidebarInstallBtn');
+  const updateBtn  = document.getElementById('sidebarUpdateBtn');
+  const versionEl  = document.getElementById('appVersionWrapper');
+
+  [installBtn, updateBtn, versionEl].forEach(el => { if (el) el.style.display = 'none'; });
+
+  const installed = isInstalledPWA();
+  const hasUpdate = checkForUpdates();
+  const menuToggle = document.getElementById('menuToggle');
+
+  menuToggle?.classList.toggle('has-update', hasUpdate);
+
+  if (canInstall) {
+    if (installBtn) installBtn.style.display = 'flex';
+    logger.debug(MODULE, 'Sidebar footer: botão Instalar');
+  } else if (installed && hasUpdate) {
+    if (updateBtn) updateBtn.style.display = 'flex';
+    logger.debug(MODULE, 'Sidebar footer: botão Atualizar');
+  } else if (installed) {
+    if (versionEl) versionEl.style.display = 'flex';
+    logger.debug(MODULE, 'Sidebar footer: versão');
+  } else {
+    logger.debug(MODULE, 'Sidebar footer: nada a exibir');
+  }
 }
 
 // ============================================================
@@ -85,66 +137,24 @@ async function updateApp() {
 }
 
 // ============================================================
-// VERIFICAÇÃO DE VERSÃO
-// ============================================================
-
-/**
- * Três cenários possíveis:
- *
- * 1. installedVersion === null  → primeira visita após trocar de sistema
- *    de notificação. Salva silenciosamente. Sem botão.
- *
- * 2. installedVersion < APP_VERSION  → há atualização disponível.
- *    Exibe botão (a menos que o usuário tenha dispensado na sessão).
- *
- * 3. installedVersion === APP_VERSION  → tudo em dia. Sem botão.
- */
-export function checkForUpdates() {
-  const installedVersion = getInstalledVersion();
-  const currentVersion = APP_VERSION;
-
-  // Cenário 1: primeira visita — apenas registra, sem mostrar botão
-  if (installedVersion === null) {
-    logger.info(MODULE, `Primeira visita — registrando versão ${currentVersion}`);
-    saveInstalledVersion(currentVersion);
-    return false;
-  }
-
-  logger.info(MODULE, `Verificando atualizações — instalada: ${installedVersion} / atual: ${currentVersion}`);
-
-  // Cenário 2: versão desatualizada
-  if (isNewerVersion(currentVersion, installedVersion)) {
-    const dismissed = sessionStorage.getItem('update_dismissed');
-    if (!dismissed) {
-      showSidebarUpdateButton();
-    }
-    return true;
-  }
-
-  // Cenário 3: em dia
-  return false;
-}
-
-// ============================================================
 // INICIALIZAÇÃO — event delegation no document
 // ============================================================
 
 export function initializeUpdateHandler() {
   logger.group('🔄 Inicializando Update Handler');
 
-  // Event delegation — funciona mesmo se o elemento ainda não estiver no DOM
   document.addEventListener('click', (e) => {
     if (e.target.closest('#sidebarUpdateBtn')) {
       updateApp();
     }
   });
 
-  checkForUpdates();
+  syncSidebarFooter(false);
 
-  setInterval(checkForUpdates, 30 * 60 * 1000);
+  setInterval(() => syncSidebarFooter(false), 30 * 60 * 1000);
 
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) checkForUpdates();
+    if (!document.hidden) syncSidebarFooter(false);
   });
 
   logger.groupEnd();

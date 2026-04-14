@@ -11,6 +11,20 @@
     gap: 5px;
     padding: var(--padding);
     z-index: 1001;
+    position: relative;
+}
+
+/* Bolinha de nova versão disponível */
+.menu-toggle.has-update::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 9px;
+    height: 9px;
+    background: #ff9800;
+    border-radius: 50%;
+    border: 2px solid var(--panel);
 }
 
 .menu-toggle span {
