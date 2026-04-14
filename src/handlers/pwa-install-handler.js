@@ -17,6 +17,10 @@ export function showSidebarInstallButton(prompt) {
   logger.info(MODULE, 'Prompt de instalação armazenado — botão Instalar exibido');
 }
 
+export function hasPendingInstallPrompt() {
+  return deferredPrompt !== null;
+}
+
 export function hideSidebarInstallButton() {
   deferredPrompt = null;
   syncSidebarFooter(false);

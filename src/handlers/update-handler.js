@@ -4,6 +4,7 @@ import { APP_VERSION } from '../../version.js';
 import { logger } from '../utils/logger.js';
 import { notify } from '../utils/notifications.js';
 import { isInstalledPWA } from '../utils/version-handler.js';
+import { hasPendingInstallPrompt } from './pwa-install-handler.js';
 
 const MODULE = 'UpdateHandler';
 const STORAGE_KEY = 'installed_version';
@@ -131,12 +132,12 @@ export function initializeUpdateHandler() {
     if (e.target.closest('#sidebarUpdateBtn')) updateApp();
   });
 
-  syncSidebarFooter(false);
+  syncSidebarFooter(hasPendingInstallPrompt());
 
-  setInterval(() => syncSidebarFooter(false), 30 * 60 * 1000);
+  setInterval(() => syncSidebarFooter(hasPendingInstallPrompt()), 30 * 60 * 1000);
 
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) syncSidebarFooter(false);
+    if (!document.hidden) syncSidebarFooter(hasPendingInstallPrompt());
   });
 
   logger.success(MODULE, 'Update Handler inicializado');
