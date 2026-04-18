@@ -5,7 +5,7 @@
     "cst_saida_real": "01",
     "aliq_entrada_real": 9.25,
     "aliq_saida_real": 9.25,
-    "aliq_entrada_presumido": 3.65,
+    "aliq_entrada_presumido": 0,
     "aliq_saida_presumido": 3.65,
     "aliq_entrada_simples": 0,
     "aliq_saida_simples": 0
@@ -38,7 +38,7 @@
     "cst_saida_real": "02",
     "aliq_entrada_real": 0.925,
     "aliq_saida_real": 0.925,
-    "aliq_entrada_presumido": 0.365,
+    "aliq_entrada_presumido": 0,
     "aliq_saida_presumido": 0.365,
     "aliq_entrada_simples": 0,
     "aliq_saida_simples": 0
